@@ -1,39 +1,44 @@
-import { useEffect } from 'react';
 import './App.css';
-import { useState } from 'react';
-import { createClient } from '@supabase/supabase-js'
-
-const supabaseUrl = 'https://vussefkqdtgdosoytjch.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1c3NlZmtxZHRnZG9zb3l0amNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODA2MTIxNTgsImV4cCI6MTk5NjE4ODE1OH0.Df2aXRl0D-XsGkkoJMgGomnu7NnI165udUEmiicXUyg'
-const supabase = createClient(supabaseUrl, supabaseKey)
-
+import { useEffect, useState } from 'react';
+import supabase from './DataBase/SupabaseClient';
 
 function App() {
-  
-  const [data, setData] = useState([])
+  const [fetchError , setFetchError] = useState(null);
+  const [fetchData , setFetchData] = useState(null);
 
-  async function fetchData() {
-    const { data: testTableData, error } = await supabase
-      .from('test')
-      .select('*')
-    if (error) {
-      console.log('error', error)
-    }
-    else {
-      setData(testTableData)
-    }
-  }
-  
   useEffect(() => {
-    fetchData()
-  }, [])
+    const fetchData = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('test')
+          .select('*')
+        if (error) {
+          setFetchError(error);
+          setFetchData(null);
+          console.log(error);
+        } else {
+          setFetchData(data);
+          setFetchError(null);
+        }
+      } catch (error) {
+        setFetchError(error);
+      }
+    };
 
-  console.log(data)
+    fetchData();
+
+  }, []);
+
+
   return (
     <div className="App">
       <header className="App-header">
         <p>
-          
+          <h1>Supabase React App</h1>
+          {fetchError && <p>{fetchError.message}</p>}
+          {fetchData && fetchData.map((data) => (
+            <p key={data.id}>{data.test_name}</p>
+          ))}
         </p>
       </header>
     </div>
