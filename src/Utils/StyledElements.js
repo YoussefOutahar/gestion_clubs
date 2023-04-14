@@ -18,7 +18,7 @@ const SplitRight = styled(Split)`
     right: 0;
 `;
 
-const Centered = styled.div`
+const Center = styled.div`
     position: absolute;
     top: 50%;
     left: 50%;
@@ -26,4 +26,8 @@ const Centered = styled.div`
     text-align: center;
 `;
 
-export {SplitLeft, SplitRight, Centered};
+const Spacer = styled.div`
+    flex: 1;
+`;
+
+export {SplitLeft, SplitRight, Center, Spacer};

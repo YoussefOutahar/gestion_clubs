@@ -10,6 +10,7 @@ import {
 
 import App from './App';
 import AuthentificationPage from './Pages/AuthentificationPage';
+import LandingPage from './Pages/LandingPage/LandingPage';
 import ErrorPage from './Pages/ErrorPage';
 
 
@@ -24,6 +25,11 @@ const router = createBrowserRouter([
   {
     path: "/authentification",
     element: <AuthentificationPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/landingPage",
+    element: <LandingPage />,
     errorElement: <ErrorPage />,
   }
 ]);
