@@ -1,41 +1,32 @@
-import styled from "styled-components";
-import { Spacer } from "../../Utils/StyledElements";
+import React from "react";
 
-import { Link } from "react-router-dom";
+import Footer from "./Components/Footer";
+import NavBar from "./Components/NavBar";
+import CarouselClubs from "./Components/CarouselClubs";
 
 function LandingPage() {
-    const NavBarStyle = styled.div`
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #000000;
-        color: #ffffff;
-        padding: 1rem;
-    `;
-
-    const NavBar = (props) => {
-        return (
-            <NavBarStyle>
-                {props.logo}
-                <Spacer />
-                {props.children}
-            </NavBarStyle>
-        );
-    };
 
     return (
         <>
             <NavBar
-                logo={<h1>test</h1>}
+                logo={
+                    <img
+                        src="https://www.uir.ac.ma/assets/_resources/img/mono-logo.png"
+                        alt="logo"
+                        width={50}
+                        height={50}
+                    />
+                }
                 children={
                     <>
-                        <a href="/authentification">Authentification</a>
-                        <a href="/landingPage">Landing Page</a>
+                        
                     </>
                 }
             />
-            <h1>Landing Page</h1>
+
+            <CarouselClubs />
+
+            <Footer />
         </>
     );
 }
