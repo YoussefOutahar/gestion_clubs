@@ -13,8 +13,8 @@ function LandingPage() {
                     <img
                         src="https://www.uir.ac.ma/assets/_resources/img/mono-logo.png"
                         alt="logo"
-                        width={50}
-                        height={50}
+                        width={80}
+                        height={80}
                     />
                 }
                 children={
