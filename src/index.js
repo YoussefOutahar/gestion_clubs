@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 
 import App from './App';
-import AuthentificationPage from './Pages/AuthentificationPage';
+import AuthentificationPage from './Pages/Authentification/AuthentificationPage';
 import LandingPage from './Pages/LandingPage/LandingPage';
 import ErrorPage from './Pages/ErrorPage';
 

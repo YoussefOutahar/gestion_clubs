@@ -1,4 +1,4 @@
-import { SplitLeft, SplitRight, Center } from "../Utils/StyledElements";
+import { SplitLeft, SplitRight, Center } from "../../Utils/StyledElements";
 import { Input, Button, Tooltip,Divider} from "antd";
 import {
     InfoCircleOutlined,
@@ -9,10 +9,14 @@ import {
 } from "@ant-design/icons";
 import React from "react";
 import { useEffect, useState } from 'react';
-import supabase from "../DataBase/SupabaseClient";
+import supabase from "../../DataBase/SupabaseClient";
 import {Routes, Route, useNavigate} from 'react-router-dom';
 
 function AuthentificationPage() {
+
+    function test(){
+        console.log("test");
+    }
 
     const navigate = useNavigate();
 
