@@ -1,5 +1,5 @@
 import { SplitLeft, SplitRight, Center } from "../../Utils/StyledElements";
-import { Input, Button, Tooltip,Divider} from "antd";
+import { Input, Button, Tooltip, Divider } from "antd";
 import {
     InfoCircleOutlined,
     EyeInvisibleOutlined,
@@ -8,71 +8,73 @@ import {
     LockOutlined,
 } from "@ant-design/icons";
 import React from "react";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import supabase from "../../DataBase/SupabaseClient";
-import {Routes, Route, useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function AuthentificationPage() {
-
-    function test(){
-        console.log("test");
-    }
-
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleLogin = async () => {
         try {
             //get email and password from Etudiants table
             const { data, error } = await supabase
-                .from('Etudiants')
-                .select('email, password')
-                .eq('email', email)
-                
-            if (error) throw error
+                .from("Etudiants")
+                .select("email, password")
+                .eq("email", email);
+
+            if (error) throw error;
             if (data) {
                 if (data[0].password === password) {
-                    navigate('/landingPage')
-                }
-                else {
+                    navigate("/landingPage");
+                } else {
                     alert("Mot de passe incorrect");
                 }
             }
         } catch (error) {
-            alert(error.message)
+            alert(error.message);
         }
-    }
+    };
+
+    const handleSignUp = async () => {
+        try {
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+            });
+        } catch {}
+    };
 
     return (
         <div>
             <SplitLeft>
                 <h1>Authentification Page</h1>
                 <Center>
-                        <Input
-                            placeholder="Enter your username"
-                            prefix={<UserOutlined className="site-form-item-icon" />}
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            suffix={
-                                <Tooltip title="Extra information">
-                                    <InfoCircleOutlined style={{ color: "rgba(0,0,0,.45)" }} />
-                                </Tooltip>
-                            }
-                        />
-                        <Divider />
-                        <Input.Password
-                            placeholder="input password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            prefix={<LockOutlined />}
-                            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-                        />
-                        <Divider />
-                        <Button type="primary" onClick={handleLogin}>
-                            Sign in
-                        </Button>
+                    <Input
+                        placeholder="Enter your username"
+                        prefix={<UserOutlined className="site-form-item-icon" />}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        suffix={
+                            <Tooltip title="Extra information">
+                                <InfoCircleOutlined style={{ color: "rgba(0,0,0,.45)" }} />
+                            </Tooltip>
+                        }
+                    />
+                    <Divider />
+                    <Input.Password
+                        placeholder="input password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        prefix={<LockOutlined />}
+                        iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                    />
+                    <Divider />
+                    <Button onClick={handleLogin}>Sign in</Button>
+                    <Button onClick={handleSignUp}>Sign Up</Button>
                 </Center>
             </SplitLeft>
             <SplitRight>

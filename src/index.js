@@ -1,43 +1,50 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
 
 // Imports for React Router
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import App from './App';
-import AuthentificationPage from './Pages/Authentification/AuthentificationPage';
-import LandingPage from './Pages/LandingPage/LandingPage';
-import ErrorPage from './Pages/ErrorPage';
+import ProtectedRoute from "./Utils/ProtectedRoute";
+import App from "./App";
+import AuthentificationPage from "./Pages/Authentification/AuthentificationPage";
+import AdminDashBoardPage from "./Pages/AdminDashboard/AdminDashBoardPage";
+import LandingPage from "./Pages/LandingPage/LandingPage";
+import ErrorPage from "./Pages/ErrorPage";
 
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/authentification",
-    element: <AuthentificationPage />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/landingPage",
-    element: <LandingPage />,
-    errorElement: <ErrorPage />,
-  }
+    {
+        path: "/",
+        element: <App />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/authentification",
+        element: <AuthentificationPage />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/landingPage",
+        element: <LandingPage />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/adminDashboard",
+        element: (
+            <ProtectedRoute>
+                <AdminDashBoardPage />
+            </ProtectedRoute>
+        ),
+        errorElement: <ErrorPage />,
+    },
 ]);
 
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+    <React.StrictMode>
+        <RouterProvider router={router} />
+    </React.StrictMode>
 );
 
 // // If you want to start measuring performance in your app, pass a function
