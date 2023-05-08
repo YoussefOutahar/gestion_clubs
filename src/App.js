@@ -1,6 +1,3 @@
-import { useEffect, useState } from 'react';
-import supabase from './DataBase/SupabaseClient';
-
 function App() {
   
   return (

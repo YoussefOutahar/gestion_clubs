@@ -6,7 +6,6 @@ const ProtectedRoute = (props) => {
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const checkUserToken = async () => {
-        await supabase.auth.signOut();
         const session = await supabase.auth.getSession();
         console.log(session);
         if (session.data.session === null || session.data.session === undefined || !session) {

@@ -9,6 +9,7 @@ import ProtectedRoute from "./Utils/ProtectedRoute";
 import App from "./App";
 import AuthentificationPage from "./Pages/Authentification/AuthentificationPage";
 import AdminDashBoardPage from "./Pages/AdminDashboard/AdminDashBoardPage";
+import { ProSidebarProvider } from 'react-pro-sidebar';
 import LandingPage from "./Pages/LandingPage/LandingPage";
 import ErrorPage from "./Pages/ErrorPage";
 
@@ -34,10 +35,20 @@ const router = createBrowserRouter([
         path: "/adminDashboard",
         element: (
             <ProtectedRoute>
-                <AdminDashBoardPage />
+                <ProSidebarProvider>
+                    <AdminDashBoardPage />
+                </ProSidebarProvider>
             </ProtectedRoute>
         ),
         errorElement: <ErrorPage />,
+        children: [
+            {
+                path: "/adminDashboard/test",
+                element: <h1>Admin Dashboard</h1>,
+                errorElement: <ErrorPage />,
+            
+            }
+        ]
     },
 ]);
 

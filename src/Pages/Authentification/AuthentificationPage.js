@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import supabase from "../../DataBase/SupabaseClient";
 import { useNavigate } from "react-router-dom";
 
+import {signIn} from "../../DataBase/AuthClient"
+
 function AuthentificationPage() {
     const navigate = useNavigate();
 
@@ -20,20 +22,10 @@ function AuthentificationPage() {
 
     const handleLogin = async () => {
         try {
-            //get email and password from Etudiants table
-            const { data, error } = await supabase
-                .from("Etudiants")
-                .select("email, password")
-                .eq("email", email);
-
+            const { user, session, error } = await signIn(email, password);
             if (error) throw error;
-            if (data) {
-                if (data[0].password === password) {
-                    navigate("/landingPage");
-                } else {
-                    alert("Mot de passe incorrect");
-                }
-            }
+            alert("You are logged in!");
+            navigate("/adminDashboard");
         } catch (error) {
             alert(error.message);
         }
