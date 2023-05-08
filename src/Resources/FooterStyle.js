@@ -92,6 +92,7 @@ margin-bottom: 10px;
 font-size: 14px;
 text-decoration: none;
 font-family: Montserrat, Helvetica, sans-serif;
+display: inline-block;
 
 &:hover {
 	color: #d0d700;
