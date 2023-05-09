@@ -8,6 +8,7 @@
 .carousel {
     position: relative;
     width: calc(min(80rem, 90%));
+    max-width: 1200px;
     margin: 0 auto;
     min-height: 100vh;
     column-gap: 3rem;

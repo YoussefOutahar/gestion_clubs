@@ -3,7 +3,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const slideStyles = {
   width: "100%",
   height: "100%",
-  borderRadius: "10px",
   backgroundSize: "cover",
   backgroundPosition: "center",
 };
@@ -115,6 +114,7 @@ const ImageSlider = ({ slides, parentWidth }) => {
           ))}
         </div>
       </div>
+      {/*
       <div style={dotsContainerStyles}>
         {slides.map((slide, slideIndex) => (
           <div
@@ -125,7 +125,7 @@ const ImageSlider = ({ slides, parentWidth }) => {
             ●
           </div>
         ))}
-      </div>
+        </div>*/}
     </div>
   );
 };

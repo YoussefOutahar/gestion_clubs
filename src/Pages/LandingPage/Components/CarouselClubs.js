@@ -24,7 +24,7 @@ const [clubs, setClubs] = useState([]);
         <div>
             <div className='carousel-content'>
                 <span>discover</span>
-                <h1>UIR clubs </h1>
+                <h1 style={{ fontWeight: '550'}}>UIR clubs </h1>
                 <hr />
                 <p>L’UIR a la fierté de compter 29 clubs étudiants affiliés à la Direction de la Vie<br/> Etudiante et qui contribuent à promouvoir l’expérience étudiante en participant à l’animation de leur campus et par conséquent, au rayonnement et au développement de leur communauté..</p>
             </div>

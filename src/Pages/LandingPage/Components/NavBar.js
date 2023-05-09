@@ -111,7 +111,7 @@ function NavBar() {
                     },
                 }}
             >
-            <Button type="primary">Login</Button>
+            <Button type="primary" style={{ backgroundColor: '#d0d700', color: '#003667' }}>Login</Button>
             </ConfigProvider>
         </NavBarStyle>
     );

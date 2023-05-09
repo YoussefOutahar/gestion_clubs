@@ -1,17 +1,9 @@
 import styled from "styled-components";
 import { Spacer } from "../../../Utils/StyledElements";
-import { Box, Container, Row, Column, FooterLink, Heading, FooterBar, Footernav } from "../../../Resources/FooterStyle";
+import { Box, Container,FootContainer, Row, Column, FooterLink, Heading, FooterBar, Footernav } from "../../../Resources/FooterStyle";
 
 function Footer() {
-    /*const FooterStyle = styled.div`
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #003667;
-        color: #ffffff;
-        padding: 1rem;
-    `;*/
+    
     return (
         <Box>
       <Container>
@@ -82,15 +74,13 @@ function Footer() {
         </Row>
       </Container>
       <FooterBar>
-      <Container>
-        <Row>
-          <h4 style={{ color: "#a3b5ca",fontSize: "14px" }}>© Copyright 2023 <span>UIR</span>. Tous droits réservés.</h4>
+      <FootContainer >
+          <p style={{ color: "#a3b5ca",fontSize: "14px" }}>© Copyright 2023 <span>UIR</span>. Tous droits réservés.</p>
           <Footernav href="#">Conditions générales d'utilisation</Footernav>
           <Footernav href="#">Mentions légales</Footernav>
           <Footernav href="#">Plan du site</Footernav>
           <Footernav href="#">FAQ</Footernav>
-        </Row>
-      </Container>
+      </FootContainer>
       </FooterBar>
     </Box>
     );

@@ -5,17 +5,19 @@ import Footer from "./Components/Footer";
 import NavBar from "./Components/NavBar";
 import CarouselEvents from "./Components/CarouselEvents";
 import CarouselClubs from "./Components/CarouselClubs";
+import Gallery from "./Components/Gallery";
+import Body from "./Components/body";
 
 
 function LandingPage() {
 
     return (
         <>
-        <bodyStyle>
             <NavBar/>
             <CarouselEvents/>
             <CarouselClubs/>
-            </bodyStyle>
+            <Body/>
+            <Gallery/>
             <Footer />
         </>
     );
