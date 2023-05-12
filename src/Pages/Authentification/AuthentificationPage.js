@@ -52,6 +52,7 @@ function AuthentificationPage() {
     }
 
     const h3Style = {
+        marginTop:"15px",
         textAlign: "center",
         texttransform: "uppercase",
         color: /*"#d0d700"*/ "#363434",
@@ -66,6 +67,8 @@ function AuthentificationPage() {
 
     const h2Style = {
         textAlign: "center",
+        marginBottom:"30px",
+        marginTop:"30px",
         color: "#606470",
         textIndent: "40px",
         /*textDecoration: "overline underline",*/
@@ -142,19 +145,19 @@ function AuthentificationPage() {
           };
 
           const label = {
-            fontFamily: '"DM Sans", sans-serif, "Helvetica Neue", Arial, "Noto Sans", sans-serif',            display: "block",
+            fontFamily: '"DM Sans", sans-serif, "Helvetica Neue", Arial, "Noto Sans", sans-serif',display: "block",
             textAlign: "left",
             margin: "auto",
             width: "78%",
             color: "black",
             marginBottom: "0.9rem",
             /*letterSpacing: "8px",*/
-            fontSize: "14px"
+            fontSize: "15px"
           };
 
           
           const subBtn = {
-            fontFamily: '"DM Sans", sans-serif, "Helvetica Neue", Arial, "Noto Sans", sans-serif',            display: "block",
+            fontFamily: '"DM Sans", sans-serif, "Helvetica Neue", Arial, "Noto Sans", sans-serif',display: "block",
             width: "77.5%",
             background: " #003667",
             color: "white",
@@ -203,19 +206,19 @@ function AuthentificationPage() {
     return (
         <div> 
             <header className="Auth-header">
-                    <h3 style={{ ...h3Style}}>AUTHENTIFICATION</h3>
-                    <p style={{ ...h2Style }}>Renseigner votre adresse email et mot de passe.</p>  
+                    <h3 style={{ ...h3Style}}>Connexion</h3>
+                    <p style={{ ...h2Style }}>Renseignez votre adresse email et mot de passe.</p>  
 
             </header>  
-            <div className="Auth" style={style}>
+            <div className="Auth" style={{...style}}>
                 <div className="left-side" style={{ ...sideStyle, ...leftsideStyle }}>
                     <form>
                     <br></br>  
                     <label for="eml" style={{ ...label }}>E-mail :</label>
-                        <input placeholder="Enter Your E-mail..." type="email" id="eml" style={{ ...inputStyle, ...inputStyleFocus, ...inputHover }}/>
-                    <label for="pwd" style={{ ...label }}>Password :</label>
-                        <input placeholder="Enter Your Password..." type="password" id="pwd" style={{ ...inputStyle, ...inputStyleFocus, ...inputHover }}/>  
-                        <button type="submit" style={{ ...subBtn, ...subBtnHover}}>Login</button>
+                        <input placeholder="Entrez votre E-mail..." type="email" id="eml" style={{ ...inputStyle, ...inputStyleFocus, ...inputHover }}/>
+                    <label for="pwd" style={{ ...label }}>Mot de passe :</label>
+                        <input placeholder="Entrez votre mot de passe..." type="password" id="pwd" style={{ ...inputStyle, ...inputStyleFocus, ...inputHover }}/>  
+                        <button type="submit" style={{ ...subBtn, ...subBtnHover}}>Se connecter</button>
                     </form>
                     <div>
                         <p style={{ ...pStyle}}>© 2023 UIR - Rabat.</p>

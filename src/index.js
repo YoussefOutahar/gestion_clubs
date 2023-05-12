@@ -11,6 +11,7 @@ import {
 import App from './App';
 import AuthentificationPage from './Pages/Authentification/AuthentificationPage';
 import LandingPage from './Pages/LandingPage/LandingPage';
+import JoinUsPage from './Pages/JoinUs/JoinUsPage';
 import ErrorPage from './Pages/ErrorPage';
 
 
@@ -30,6 +31,11 @@ const router = createBrowserRouter([
   {
     path: "/landingPage",
     element: <LandingPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/JoinUs",
+    element: <JoinUsPage />,
     errorElement: <ErrorPage />,
   }
 ]);
