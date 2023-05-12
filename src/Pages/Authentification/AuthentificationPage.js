@@ -1,5 +1,5 @@
 import { SplitLeft, SplitRight, Center } from "../../Utils/StyledElements";
-import { Input, Button, Tooltip,Divider} from "antd";
+import { Input, Button, Tooltip, Divider } from "antd";
 import {
     InfoCircleOutlined,
     EyeInvisibleOutlined,
@@ -8,7 +8,7 @@ import {
     LockOutlined,
 } from "@ant-design/icons";
 import React from "react";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import supabase from "../../DataBase/SupabaseClient";
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import {styled} from "styled-components";
@@ -19,35 +19,19 @@ import '../../Resources/authStyle.css';
 
 
 function AuthentificationPage() {
-
-    function test(){
-        console.log("test");
-    }
-
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleLogin = async () => {
         try {
-            //get email and password from Etudiants table
-            const { data, error } = await supabase
-                .from('Etudiants')
-                .select('email, password')
-                .eq('email', email)
-                
-            if (error) throw error
-            if (data) {
-                if (data[0].password === password) {
-                    navigate('/landingPage')
-                }
-                else {
-                    alert("Mot de passe incorrect");
-                }
-            }
+            const { user, session, error } = await signIn(email, password);
+            if (error) throw error;
+            alert("You are logged in!");
+            navigate("/adminDashboard");
         } catch (error) {
-            alert(error.message)
+            alert(error.message);
         }
     }
 

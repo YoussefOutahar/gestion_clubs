@@ -1,31 +1,23 @@
 import React from "react";
+import styled from "styled-components";
 
 import Footer from "./Components/Footer";
 import NavBar from "./Components/NavBar";
+import CarouselEvents from "./Components/CarouselEvents";
 import CarouselClubs from "./Components/CarouselClubs";
+import Gallery from "./Components/Gallery";
+import Body from "./Components/body";
+
 
 function LandingPage() {
 
     return (
         <>
-            <NavBar
-                logo={
-                    <img
-                        src="https://www.uir.ac.ma/assets/_resources/img/mono-logo.png"
-                        alt="logo"
-                        width={80}
-                        height={80}
-                    />
-                }
-                children={
-                    <>
-                        
-                    </>
-                }
-            />
-
-            <CarouselClubs />
-
+            <NavBar/>
+            <CarouselEvents/>
+            <CarouselClubs/>
+            <Body/>
+            <Gallery/>
             <Footer />
         </>
     );
