@@ -30,4 +30,19 @@ const Spacer = styled.div`
     flex: 1;
 `;
 
-export {SplitLeft, SplitRight, Center, Spacer};
+const VerticalSpacer = styled.div`
+    height: 100%;
+    width: 100%;
+`;
+
+const Expanded = styled.div`
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+`;
+
+export {SplitLeft, SplitRight, Center, Spacer, VerticalSpacer, Expanded};

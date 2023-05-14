@@ -8,10 +8,17 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ProtectedRoute from "./Utils/ProtectedRoute";
 import App from "./App";
 import AuthentificationPage from "./Pages/Authentification/AuthentificationPage";
-import AdminDashBoardPage from "./Pages/AdminDashboard/AdminDashBoardPage";
 import { ProSidebarProvider } from 'react-pro-sidebar';
 import LandingPage from "./Pages/LandingPage/LandingPage";
 import ErrorPage from "./Pages/ErrorPage";
+
+//Admin Dashboard screens imports
+import AdminDashBoardPage from "./Pages/AdminDashboard/AdminDashBoardPage";
+import ChartsPage from "./Pages/AdminDashboard/Screens/Charts"; "./Pages/AdminDashboard/Screens/Charts";
+import CalendarPage from "./Pages/AdminDashboard/Screens/Calendar";
+import ClubsPage from "./Pages/AdminDashboard/Screens/Clubs";
+import SettingsPage from "./Pages/AdminDashboard/Screens/Settings";
+import MembersPage  from "./Pages/AdminDashboard/Screens/Members";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -43,11 +50,30 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             {
-                path: "/adminDashboard/test",
-                element: <h1>Admin Dashboard</h1>,
+                path: "/adminDashboard/Charts",
+                element: <ChartsPage />,
                 errorElement: <ErrorPage />,
-            
-            }
+            },
+            {
+                path: "/adminDashboard/Calendar",
+                element: <CalendarPage />,
+                errorElement: <ErrorPage />,
+            },
+            {
+                path: "/adminDashboard/Clubs",
+                element: <ClubsPage />,
+                errorElement: <ErrorPage />,
+            },
+            {
+                path: "/adminDashboard/Members",
+                element: <MembersPage />,
+                errorElement: <ErrorPage />,
+            },
+            {
+                path: "/adminDashboard/Settings",
+                element: <SettingsPage />,
+                errorElement: <ErrorPage />,
+            },
         ]
     },
 ]);
