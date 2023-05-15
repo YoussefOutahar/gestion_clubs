@@ -20,6 +20,14 @@ import ClubsPage from "./Pages/AdminDashboard/Screens/Clubs";
 import SettingsPage from "./Pages/AdminDashboard/Screens/Settings";
 import MembersPage  from "./Pages/AdminDashboard/Screens/Members";
 
+//User Dashboard screens imports
+import UserDashboardPage from "./Pages/UserDashboard/UserDashboardPage";
+import UserClubsPage from "./Pages/UserDashboard/Screens/MyClubs";
+import UserCalendarPage from "./Pages/UserDashboard/Screens/Calendar";
+import UserForumsPage from "./Pages/UserDashboard/Screens/Forums";
+import UserMembersPage  from "./Pages/UserDashboard/Screens/Members";
+import UserSettingsPage from "./Pages/UserDashboard/Screens/Settings";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const router = createBrowserRouter([
@@ -72,6 +80,44 @@ const router = createBrowserRouter([
             {
                 path: "/adminDashboard/Settings",
                 element: <SettingsPage />,
+                errorElement: <ErrorPage />,
+            },
+        ]
+    },
+    {
+        path: "/userDashboard",
+        element: (
+            <ProtectedRoute>
+                <ProSidebarProvider>
+                    <UserDashboardPage />
+                </ProSidebarProvider>
+            </ProtectedRoute>
+        ),
+        errorElement: <ErrorPage />,
+        children: [
+            {
+                path: "/userDashboard/myClubs",
+                element: <UserClubsPage />,
+                errorElement: <ErrorPage />,
+            },
+            {
+                path: "/userDashboard/Calendar",
+                element: <UserCalendarPage />,
+                errorElement: <ErrorPage />,
+            },
+            {
+                path: "/userDashboard/Forums",
+                element: <UserForumsPage />,
+                errorElement: <ErrorPage />,
+            },
+            {
+                path: "/userDashboard/Members",
+                element: <UserMembersPage />,
+                errorElement: <ErrorPage />,
+            },
+            {
+                path: "/userDashboard/Settings",
+                element: <UserSettingsPage />,
                 errorElement: <ErrorPage />,
             },
         ]
