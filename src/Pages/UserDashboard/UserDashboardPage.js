@@ -15,7 +15,7 @@ export default function UserDashBoardPage() {
     return (
         <div
             style={{
-                minHeight: "100%",
+                height: "100vh",
                 display: "flex",
                 flexDirection: "row",
             }}
@@ -60,9 +60,6 @@ export default function UserDashBoardPage() {
                         Mmebers
                     </MenuItem>
                 </Menu>
-                <br />
-                <br />
-                <br />
                 <Menu
                     menuItemStyles={{
                         button: ({ level, active, disabled }) => {
@@ -74,22 +71,6 @@ export default function UserDashBoardPage() {
                         },
                     }}
                 >
-                    
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
                     <MenuItem component={<Link to="/userDashboard/Settings" />} icon={<IoSettingsSharp />}>
                         {" "}
                         Settings
@@ -98,10 +79,8 @@ export default function UserDashBoardPage() {
             </Sidebar>
             <div
                 style={{
-                    height: "100%",
-                    width: "100%",
+                    flex: 1,
                     overflow: "auto",
-                    padding: "20px",
                 }}
             >
                 <Outlet />

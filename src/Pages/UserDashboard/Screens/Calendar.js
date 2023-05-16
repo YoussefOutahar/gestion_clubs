@@ -1,9 +1,9 @@
-import { Calendar } from 'antd';
+import { Calendar } from "antd";
 
-export default function UserCalendarPage(props) {
+export default function CalendarPage(props) {
     const onPanelChange = (value, mode) => {
-        console.log(value.format('YYYY-MM-DD'), mode);
-      };
+        console.log(value.format("YYYY-MM-DD"), mode);
+    };
     return (
         <>
             <Calendar onPanelChange={onPanelChange} />

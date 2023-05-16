@@ -1,5 +1,7 @@
+import { Menu ,Button} from "antd";
+import  supabase  from "../../../DataBase/SupabaseClient";
+import { useNavigate } from "react-router-dom";
 import { MailOutlined, SettingOutlined, AppstoreOutlined } from "@ant-design/icons";
-import { Menu } from "antd";
 
 function getItem(label, key, icon, children, type) {
     return {
@@ -33,6 +35,7 @@ const items = [
 ];
 
 export default function SettingsPage(props) {
+    const navigate = useNavigate();
     const onClick = (e) => {
         console.log("click ", e);
     };
@@ -47,6 +50,17 @@ export default function SettingsPage(props) {
                 defaultOpenKeys={["sub1"]}
                 mode="inline"
                 items={items}
+            />
+            <Button
+                type="primary"
+                danger={true}
+                about="Sign Out"
+                onClick={
+                    () => {
+                        supabase.auth.signOut();
+                        navigate("/landingPage");
+                    }
+                }
             />
         </>
     );
