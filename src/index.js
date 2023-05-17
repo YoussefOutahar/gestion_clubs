@@ -10,6 +10,7 @@ import App from "./App";
 import AuthentificationPage from "./Pages/Authentification/AuthentificationPage";
 import { ProSidebarProvider } from 'react-pro-sidebar';
 import LandingPage from "./Pages/LandingPage/LandingPage";
+import FinancePage from "./Pages/FinanceManagement/FinancePage";
 import ErrorPage from "./Pages/ErrorPage";
 
 //Admin Dashboard screens imports
@@ -44,6 +45,11 @@ const router = createBrowserRouter([
     {
         path: "/landingPage",
         element: <LandingPage />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/FinancePage",
+        element: <FinancePage />,
         errorElement: <ErrorPage />,
     },
     {

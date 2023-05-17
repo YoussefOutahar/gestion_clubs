@@ -8,9 +8,10 @@ function CarouselEvents() {
 
     useEffect(() => {
         const fetchClubs = async () => {
-            const { data, error } = await supabase.from("Clubs").select("*");
+            const { data, error } = await supabase.from("Publication").select("*");
             if (error) throw error;
             setClubs(data);
+            console.log(data);
         };
         fetchClubs();
     }, []);
