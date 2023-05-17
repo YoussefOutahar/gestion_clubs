@@ -7,6 +7,7 @@ function App() {
   useEffect(() => {
     navigate("/landingPage");
     //TODO: handle session navigation 
+    
   }, []);
 
   return (
