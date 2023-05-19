@@ -212,7 +212,7 @@ function JoinUsPage() {
                     
                     <div className="container" style={{...container}}>
 
-                        <h2 style={{ ...h2Style }}>Rejoignez notre Club !</h2>
+                        <h2 style={{ ...h2Style }}>Rejoignez notre Club </h2>
 
                         <form style={formStyle}>
 
