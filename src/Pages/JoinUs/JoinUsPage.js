@@ -134,7 +134,7 @@ function JoinUsPage() {
             fontFamily: '"DM Sans", sans-serif, "Helvetica Neue", Arial, "Noto Sans", sans-serif',display: "block",
             textAlign: "left",
             margin: "auto",
-            width: "78%",
+            width: "80%",
             color: "black",
             marginBottom: "0.1rem",
             //fontSize: "15px",
@@ -218,8 +218,8 @@ function JoinUsPage() {
 
                         <label for="nom" style={{ ...h5Style }}>Nom :</label>
                             <input placeholder="Entrez votre nom..." type="text" id="nom" style={{ ...inputGroup,...inputStyle }}/>
-                        <label for="pwd" style={{ ...h5Style }}>Mot de passe :</label>
-                            <input placeholder="Entrez votre prenom..." type="text" id="prenom" style={{ ...inputGroup,...inputStyle }}/>
+                        <label for="prn" style={{ ...h5Style }}>Prénom :</label>
+                            <input placeholder="Entrez votre prénom..." type="text" id="prenom" style={{ ...inputGroup,...inputStyle }}/>
                         <label for="eml" style={{ ...h5Style }}>E-mail :</label>
                             <input placeholder="Entrez votre E-mail..." type="email" id="eml" style={{ ...inputGroup,...inputStyle }}/>
                         <label for="pwd" style={{ ...h5Style }}>Mot de passe :</label>
