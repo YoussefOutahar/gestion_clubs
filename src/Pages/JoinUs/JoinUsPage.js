@@ -147,7 +147,7 @@ function JoinUsPage() {
             borderRadius: "4px",
             borderWidth: "2px",
             display: "block",
-            height: "2.5rem",
+            height: "2.7rem",
             width: "79.5%",
             margin: "auto",
             marginBottom: "10px",

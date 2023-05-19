@@ -104,8 +104,8 @@ function AuthentificationPage() {
         /*borderStyle: "inset",
             border:"none",*/
         display: "block",
-        height: "2rem",
-        width: "70%",
+        height: "2.7rem",
+        width: "80%",
         margin: "auto",
         marginBottom: "1.9rem",
         color: "#696969",
