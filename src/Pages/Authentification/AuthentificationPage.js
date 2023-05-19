@@ -52,7 +52,7 @@ function AuthentificationPage() {
     const h2Style = {
         textAlign: "center",
         marginBottom:"30px",
-        marginTop:"30px",
+        marginTop:"25px",
         color: "#606470",
         textIndent: "40px",
         /*textDecoration: "overline underline",*/
@@ -112,8 +112,8 @@ function AuthentificationPage() {
             /*borderStyle: "inset",
             border:"none",*/
             display: "block",
-            height: "2rem",
-            width: "70%",
+            height: "2.5rem",
+            width: "79.5%",
             margin: "auto",
             marginBottom: "1.9rem",
             color: "#696969",

@@ -108,10 +108,10 @@ function JoinUsPage() {
           };
 
           const container = {
-                height: "80%",
+                padding:"2rem",
+                height: "85%",
                 width: "60%",
                 margin: "2rem auto",
-                paddingTop: "1rem",
                 boxShadow: "0rem 0rem 2rem 0.1rem #e4f1fe",
                 borderRadius: "0.5rem"
           };
@@ -126,19 +126,19 @@ function JoinUsPage() {
           };
           
           const inputGroup = {
-            width: "100%",
-            marginBottom: "1.9rem"
+            // width: "100%",
+            // marginBottom: "1.9rem"
           };
           
           const h5Style = {
-            fontFamily: '"DM Sans", sans-serif, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
-            display: "block",
+            fontFamily: '"DM Sans", sans-serif, "Helvetica Neue", Arial, "Noto Sans", sans-serif',display: "block",
             textAlign: "left",
             margin: "auto",
             width: "78%",
             color: "black",
-            marginBottom: "0.9rem",
-            fontSize: "15px"
+            marginBottom: "0.1rem",
+            //fontSize: "15px",
+            fontSize: "95%",
           };
           
           const inputStyle = {
@@ -147,10 +147,11 @@ function JoinUsPage() {
             borderRadius: "4px",
             borderWidth: "2px",
             display: "block",
-            height: "2rem",
-            width: "100%",
+            height: "2.5rem",
+            width: "79.5%",
             margin: "auto",
-            color: "red",
+            marginBottom: "10px",
+            color: "#696969",
             fontFamily: "inherit",
             fontSize: "inherit"
           };
@@ -164,7 +165,8 @@ function JoinUsPage() {
             border: "none",
             cursor: "pointer",
             padding: "1.2rem 1rem",
-            marginTop: "45px",
+            marginTop: "25px",
+            marginBottom: "20px",
             transition: "all 0.5s ease",
             height: "10px",
             display: "flex",
@@ -172,8 +174,22 @@ function JoinUsPage() {
             alignItems: "center",
             fontSize: "16px"
           };
+
+          const h2Style = {
+            textDecorationThickness: "7px",
+            fontSize: "115%",
+            textIndent: "50px",
+            letterSpacing: "2px",
+            textAlign: "center",
+            marginTop:"0px",
+            marginBottom:"2px",
+            color: "black",
+          };
           
-        
+          const pStyle ={
+            fontSize: "115%",
+            marginRight:"15px"
+          }
           
           
           
@@ -190,12 +206,13 @@ function JoinUsPage() {
             </div>
             <div className="right-side" style={{...rightSide}}>
                 <div className="top-right" style={{...topRight}}>
-                   <h4>Contactez-nous </h4>
+                   <p style={{...pStyle}}>Contactez-nous</p>
                 </div>
                 <div className="body-right" style={{...bodyRight}}>
                     
                     <div className="container" style={{...container}}>
-                        <h2>Rejoignez notre Club !</h2>
+
+                        <h2 style={{ ...h2Style }}>Rejoignez notre Club !</h2>
 
                         <form style={formStyle}>
 
@@ -207,13 +224,13 @@ function JoinUsPage() {
                             <input placeholder="Entrez votre E-mail..." type="email" id="eml" style={{ ...inputGroup,...inputStyle }}/>
                         <label for="pwd" style={{ ...h5Style }}>Mot de passe :</label>
                             <input placeholder="Entrez votre mot de passe..." type="password" id="pwd" style={{ ...inputGroup,...inputStyle }}/>
-                        <label for="pwd" style={{ ...h5Style }}>Confirmez votre mot de passe :</label>
-                        <button type="submit" style={ {...btn }}>Se connecter</button>
-                            
+                        
+                        <button type="submit" style={ {...btn }}>S'inscrire</button>
                             
                         </form>
 
                     </div>
+                    
                 </div>
             </div>
         </div>
