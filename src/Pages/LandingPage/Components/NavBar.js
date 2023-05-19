@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Spacer } from "../../../Utils/StyledElements";
-import { Link } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";
 import { Space, Dropdown ,Button, ConfigProvider, theme} from "antd";
 import { DownOutlined } from "@ant-design/icons";
 
@@ -72,6 +72,7 @@ const linkStyle = {
   ];
 
 function NavBar() {
+  const navigate = useNavigate();
     return (
         <NavBarStyle>
             <img
@@ -111,7 +112,11 @@ function NavBar() {
                     },
                 }}
             >
-            <Button type="primary" style={{ backgroundColor: '#d0d700', color: '#003667' }}>Login</Button>
+            <Button type="primary" style={{ backgroundColor: '#d0d700', color: '#003667' }} onClick={
+                () => {
+                    navigate("/authentification");
+                }
+            }>Login</Button>
             </ConfigProvider>
         </NavBarStyle>
     );

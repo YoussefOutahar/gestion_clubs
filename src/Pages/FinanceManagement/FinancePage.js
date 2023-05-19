@@ -10,13 +10,13 @@ import { AiOutlineMenu } from "react-icons/ai";
 
 import { Link, Outlet } from "react-router-dom";
 
-export default function AdminDashBoardPage() {
-    const { collapseSidebar } = useProSidebar();
 
+function FinancePage(){
+    const { collapseSidebar } = useProSidebar();
     return (
         <div
             style={{
-                height: "100vh",
+                minHeight: "100%",
                 display: "flex",
                 flexDirection: "row",
             }}
@@ -31,7 +31,6 @@ export default function AdminDashBoardPage() {
                 <Menu
                     menuItemStyles={{
                         button: ({ level, active, disabled }) => {
-                            // only apply styles on first level elements of the tree
                             if (level === 0)
                                 return {
                                     color: "#344cff",
@@ -40,35 +39,31 @@ export default function AdminDashBoardPage() {
                     }}
                 >
                     <MenuItem icon={<AiOutlineMenu onClick={() => collapseSidebar()} />}>
-                        <h1>Admin Dashboard</h1>
+                        <h1>User Dashboard</h1>
                     </MenuItem>
-
                     <br />
                     <br />
                     <br />
-
-                    <SubMenu label="Dashboard" icon={<MdOutlineSpaceDashboard />}>
-                        <MenuItem component={<Link to="/adminDashboard/Charts" />} icon={<BiStats />}>
-                            {" "}
-                            Statistiques
-                        </MenuItem>
-                    </SubMenu>
-                    <MenuItem
-                        component={<Link to="/adminDashboard/Calendar" />}
-                        icon={<BsFillCalendarFill />}
-                    >
+                    <MenuItem component={<Link to="/userDashboard/myClubs" />} icon={<BiStats />}>
+                        {" "}
+                        My clubs
+                    </MenuItem>
+                    <MenuItem component={<Link to="/userDashboard/Calendar" />} icon={<BsFillCalendarFill />}>
                         {" "}
                         Calendar
                     </MenuItem>
-                    <MenuItem component={<Link to="/adminDashboard/Clubs" />} icon={<CgOrganisation />}>
+                    <MenuItem component={<Link to="/userDashboard/Forums" />} icon={<CgOrganisation />}>
                         {" "}
-                        Clubs
+                        Forums
                     </MenuItem>
-                    <MenuItem component={<Link to="/adminDashboard/Members" />} icon={<MdGroups2 />}>
+                    <MenuItem component={<Link to="/userDashboard/Members" />} icon={<MdGroups2 />}>
                         {" "}
                         Mmebers
                     </MenuItem>
                 </Menu>
+                <br />
+                <br />
+                <br />
                 <Menu
                     menuItemStyles={{
                         button: ({ level, active, disabled }) => {
@@ -80,17 +75,34 @@ export default function AdminDashBoardPage() {
                         },
                     }}
                 >
-                    <MenuItem component={<Link to="/adminDashboard/Settings" />} icon={<IoSettingsSharp />}>
+                    
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <MenuItem component={<Link to="/userDashboard/Settings" />} icon={<IoSettingsSharp />}>
                         {" "}
                         Settings
                     </MenuItem>
                 </Menu>
             </Sidebar>
-
             <div
                 style={{
-                    flex: 1,
+                    height: "100%",
+                    width: "100%",
                     overflow: "auto",
+                    padding: "20px",
                 }}
             >
                 <Outlet />
@@ -98,3 +110,4 @@ export default function AdminDashBoardPage() {
         </div>
     );
 }
+export default FinancePage;
