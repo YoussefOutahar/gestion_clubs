@@ -27,6 +27,7 @@ function AuthentificationPage() {
     };
 
     const h3Style = {
+        marginBottom:"15px",
         marginTop: "15px",
         textAlign: "center",
         texttransform: "uppercase",
@@ -42,8 +43,8 @@ function AuthentificationPage() {
 
     const h2Style = {
         textAlign: "center",
-        marginBottom: "30px",
-        marginTop: "30px",
+        marginBottom: "25px",
+        marginTop: "15px",
         color: "#606470",
         textIndent: "40px",
         /*textDecoration: "overline underline",*/
