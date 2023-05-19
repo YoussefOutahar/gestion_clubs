@@ -9,7 +9,6 @@ import ProtectedRoute from "./Utils/ProtectedRoute";
 import App from "./App";
 import AuthentificationPage from "./Pages/Authentification/AuthentificationPage";
 import JoinUsPage from "./Pages/JoinUs/JoinUsPage";
-import AdminDashBoardPage from "./Pages/AdminDashboard/AdminDashBoardPage";
 import { ProSidebarProvider } from 'react-pro-sidebar';
 import LandingPage from "./Pages/LandingPage/LandingPage";
 import FinancePage from "./Pages/FinanceManagement/FinancePage";

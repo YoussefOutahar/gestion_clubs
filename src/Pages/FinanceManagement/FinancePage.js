@@ -1,113 +1,99 @@
-import { Sidebar, Menu, MenuItem, useProSidebar, SubMenu } from "react-pro-sidebar";
+import React, { useState } from 'react';
+import supabase from "../../DataBase/SupabaseClient";
+import {getUserClub} from "../../Utils/UserInfos"
 
-// Icons :
-import { BiStats } from "react-icons/bi";
-import { BsFillCalendarFill } from "react-icons/bs";
-import { CgOrganisation } from "react-icons/cg";
-import { IoSettingsSharp } from "react-icons/io5";
-import { MdGroups2, MdOutlineSpaceDashboard } from "react-icons/md";
-import { AiOutlineMenu } from "react-icons/ai";
+// Upload a file to Storage
+async function uploadFileToStorage(file, fileName) {
+    const { data, error } = await supabase.storage
+      .from('Documents')
+      .upload(fileName, file);
+  
+    if (error) {
+      console.error('Error uploading file:', error.message);
+      return;
+    }
+  
+    console.log('File uploaded successfully:', data.Key);
+  }
 
-import { Link, Outlet } from "react-router-dom";
+// Get file URL from Storage
+async function getFileURL(fileName) {
+  const { publicURL, error } = await supabase.storage
+    .from('Documents')
+    .getPublicUrl(fileName);
 
+  if (error) {
+    console.error('Error getting file URL:', error.message);
+    return null;
+  }
+
+  console.log('File URL:', publicURL);
+  return publicURL;
+}
+
+  // Insert file metadata into the table
+async function linkFileToTable(fileName, fileURL,Rval, Dval, event) { 
+    const { Infos } = await getUserClub();
+    const club = Infos.club;
+    const { data, error } = await supabase
+      .from('Documents')
+      .insert([{ nom: fileName, path: fileURL, ref_validation: Rval, dve_validation: Dval, id_club : club, id_activité: event }]);
+  
+    if (error) {
+      console.error('Error linking file to table:', error.message);
+      return;
+    }
+    console.log('File linked to table successfully:', data);
+  }
 
 function FinancePage(){
-    const { collapseSidebar } = useProSidebar();
-    return (
-        <div
-            style={{
-                minHeight: "100%",
-                display: "flex",
-                flexDirection: "row",
-            }}
-        >
-            <Sidebar
-                rootStyles={{
-                    transition: "all 0.3s ease",
-                    background:
-                        "linear-gradient(180deg, rgba(166,240,255,1) 0%, rgba(220,250,255,1) 49%, rgba(230,252,255,1) 100%)",
-                }}
-            >
-                <Menu
-                    menuItemStyles={{
-                        button: ({ level, active, disabled }) => {
-                            if (level === 0)
-                                return {
-                                    color: "#344cff",
-                                };
-                        },
-                    }}
-                >
-                    <MenuItem icon={<AiOutlineMenu onClick={() => collapseSidebar()} />}>
-                        <h1>User Dashboard</h1>
-                    </MenuItem>
-                    <br />
-                    <br />
-                    <br />
-                    <MenuItem component={<Link to="/userDashboard/myClubs" />} icon={<BiStats />}>
-                        {" "}
-                        My clubs
-                    </MenuItem>
-                    <MenuItem component={<Link to="/userDashboard/Calendar" />} icon={<BsFillCalendarFill />}>
-                        {" "}
-                        Calendar
-                    </MenuItem>
-                    <MenuItem component={<Link to="/userDashboard/Forums" />} icon={<CgOrganisation />}>
-                        {" "}
-                        Forums
-                    </MenuItem>
-                    <MenuItem component={<Link to="/userDashboard/Members" />} icon={<MdGroups2 />}>
-                        {" "}
-                        Mmebers
-                    </MenuItem>
-                </Menu>
-                <br />
-                <br />
-                <br />
-                <Menu
-                    menuItemStyles={{
-                        button: ({ level, active, disabled }) => {
-                            // only apply styles on first level elements of the tree
-                            if (level === 0)
-                                return {
-                                    color: "#344cff",
-                                };
-                        },
-                    }}
-                >
-                    
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <MenuItem component={<Link to="/userDashboard/Settings" />} icon={<IoSettingsSharp />}>
-                        {" "}
-                        Settings
-                    </MenuItem>
-                </Menu>
-            </Sidebar>
-            <div
-                style={{
-                    height: "100%",
-                    width: "100%",
-                    overflow: "auto",
-                    padding: "20px",
-                }}
-            >
-                <Outlet />
-            </div>
-        </div>
-    );
+  const [eventName, setEventName] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!selectedFile || !eventName) {
+      console.error('Please choose a file and enter an event name.');
+      return;
+    }
+    // Upload file to storage
+    const fileName = selectedFile.name;
+    await uploadFileToStorage(selectedFile, fileName);
+
+    // Get file URL from storage
+    const fileURL = await getFileURL(fileName);
+
+    // Link file to table
+    await linkFileToTable(fileName, fileURL, 'false', 'false', eventName);
+
+    // Clear form fields
+    setEventName('');
+    setSelectedFile(null);
+  };
+   // Handle file selection
+   const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+  };
+
+  return(
+  <div>
+  <h1>Finance Page Test</h1>
+  <form onSubmit={handleSubmit}>
+    <label>
+      Event Name:
+      <input type="text" value={eventName} onChange={(e) => setEventName(e.target.value)} />
+    </label>
+    <br />
+    <label>
+      File:
+      <input type="file" onChange={handleFileSelect} />
+    </label>
+    <br />
+    <button type="submit">Submit</button>
+  </form>
+</div>);
 }
 export default FinancePage;
