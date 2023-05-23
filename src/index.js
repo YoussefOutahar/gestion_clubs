@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+import { StyledEngineProvider } from '@mui/styled-engine';
+import { CssBaseline } from '@mui/material';
+import 'perfect-scrollbar/css/perfect-scrollbar.css';
 
 // Imports for React Router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -14,7 +17,7 @@ import ErrorPage from "./Pages/ErrorPage";
 
 //Admin Dashboard screens imports
 import AdminDashBoardPage from "./Pages/AdminDashboard/AdminDashBoardPage";
-import ChartsPage from "./Pages/AdminDashboard/Screens/Charts"; "./Pages/AdminDashboard/Screens/Charts";
+import ChartsPage from "./Pages/AdminDashboard/Screens/Charts";
 import CalendarPage from "./Pages/AdminDashboard/Screens/Calendar";
 import ClubsPage from "./Pages/AdminDashboard/Screens/Clubs";
 import SettingsPage from "./Pages/AdminDashboard/Screens/Settings";
@@ -126,7 +129,10 @@ const router = createBrowserRouter([
 
 root.render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <StyledEngineProvider injectFirst>
+            <CssBaseline />
+            <RouterProvider router={router} />
+        </StyledEngineProvider>
     </React.StrictMode>
 );
 

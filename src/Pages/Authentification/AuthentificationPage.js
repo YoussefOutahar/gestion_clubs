@@ -2,7 +2,7 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signIn } from "../../DataBase/AuthClient";
+import { signIn, signUp } from "../../DataBase/AuthClient";
 
 import { subBtn } from "../../Resources/authStyle";
 
@@ -23,6 +23,18 @@ function AuthentificationPage() {
             //TODO: redirect to user dashboard or admin dashboard
         } catch (error) {
             alert(error.message);
+        }
+    };
+
+    const handleSignUp = async () => {
+        try {
+            const { user, session, error } = await signUp(email, password,"admin","Youssef Outahar","+212 64269 5547","test_image");
+            if (error) throw error;
+            alert("You are signed up!");
+            navigate("/adminDashboard" , { replace: true });
+        }
+        catch (error) {
+            console.log(error);
         }
     };
 
@@ -215,6 +227,9 @@ function AuthentificationPage() {
                         />
                         <button type="submit" style={{ ...subBtn, ...subBtnHover }}>
                             Se connecter
+                        </button>
+                        <button type="button" style={{ ...subBtn, ...subBtnHover }} onClick={(e) => handleSignUp()}>
+                            S'inscrire
                         </button>
                     </form>
                     <div>
