@@ -39,6 +39,7 @@ function AuthentificationPage() {
     };
 
     const h3Style = {
+        marginBottom:"15px",
         marginTop: "15px",
         textAlign: "center",
         texttransform: "uppercase",
@@ -54,8 +55,8 @@ function AuthentificationPage() {
 
     const h2Style = {
         textAlign: "center",
-        marginBottom: "30px",
-        marginTop: "30px",
+        marginBottom: "25px",
+        marginTop: "15px",
         color: "#606470",
         textIndent: "40px",
         /*textDecoration: "overline underline",*/
@@ -116,8 +117,8 @@ function AuthentificationPage() {
         /*borderStyle: "inset",
             border:"none",*/
         display: "block",
-        height: "2rem",
-        width: "70%",
+        height: "2.7rem",
+        width: "80%",
         margin: "auto",
         marginBottom: "1.9rem",
         color: "#696969",
