@@ -2,6 +2,7 @@ import { Badge, Button, Drawer, Icon, IconButton, ThemeProvider } from '@mui/mat
 import { Box, styled, useTheme } from '@mui/system';
 import useAuth from '../hooks/useAuth';
 import useSettings from '../hooks/useSettings';
+
 import {
   deleteProductFromCart,
   getCartList,

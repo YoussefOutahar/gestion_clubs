@@ -1,5 +1,5 @@
 import { Box, Button, Fab, Icon, IconButton, styled } from '@mui/material';
-import { Breadcrumb, SimpleCard } from 'app/components';
+import { Breadcrumb, SimpleCard } from '../../../components';
 
 const AppButtonRoot = styled('div')(({ theme }) => ({
   margin: '30px',

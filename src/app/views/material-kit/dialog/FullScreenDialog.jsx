@@ -11,7 +11,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/system';
-import { H6 } from 'app/components/Typography';
+import { H6 } from '../../../components/Typography';
 import React from 'react';
 
 const Transition = React.forwardRef(function Transition(props, ref) {

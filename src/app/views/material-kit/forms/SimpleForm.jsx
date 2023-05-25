@@ -11,7 +11,7 @@ import {
   RadioGroup,
   styled,
 } from "@mui/material";
-import { Span } from "app/components/Typography";
+import { Span } from "../../../components/Typography";
 import { useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 

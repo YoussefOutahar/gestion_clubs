@@ -1,6 +1,6 @@
 import { Stack } from "@mui/material";
 import { Box, styled } from "@mui/system";
-import { Breadcrumb, SimpleCard } from "app/components";
+import { Breadcrumb, SimpleCard } from "../../../components";
 import CustomizedMenu from "./CustomizedMenu";
 import MaxHeightMenu from "./MaxHeightMenu";
 import SelectedMenu from "./SelectedMenu";
