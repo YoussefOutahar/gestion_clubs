@@ -6,7 +6,7 @@ const FinancePage = Loadable(lazy(() => import('./FinancePage')));
 const FinanceRoutes = [
     {
         path: "/finance",
-        component: <FinancePage/>,
+        element: <FinancePage/>,
     },
 ];
 

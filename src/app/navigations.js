@@ -11,7 +11,6 @@ export const navigations = [
       },
     ] 
   },
-  { label: 'Finances', type: 'label' },
   {
     name: 'Finances',
     path: '/finance',

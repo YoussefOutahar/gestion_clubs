@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import supabase from "../../DataBase/SupabaseClient";
 import { getUserClub } from "../../../old_project/Utils/UserInfos";
 
-import { styled } from "@mui/material";
+import { styled,useTheme } from "@mui/material";
 
 // Upload a file to Storage
 async function uploadFileToStorage(file, fileName) {
@@ -46,7 +46,8 @@ const linkFileToTable = async (fileName, fileURL, Rval, Dval, event) => {
     console.log("File linked to table successfully:", data);
 }
 
-function FinancePage() {
+const FinancePage = () => {
+    const { palette } = useTheme();
     const [eventName, setEventName] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
 
