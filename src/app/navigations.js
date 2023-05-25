@@ -1,5 +1,22 @@
 export const navigations = [
-  { name: 'Dashboard', path: '/dashboard/default', icon: 'dashboard' },
+  { 
+    name: 'Dashboard', 
+    path: '/dashboard/default', 
+    icon: 'dashboard',
+    children: [
+      { 
+        name: 'Summary',
+        path: '/dashboard/default',
+        iconText: 'S',
+      },
+    ] 
+  },
+  { label: 'Finances', type: 'label' },
+  {
+    name: 'Finances',
+    path: '/finance',
+    icon: 'account_balance_wallet',
+  },
   { label: 'PAGES', type: 'label' },
   {
     name: 'Session/Auth',
@@ -38,10 +55,15 @@ export const navigations = [
     icon: 'trending_up',
     children: [{ name: 'Echarts', path: '/charts/echarts', iconText: 'E' }],
   },
+  // {
+  //   name: 'Documentation',
+  //   icon: 'launch',
+  //   type: 'extLink',
+  //   path: 'http://demos.ui-lib.com/matx-react-doc/',
+  // },
   {
-    name: 'Documentation',
-    icon: 'launch',
-    type: 'extLink',
-    path: 'http://demos.ui-lib.com/matx-react-doc/',
+    name: 'LandingPage',
+    icon: 'store_front',
+    path: '/LandingPage',
   },
 ];

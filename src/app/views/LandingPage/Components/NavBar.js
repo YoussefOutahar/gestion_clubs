@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { Spacer } from "../../../Utils/StyledElements";
+import { Spacer } from "../../../../old_project/Utils/StyledElements";
 import { Link , useNavigate } from "react-router-dom";
-import { Space, Dropdown ,Button, ConfigProvider, theme} from "antd";
+import { Space, Dropdown ,Button, ConfigProvider} from "antd";
 import { DownOutlined } from "@ant-design/icons";
 
 const NavBarStyle = styled.div`

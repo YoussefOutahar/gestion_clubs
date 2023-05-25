@@ -1,8 +1,4 @@
 import styled from "styled-components";
-import { Spacer } from "../../../Utils/StyledElements";
-import { Link } from "react-router-dom";
-import { Space, Dropdown ,Button, ConfigProvider, theme} from "antd";
-import { DownOutlined } from "@ant-design/icons";
 
 const Container = styled.div`
     align-items: center;

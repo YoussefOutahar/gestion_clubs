@@ -5,7 +5,7 @@ import supabase from "../../../DataBase/SupabaseClient";
 
 import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.min.css'
-import '../../../Resources/Carousel.css'
+import '../css/Carousel.css'
 
 function CarouselClubs() {
 const [clubs, setClubs] = useState([]);
