@@ -3,6 +3,8 @@ import jwtDecode from 'jwt-decode'
 import axios from '../../axios'
 import { MatxLoading } from '../components'
 
+import { signOut } from '../DataBase/AuthClient'
+
 const initialState = {
     isAuthenticated: false,
     isInitialised: false,
@@ -76,7 +78,8 @@ const AuthContext = createContext({
     ...initialState,
     method: 'JWT',
     login: () => Promise.resolve(),
-    logout: () => { },
+    logout: () => {
+    },
     register: () => Promise.resolve(),
 })
 
@@ -100,10 +103,10 @@ export const AuthProvider = ({ children }) => {
         })
     }
 
-    const register = async (email, username, password) => {
+    const register = async (email, name, password) => {
         const response = await axios.post('/api/auth/register', {
             email,
-            username,
+            name,
             password,
         })
 
@@ -121,6 +124,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setSession(null)
+        signOut()
         dispatch({ type: 'LOGOUT' })
     }
 

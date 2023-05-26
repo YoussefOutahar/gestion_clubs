@@ -36,7 +36,7 @@ const JWTRegister = styled(JustifyBox)(() => ({
 const initialValues = {
   email: '',
   password: '',
-  username: '',
+  name: '',
   remember: true,
 };
 
@@ -58,7 +58,7 @@ const JwtRegister = () => {
     setLoading(true);
 
     try {
-      register(values.email, values.username, values.password);
+      register(values.email, values.name, values.password);
       navigate('/');
       setLoading(false);
     } catch (e) {
@@ -94,14 +94,14 @@ const JwtRegister = () => {
                       fullWidth
                       size="small"
                       type="text"
-                      name="username"
-                      label="Username"
+                      name="name"
+                      label="Name"
                       variant="outlined"
                       onBlur={handleBlur}
-                      value={values.username}
+                      value={values.name}
                       onChange={handleChange}
-                      helperText={touched.username && errors.username}
-                      error={Boolean(errors.username && touched.username)}
+                      helperText={touched.name && errors.name}
+                      error={Boolean(errors.name && touched.name)}
                       sx={{ mb: 3 }}
                     />
 

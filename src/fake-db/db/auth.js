@@ -1,6 +1,10 @@
 import jwt from 'jsonwebtoken';
 import Mock from '../mock';
 
+import { getProfileById } from '../../app/DataBase/UsersClient';
+import { signIn , signOut , signUp} from '../../app/DataBase/AuthClient';
+import { getCurrentUser } from '../../app/DataBase/UsersClient';
+
 const JWT_SECRET = 'jwt_secret_key';
 const JWT_VALIDITY = '7 days';
 
@@ -9,10 +13,9 @@ const userList = [
     id: 1,
     role: 'SA',
     name: 'Jason Alexander',
-    username: 'jason_alexander',
     email: 'jason@ui-lib.com',
     avatar: '/assets/images/face-6.jpg',
-    age: 25,
+    phone: '0123456789',
   },
 ];
 
@@ -25,26 +28,32 @@ Mock.onPost('/api/auth/login').reply(async (config) => {
   try {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    const { email } = JSON.parse(config.data);
-    const user = userList.find((u) => u.email === email);
+    const { email , password } = JSON.parse(config.data);
 
-    if (!user) {
-      return [400, { message: 'Invalid email or password' }];
-    }
+    let { error } = await signIn(email, password)
+
+    if (error) {
+        return [400, { message: 'Invalid email or password' }];
+    };
+
+    let user = await getCurrentUser();
+
+    let profile  = await getProfileById(user.id);
+    
     const accessToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
       expiresIn: JWT_VALIDITY,
     });
-
+    
     return [
       200,
       {
         accessToken,
         user: {
           id: user.id,
-          avatar: user.avatar,
+          avatar: profile[0].avatar,
           email: user.email,
-          name: user.name,
-          role: user.role,
+          name: profile[0].name,
+          role: profile[0].role,
         },
       },
     ];
@@ -56,7 +65,7 @@ Mock.onPost('/api/auth/login').reply(async (config) => {
 
 Mock.onPost('/api/auth/register').reply((config) => {
   try {
-    const { email, username } = JSON.parse(config.data);
+    const { email, name } = JSON.parse(config.data);
     const user = userList.find((u) => u.email === email);
 
     if (user) {
@@ -65,11 +74,10 @@ Mock.onPost('/api/auth/register').reply((config) => {
     const newUser = {
       id: 2,
       role: 'GUEST',
-      name: '',
-      username: username,
+      name: name,
       email: email,
       avatar: '/assets/images/face-6.jpg',
-      age: 25,
+      phone: '0123456789',
     };
     userList.push(newUser);
 

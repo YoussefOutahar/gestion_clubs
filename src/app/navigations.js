@@ -6,10 +6,41 @@ export const navigations = [
     children: [
       { 
         name: 'Summary',
-        path: '/dashboard/default',
+        path: '/dashboard/test',
         iconText: 'S',
       },
+      { 
+        name: 'Clubs',
+        path: '/dashboard/test',
+        iconText: 'C',
+      },
+      { 
+        name: 'Memebers',
+        path: '/dashboard/test',
+        iconText: 'M',
+      },
+      { 
+        name: 'Events',
+        path: '/dashboard/test',
+        iconText: 'E',
+      },
     ] 
+  },
+  { label: 'General', type: 'label' },
+  {
+    name: 'Clubs',
+    path: '/test',
+    icon: 'home',
+  },
+  {
+    name: 'Memebers',
+    path: '/test',
+    icon: 'group',
+  },
+  {
+    name: 'Events',
+    path: '/test',
+    icon: 'event',
   },
   {
     name: 'Finances',
