@@ -6,22 +6,22 @@ export const navigations = [
     children: [
       { 
         name: 'Summary',
-        path: '/dashboard/test',
+        path: '/summary/global',
         iconText: 'S',
       },
       { 
         name: 'Clubs',
-        path: '/dashboard/test',
+        path: '/summary/clubs',
         iconText: 'C',
       },
       { 
         name: 'Memebers',
-        path: '/dashboard/test',
+        path: '/summary/members',
         iconText: 'M',
       },
       { 
         name: 'Events',
-        path: '/dashboard/test',
+        path: '/summary/events',
         iconText: 'E',
       },
     ] 
@@ -29,17 +29,17 @@ export const navigations = [
   { label: 'General', type: 'label' },
   {
     name: 'Clubs',
-    path: '/test',
+    path: '/clubs',
     icon: 'home',
   },
   {
     name: 'Memebers',
-    path: '/test',
+    path: '/members',
     icon: 'group',
   },
   {
     name: 'Events',
-    path: '/test',
+    path: '/events',
     icon: 'event',
   },
   {
