@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import Mock from '../mock';
 
 import { getProfileById } from '../../app/DataBase/UsersClient';
-import { signIn , signOut , signUp} from '../../app/DataBase/AuthClient';
+import { signIn , signUp} from '../../app/DataBase/AuthClient';
 import { getCurrentUser } from '../../app/DataBase/UsersClient';
 
 const JWT_SECRET = 'jwt_secret_key';
@@ -63,25 +63,23 @@ Mock.onPost('/api/auth/login').reply(async (config) => {
   }
 });
 
-Mock.onPost('/api/auth/register').reply((config) => {
+Mock.onPost('/api/auth/register').reply(async (config) => {
   try {
-    const { email, name } = JSON.parse(config.data);
-    const user = userList.find((u) => u.email === email);
+    const { email,password,name,role,phone,avatar,  } = JSON.parse(config.data);
 
-    if (user) {
-      return [400, { message: 'User already exists!' }];
-    }
-    const newUser = {
-      id: 2,
-      role: 'GUEST',
-      name: name,
-      email: email,
-      avatar: '/assets/images/face-6.jpg',
-      phone: '0123456789',
+    console.log(email,password,name,role,phone,avatar);
+
+    let { error } = await signUp(email, password,role,name,phone,avatar);
+
+    if (error) {
+        return [400, { message: 'Invalid email or password' }];
     };
-    userList.push(newUser);
 
-    const accessToken = jwt.sign({ userId: newUser.id }, JWT_SECRET, {
+    let user = await getCurrentUser();
+
+    let profile  = await getProfileById(user.id);
+
+    const accessToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
       expiresIn: JWT_VALIDITY,
     });
 
@@ -90,12 +88,11 @@ Mock.onPost('/api/auth/register').reply((config) => {
       {
         accessToken,
         user: {
-          id: newUser.id,
-          avatar: newUser.avatar,
-          email: newUser.email,
-          name: newUser.name,
-          username: newUser.username,
-          role: newUser.role,
+          id: user.id,
+          avatar: profile[0].avatar,
+          email: user.email,
+          name: profile[0].name,
+          role: profile[0].role,
         },
       },
     ];

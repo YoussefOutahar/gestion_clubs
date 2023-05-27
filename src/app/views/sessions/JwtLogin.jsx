@@ -1,5 +1,5 @@
 import { LoadingButton } from '@mui/lab';
-import { Card, Checkbox, Grid, TextField } from '@mui/material';
+import { Card, Checkbox, Grid, TextField, Alert, Snackbar } from '@mui/material';
 import { Box, styled, useTheme } from '@mui/system';
 import { Paragraph } from '../../components/Typography';
 import useAuth from '../../hooks/useAuth';
@@ -7,6 +7,7 @@ import { Formik } from 'formik';
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import React from 'react';
 
 const FlexBox = styled(Box)(() => ({ display: 'flex', alignItems: 'center' }));
 
@@ -51,6 +52,17 @@ const JwtLogin = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = React.useState(false);
+
+  function handleClick() {
+    setOpen(true);
+  }
+  function handleClose(_, reason) {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  }
 
   const { login } = useAuth();
 
@@ -61,6 +73,7 @@ const JwtLogin = () => {
       navigate('/');
     } catch (e) {
       setLoading(false);
+      handleClick();
     }
   };
 
@@ -160,6 +173,11 @@ const JwtLogin = () => {
           </Grid>
         </Grid>
       </Card>
+      <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }} variant="filled">
+          Invalid email or password!
+        </Alert>
+      </Snackbar>
     </JWTRoot>
   );
 };

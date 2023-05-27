@@ -2,6 +2,8 @@ import { Box, Button, Card, Grid, styled, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { forgotPassword } from '../../DataBase/AuthClient';
+
 const FlexBox = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
@@ -28,10 +30,15 @@ const ForgotPasswordRoot = styled(JustifyBox)(() => ({
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('admin@example.com');
+  const [email, setEmail] = useState('');
 
-  const handleFormSubmit = () => {
-    console.log(email);
+  const handleFormSubmit = async () => {
+    try{
+      const {error} = await forgotPassword(email);
+      if(error) throw error;
+    }catch(error){
+      console.log(error);
+    }
   };
 
   return (
@@ -56,7 +63,7 @@ const ForgotPassword = () => {
                   sx={{ mb: 3, width: '100%' }}
                 />
 
-                <Button fullWidth variant="contained" color="primary" type="submit">
+                <Button fullWidth variant="contained" color="primary" onClick={handleFormSubmit}>
                   Reset Password
                 </Button>
 
