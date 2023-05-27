@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import supabase from "../../../DataBase/SupabaseClient";
 import ImageSlider from './ImageSlider';
 
 

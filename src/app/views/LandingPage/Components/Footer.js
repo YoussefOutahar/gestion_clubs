@@ -1,5 +1,3 @@
-import styled from "styled-components";
-import { Spacer } from "../../../../old_project/Utils/StyledElements";
 import { Box, Container,FootContainer, Row, Column, FooterLink, Heading, FooterBar, Footernav } from "../../../../old_project/Resources/FooterStyle";
 
 function Footer() {
