@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination, EffectCoverflow, Autoplay } from 'swiper'
 import { useEffect, useState,React } from "react";
-import supabase from "../../../DataBase/SupabaseClient";
+import supabase from "../../../DataBase/Clients/SupabaseClient";
 
 import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.min.css'

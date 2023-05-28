@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode'
 import axios from '../../axios'
 import { MatxLoading } from '../components'
 
-import { signOut } from '../DataBase/AuthClient'
+import { signOut } from '../DataBase/Clients/AuthClient'
 
 const initialState = {
     isAuthenticated: false,

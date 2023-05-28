@@ -1,4 +1,4 @@
-import supabase from "../../app/DataBase/SupabaseClient";
+import supabase from "../../app/DataBase/Clients/SupabaseClient";
 
 // Retrieve user's club from the 'users' table
 

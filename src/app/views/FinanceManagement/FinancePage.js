@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import supabase from "../../DataBase/SupabaseClient";
+import supabase from "../../DataBase/Clients/SupabaseClient";
 import { getUserClub } from "../../../old_project/Utils/UserInfos";
 
 import { styled,useTheme } from "@mui/material";

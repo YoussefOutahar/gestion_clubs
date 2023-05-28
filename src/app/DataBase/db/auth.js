@@ -1,9 +1,8 @@
 import jwt from 'jsonwebtoken';
 import Mock from '../mock';
 
-import { getProfileById } from '../../app/DataBase/UsersClient';
-import { signIn , signUp} from '../../app/DataBase/AuthClient';
-import { getCurrentUser } from '../../app/DataBase/UsersClient';
+import { signIn , signUp} from '../Clients/AuthClient';
+import { getCurrentUser, getProfileById } from '../Clients/UsersClient';
 
 const JWT_SECRET = 'jwt_secret_key';
 const JWT_VALIDITY = '7 days';
