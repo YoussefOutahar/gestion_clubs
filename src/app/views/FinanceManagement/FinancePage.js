@@ -3,8 +3,9 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
 import { getUserClub } from "../../../old_project/Utils/UserInfos";
 import StatCards from "../dashboard/shared/StatCards";
 import SimpleCard from "../../components/SimpleCard";
-import PaginationTable from "../material-kit/tables/PaginationTable";
-import { styled,useTheme,Box, Card, Icon, Grid} from "@mui/material";
+import FinanceCards from "./Components/FinanceCards";
+import ChargesTable from "./Components/ChargesTable";
+import { styled,useTheme,Box, Button, Card, Icon, Grid} from "@mui/material";
 
 const EventsDetail = [
     {
@@ -64,6 +65,9 @@ const EventsDetail = [
         supplementary_budget: "none",
       },
   ];
+  const StyledButton = styled(Button)(({ theme }) => ({
+    margin: theme.spacing(1),
+  }));
 
 
 const FinancePage = () => {
@@ -85,7 +89,7 @@ const FinancePage = () => {
             <Grid container spacing={3} sx={{ mb: '24px' }}>
                 {cardList.map((card, index) => (
                     <Grid item xs={12} md={6} key={index}>
-                        <SimpleCard
+                        <FinanceCards
                             key={index}
                             title={card.name}
                             subtitle={card.amount}
@@ -94,7 +98,17 @@ const FinancePage = () => {
                     </Grid>
                 ))}
             </Grid>
-            <PaginationTable MyData={EventsDetail} tableHeading={["EventName","Date","Cost","Earned","Supp_Budget"]}/>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+            <StyledButton variant="contained" href="/addCharge">
+                Request a supplementary budget
+            </StyledButton>
+            <StyledButton variant="contained" color="secondary" href="/addCharge">
+                Add an event charge
+            </StyledButton>
+            </Box>
+            <SimpleCard title="Charges Table">
+            <ChargesTable MyData={EventsDetail} tableHeading={["EventName","Date","Cost","Earned","Supp_Budget"]}/>
+            </SimpleCard>
         </ContentBox1>
     );
 }
