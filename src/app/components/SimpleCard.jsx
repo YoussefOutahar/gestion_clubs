@@ -23,4 +23,5 @@ const SimpleCard = ({ children, title, subtitle, icon }) => {
   );
 };
 
+
 export default SimpleCard;

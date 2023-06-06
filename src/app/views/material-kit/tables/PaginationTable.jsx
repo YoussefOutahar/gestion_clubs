@@ -150,4 +150,5 @@ const PaginationTable = () => {
   );
 };
 
+
 export default PaginationTable;
