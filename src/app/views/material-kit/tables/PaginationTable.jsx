@@ -22,8 +22,73 @@ const StyledTable = styled(Table)(() => ({
   },
 }));
 
+const subscribarList = [
+  {
+    name: "john doe",
+    date: "18 january, 2019",
+    amount: 1000,
+    status: "close",
+    company: "ABC Fintech LTD.",
+  },
+  {
+    name: "kessy bryan",
+    date: "10 january, 2019",
+    amount: 9000,
+    status: "open",
+    company: "My Fintech LTD.",
+  },
+  {
+    name: "kessy bryan",
+    date: "10 january, 2019",
+    amount: 9000,
+    status: "open",
+    company: "My Fintech LTD.",
+  },
+  {
+    name: "james cassegne",
+    date: "8 january, 2019",
+    amount: 5000,
+    status: "close",
+    company: "Collboy Tech LTD.",
+  },
+  {
+    name: "lucy brown",
+    date: "1 january, 2019",
+    amount: 89000,
+    status: "open",
+    company: "ABC Fintech LTD.",
+  },
+  {
+    name: "lucy brown",
+    date: "1 january, 2019",
+    amount: 89000,
+    status: "open",
+    company: "ABC Fintech LTD.",
+  },
+  {
+    name: "lucy brown",
+    date: "1 january, 2019",
+    amount: 89000,
+    status: "open",
+    company: "ABC Fintech LTD.",
+  },
+  {
+    name: "lucy brown",
+    date: "1 january, 2019",
+    amount: 89000,
+    status: "open",
+    company: "ABC Fintech LTD.",
+  },
+  {
+    name: "lucy brown",
+    date: "1 january, 2019",
+    amount: 89000,
+    status: "open",
+    company: "ABC Fintech LTD.",
+  },
+];
 
-const PaginationTable= ({ MyData, tableHeading }) => {
+const PaginationTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -41,33 +106,29 @@ const PaginationTable= ({ MyData, tableHeading }) => {
       <StyledTable>
         <TableHead>
           <TableRow>
-          {tableHeading.map((heading, index) => (
-             <TableCell align="center" key={index}>
-             {heading}
-           </TableCell>
-         ))}
+            <TableCell align="left">Name</TableCell>
+            <TableCell align="center">Company</TableCell>
+            <TableCell align="center">Start Date</TableCell>
+            <TableCell align="center">Status</TableCell>
+            <TableCell align="center">Amount</TableCell>
+            <TableCell align="right">Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {MyData
+          {subscribarList
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((data, index) => (
+            .map((subscriber, index) => (
               <TableRow key={index}>
-                {Object.values(data).map((value, index) => (
-                  <TableCell align="center" key={index}>
-                    {value}
-                  </TableCell>
-                ))}
-                {/*<TableCell align="center">{subscriber.Event}</TableCell>
+                <TableCell align="left">{subscriber.name}</TableCell>
+                <TableCell align="center">{subscriber.company}</TableCell>
                 <TableCell align="center">{subscriber.date}</TableCell>
-                <TableCell align="center">{subscriber.Cost}</TableCell>
-                <TableCell align="center">{subscriber.Earned}</TableCell>
-                <TableCell align="center">{subscriber.supplementary_budget}</TableCell>
+                <TableCell align="center">{subscriber.status}</TableCell>
+                <TableCell align="center">${subscriber.amount}</TableCell>
                 <TableCell align="right">
                   <IconButton>
                     <Icon color="error">close</Icon>
                   </IconButton>
-            </TableCell>*/}
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>
@@ -78,7 +139,7 @@ const PaginationTable= ({ MyData, tableHeading }) => {
         page={page}
         component="div"
         rowsPerPage={rowsPerPage}
-        count={MyData.length}
+        count={subscribarList.length}
         onPageChange={handleChangePage}
         rowsPerPageOptions={[5, 10, 25]}
         onRowsPerPageChange={handleChangeRowsPerPage}
@@ -88,6 +149,5 @@ const PaginationTable= ({ MyData, tableHeading }) => {
     </Box>
   );
 };
-
 
 export default PaginationTable;
