@@ -22,17 +22,17 @@ const ContentBox = styled(Box)(({ theme }) => ({
 const Heading = styled('h6')(({ theme }) => ({
   margin: 0,
   marginTop: '4px',
-  fontSize: '14px',
+  fontSize: '20px',
   fontWeight: '500',
   color: theme.palette.primary.main,
 }));
 
 const StatCards = () => {
   const cardList = [
-    { name: 'New Leads', amount: 3050, icon: 'group' },
-    { name: 'This week Sales', amount: '$80,500', icon: 'attach_money' },
-    { name: 'Inventory Status', amount: '8.5% Stock Surplus', icon: 'store' },
-    { name: 'Orders to deliver', amount: '305 Orders', icon: 'shopping_cart' },
+    { name: 'Total Budget', amount: '200000 DH', icon: 'attach_money' },
+    { name: 'Total suppliment budget', amount: '5000 DH', icon: 'attach_money' },
+    { name: 'Total Donations', amount: '10000 DH', icon: 'attach_money' },
+    { name: 'Rest', amount: '3099 DH', icon: 'attach_money' },
   ];
 
   return (
@@ -48,11 +48,11 @@ const StatCards = () => {
               </Box>
             </ContentBox>
 
-            <Tooltip title="View Details" placement="top">
+            {/*<Tooltip title="View Details" placement="top">
               <IconButton>
                 <Icon>arrow_right_alt</Icon>
               </IconButton>
-            </Tooltip>
+      </Tooltip>*/}
           </StyledCard>
         </Grid>
       ))}
