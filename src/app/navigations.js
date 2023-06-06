@@ -47,6 +47,11 @@ export const navigations = [
     path: '/finance',
     icon: 'account_balance_wallet',
   },
+  {
+    name: 'AddCharge',
+    path: '/AddCharge',
+    icon: 'account_balance_wallet',
+  },
   { label: 'PAGES', type: 'label' },
   {
     name: 'Session/Auth',
