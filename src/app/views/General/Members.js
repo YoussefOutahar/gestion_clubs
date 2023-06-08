@@ -124,7 +124,7 @@ import {
           mb={2}
           mt={1}
         >
-          <h1>Club Members</h1>
+          <h1 style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '40px', fontWeight: '400' }}>Club Members</h1>
         </Box>
         <Box
           display="flex"
