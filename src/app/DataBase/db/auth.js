@@ -75,7 +75,7 @@ Mock.onPost('/api/auth/register').reply(async (config) => {
   }
 });
 
-Mock.onGet('/api/auth/profile').reply((config) => {
+Mock.onGet('/api/auth/profile').reply(async (config) => {
   try {
     const { Authorization } = config.headers;
 
@@ -90,7 +90,8 @@ Mock.onGet('/api/auth/profile').reply((config) => {
 
     // const user = userList.find((u) => u.id === userId);
 
-    let user = getCurrentUser();
+    let user = await getCurrentUser();
+    let profile  = await getProfileById(user.id);
     
     if (!user) {
       return [401, { message: 'Invalid authorization token' }];
@@ -100,10 +101,10 @@ Mock.onGet('/api/auth/profile').reply((config) => {
       {
         user: {
           id: user.id,
-          avatar: user.avatar,
+          avatar: profile[0].avatar,
           email: user.email,
-          name: user.name,
-          role: user.role,
+          name: profile[0].name,
+          role: profile[0].role,
         },
       },
     ];

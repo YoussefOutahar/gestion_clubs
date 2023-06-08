@@ -22,7 +22,7 @@ const routes = [
     },
     ...sessionRoutes,
     ...landingPageRoute,
-    { path: "/", element: <Navigate to="dashboard/default" /> }, //TODO: This is where you handle user types redirections!!
+    { path: "/", element: <Navigate to="dashboard/default" /> },
     { path: "*", element: <NotFound /> },
 ];
 
