@@ -53,22 +53,12 @@ import {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((data, index) => (
                 <TableRow key={index}>
-                  {Object.values(data).map((value, index) => (
-                    <TableCell align="center" key={index}>
-                      {value}
-                    </TableCell>
-                  ))}
-                  {/*<TableCell align="center">{subscriber.Event}</TableCell>
-                  <TableCell align="center">{subscriber.date}</TableCell>
-                  <TableCell align="center">{subscriber.Cost}</TableCell>
-                  <TableCell align="center">{subscriber.Earned}</TableCell>
-                  <TableCell align="center">{subscriber.supplementary_budget}</TableCell>
-                  <TableCell align="right">
-                    <IconButton>
-                      <Icon color="error">close</Icon>
-                    </IconButton>
-              </TableCell>*/}
-                </TableRow>
+                <TableCell align="center">{data.Name}</TableCell>
+                <TableCell align="center">{data.date}</TableCell>
+                <TableCell align="center">{data.Budget}</TableCell>
+                <TableCell align="center">{data.Earnings}</TableCell>
+                <TableCell align="center">{data.supp_budget}</TableCell>
+              </TableRow>
               ))}
           </TableBody>
         </StyledTable>
