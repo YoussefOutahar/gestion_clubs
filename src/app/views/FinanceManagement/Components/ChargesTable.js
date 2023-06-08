@@ -1,7 +1,5 @@
 import {
     Box,
-    Icon,
-    IconButton,
     styled,
     Table,
     TableBody,
@@ -23,7 +21,7 @@ import {
   }));
   
   
-  const ChargesTable= ({ MyData, tableHeading }) => {
+  const ChargesTable= ({ MyData}) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
   
@@ -39,25 +37,25 @@ import {
     return (
       <Box width="100%" overflow="auto">
         <StyledTable>
-          <TableHead>
-            <TableRow>
-            {tableHeading.map((heading, index) => (
-               <TableCell align="center" key={index}>
-               {heading}
-             </TableCell>
-           ))}
-            </TableRow>
-          </TableHead>
+        <TableHead>
+          <TableRow>
+            <TableCell align="center">Event Name</TableCell>
+            <TableCell align="center">Date</TableCell>
+            <TableCell align="center">Cost</TableCell>
+            <TableCell align="center">Earned</TableCell>
+            <TableCell align="center">Supplimentary budget</TableCell>
+          </TableRow>
+        </TableHead>
           <TableBody>
             {MyData
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((data, index) => (
                 <TableRow key={index}>
                 <TableCell align="center">{data.Name}</TableCell>
-                <TableCell align="center">{data.date}</TableCell>
-                <TableCell align="center">{data.Budget}</TableCell>
+                <TableCell align="center">{data.Date}</TableCell>
+                <TableCell align="center">{data.Cost}</TableCell>
                 <TableCell align="center">{data.Earnings}</TableCell>
-                <TableCell align="center">{data.supp_budget}</TableCell>
+                <TableCell align="center">{data.Supp_budget}</TableCell>
               </TableRow>
               ))}
           </TableBody>

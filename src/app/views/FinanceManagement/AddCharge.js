@@ -20,7 +20,7 @@ const AddCharge = () => {
           </Box>
     
           <Stack spacing={3}>
-            <SimpleCard title="Form">
+            <SimpleCard title="Add event charge">
               <ChargeForm />
             </SimpleCard>
           </Stack>

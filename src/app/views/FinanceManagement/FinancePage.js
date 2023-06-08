@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import supabase from "../../DataBase/Clients/SupabaseClient";
-import { getUserClub } from "../../../old_project/Utils/UserInfos";
-import StatCards from "../dashboard/shared/StatCards";
 import SimpleCard from "../../components/SimpleCard";
 import FinanceCards from "./Components/FinanceCards";
 import ChargesTable from "./Components/ChargesTable";
@@ -29,11 +27,12 @@ const FinancePage = () => {
 
   useEffect(() => {
     const fetchActivites = async () => {
-      const { data, error } = await supabase.from("Activites").select("Name,Date,Cost,Earnings,Supplimentary_budget");
+      const { data, error } = await supabase.from("Activites").select("Name,Date,Cost,Earnings,Supp_budget");
       if (error) {
         console.error("Error fetching Activites:", error);
       } else {
         setEventsDetail(data);
+        console.log("Fetched data:", data);
       }
     };
 
@@ -65,7 +64,7 @@ const FinancePage = () => {
             </StyledButton>
             </Box>
             <SimpleCard title="Charges Table">
-            <ChargesTable MyData={eventsDetail} tableHeading={["Name","Date","Cost","Earnings","Supplimentary_budget"]}/>
+            <ChargesTable MyData={eventsDetail}/>
             </SimpleCard>
         </ContentBox1>
     );
