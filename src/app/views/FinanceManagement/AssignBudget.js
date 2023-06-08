@@ -4,7 +4,9 @@ import { Breadcrumb, SimpleCard } from "../../components";
 import { useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import supabase from "../../DataBase/Clients/SupabaseClient";
+import { useNavigate } from "react-router-dom";
 
+//Style Css
 const StyledTable = styled(Table)(({ theme }) => ({
     whiteSpace: "pre",
     "& thead": {
@@ -14,15 +16,6 @@ const StyledTable = styled(Table)(({ theme }) => ({
       "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
     },
   }));
-  const subscribarList = [
-    {
-      name: "john doe",
-      date: "18 january, 2019",
-      amount: 1000,
-      status: "close",
-      company: "ABC Fintech LTD.",
-    },
-]
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -37,19 +30,48 @@ const Container = styled("div")(({ theme }) => ({
     marginBottom: "16px",
   }));
 
+  // AssignBudget 
 const AssignBudget = () => {
+  const navigate = useNavigate();
+
     const [state, setState] = useState({ date: new Date() });
+    const [Clubs, setClubs] = useState([]);
 
-  useEffect(() => {
-    ValidatorForm.addValidationRule("isInvoiceMatch", (value) => {
-      if (value !== state.Invoice) return false;
+    //fetchClubs
+useEffect(() => {
+  const fetchClubs = async () => {
+    const { data, error } = await supabase.from('Clubs').select('nom,id');
+    if (data) {
+      setClubs(data);
+    } else {
+      console.error(error);
+    }
+  };
 
-      return true;
-    });
-    return () => ValidatorForm.removeValidationRule("isInvoiceMatch");
-  }, [state.Invoice]);
+  fetchClubs();
+}, []);
 
   const handleSubmit = async (event) => {
+    event.preventDefault();
+
+  // Prepare the data to be inserted into the database
+  const budgets = Clubs.map((club, index) => ({
+    id_club: club.id,
+    budget: state[`budget-${index}`] || 0,
+    annee: new Date().getFullYear(), // Set the actual year
+    source: "DVE",
+    rest: state[`budget-${index}`] || 0,
+  }));
+
+  // Insert the data into the database using Supabase
+  const { data, error } = await supabase.from('Budget').insert(budgets);
+  if (data) {
+    console.log('Budgets inserted successfully:', data);
+    // Redirect to finance page
+    navigate("/finance");
+  } else {
+    console.error('Error inserting budgets:', error);
+  }
   };
 
   const handleChange = (event) => {
@@ -59,20 +81,16 @@ const AssignBudget = () => {
 
   const handleDateChange = (date) => setState({ ...state, date });
 
-  const {
-    eventName,
-    totalCost,
-  } = state;
-
     return (
         <Container>
           <Box className="breadcrumb">
-            <Breadcrumb routeSegments={[{ name: "Finance", path: "/finance" }, { name: "Supplimentary Budget" }]} />
+            <Breadcrumb routeSegments={[{ name: "Finance", path: "/finance" }, { name: "Assign Budgets" }]} />
           </Box>
     
           <Stack spacing={3}>
-            <SimpleCard title="Request supplimentary Budget">
+            <SimpleCard title="Assign Budgets">
                 <div>
+                <ValidatorForm onSubmit={handleSubmit}>
                 <StyledTable>
         <TableHead>
           <TableRow>
@@ -81,19 +99,20 @@ const AssignBudget = () => {
           </TableRow>
           </TableHead>
           <TableBody>
-          {subscribarList.map((subscriber, index) => (
+          {Clubs.map((club, index) => (
             <TableRow key={index}>
-              <TableCell align="left">{subscriber.name}</TableCell>
-              <TableCell align="center">{subscriber.company}</TableCell>
-              <TableCell align="right">
-                <IconButton>
-                  <Icon color="error">close</Icon>
-                </IconButton>
-              </TableCell>
+            <TableCell align="left">{club.nom}</TableCell>
+            <TableCell align="center">
+              <TextField name={`budget-${index}`}  value={state[`budget-${index}`] || ''} onChange={handleChange} />
+            </TableCell>
             </TableRow>
           ))}
         </TableBody>
         </StyledTable>
+        <Button type="submit" variant="contained" color="primary">
+    Submit
+  </Button>
+        </ValidatorForm>
                 </div>
             </SimpleCard>
           </Stack>

@@ -19,6 +19,8 @@ const FinancePage = () => {
   const [eventsDetail, setEventsDetail] = useState([]);
   const [budgetValue, setBudgetValue] = useState(null);
   const [donationsTotal, setDonationsTotal] = useState(0);
+  const [SuppBudgetTotal, setSuppBudgetTotal] = useState(0);
+  const [costTotal, setCostTotal] = useState(0);
 
   useEffect(() => {
     const fetchActivites = async () => {
@@ -34,7 +36,37 @@ const FinancePage = () => {
     fetchActivites();
   }, []);
 
+  useEffect(() => {
+    const fetchInfos = async () => {
+      const { data, error } = await supabase
+        .from("Activites")
+        .select("Earnings, Cost,Supp_budget")
+        .eq("id_club", 1);
   
+      if (error) {
+        console.error("Error fetching Donations:", error);
+      } else {
+        const totalEarnings = data.reduce(
+          (sum, activity) => sum + (activity.Earnings || 0),
+          0
+        );
+        const totalCost = data.reduce(
+          (sum, activity) => sum + (activity.Cost || 0),
+          0
+        );
+        const totalSuppBudget = data.reduce(
+          (sum, activity) => sum + (activity.Supp_budget || 0),
+          0
+        );
+        setDonationsTotal(totalEarnings);
+        setCostTotal(totalCost);
+        setSuppBudgetTotal(totalSuppBudget);
+      }
+    };
+  
+    fetchInfos();
+  }, []);
+
 
   useEffect(() => {
     const fetchBudgetValue = async () => {
@@ -55,11 +87,14 @@ const FinancePage = () => {
     fetchBudgetValue();
   }, []);
 
+  const earningsTotal = donationsTotal + budgetValue + SuppBudgetTotal;
+  const rest = earningsTotal - costTotal;
+
   const cardList = [
     { name: "Budget", amount: budgetValue ? `${budgetValue} DH` : "Fetching...", icon: "attach_money" },
-    { name: "Total supplementary budget", amount: "5000 DH", icon: "attach_money" },
-    { name: "Total Donations", amount: "10000 DH", icon: "attach_money" },
-    { name: "Rest", amount: "3099 DH", icon: "attach_money" },
+    { name: "Total supplementary budget", amount: `${SuppBudgetTotal} DH`, icon: "attach_money" },
+    { name: "Total Donations", amount: `${donationsTotal} DH`, icon: "attach_money" },
+    { name: "Rest", amount: `${rest} DH`, icon: "attach_money" },
   ];
 
     return (
