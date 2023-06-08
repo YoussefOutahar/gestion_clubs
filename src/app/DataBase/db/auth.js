@@ -7,17 +7,6 @@ import { getCurrentUser, getProfileById } from '../Clients/UsersClient';
 const JWT_SECRET = 'jwt_secret_key';
 const JWT_VALIDITY = '7 days';
 
-const userList = [
-  {
-    id: 1,
-    role: 'SA',
-    name: 'Jason Alexander',
-    email: 'jason@ui-lib.com',
-    avatar: '/assets/images/face-6.jpg',
-    phone: '0123456789',
-  },
-];
-
 // FOLLOWING CODES ARE MOCK SERVER IMPLEMENTATION
 // YOU NEED TO BUILD YOUR OWN SERVER
 // IF YOU NEED HELP ABOUT SERVER SIDE IMPLEMENTATION
@@ -89,12 +78,20 @@ Mock.onPost('/api/auth/register').reply(async (config) => {
 Mock.onGet('/api/auth/profile').reply((config) => {
   try {
     const { Authorization } = config.headers;
+
+    console.log(Authorization);
+
     if (!Authorization) {
       return [401, { message: 'Invalid Authorization token' }];
     }
+    
     const accessToken = Authorization.split(' ')[1];
     const { userId } = jwt.verify(accessToken, JWT_SECRET);
-    const user = userList.find((u) => u.id === userId);
+
+    // const user = userList.find((u) => u.id === userId);
+
+    let user = getCurrentUser();
+    
     if (!user) {
       return [401, { message: 'Invalid authorization token' }];
     }
