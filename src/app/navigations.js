@@ -62,6 +62,11 @@ export const navigations = [
     path: '/AssignBudget',
     icon: 'account_balance_wallet',
   },
+  {
+    name: 'Admin Finance',
+    path: '/AdminFinance',
+    icon: 'account_balance_wallet',
+  },
   { label: 'PAGES', type: 'label' },
   {
     name: 'Session/Auth',
