@@ -4,8 +4,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn, signUp } from "../../DataBase/AuthClient";
 
-import { subBtn } from "../../Resources/authStyle";
-
 import "../../Resources/authStyle.css";
 
 function AuthentificationPage() {
