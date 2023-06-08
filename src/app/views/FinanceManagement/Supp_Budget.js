@@ -1,10 +1,11 @@
-import { Stack, Button,Grid, Icon, styled} from "@mui/material";
+import { Stack, Button,Grid, Icon, styled,MenuItem} from "@mui/material";
 import { Box } from "@mui/system";
 import { Span } from "../../components/Typography";
 import { Breadcrumb, SimpleCard } from "../../components";
 import { useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import supabase from "../../DataBase/Clients/SupabaseClient";
+import { useNavigate } from "react-router-dom";
 
 
 const Container = styled("div")(({ theme }) => ({
@@ -21,31 +22,85 @@ const Container = styled("div")(({ theme }) => ({
   }));
 
 const Supp_Budget = () => {
-    const [state, setState] = useState({ date: new Date() });
 
-  useEffect(() => {
+  const navigate = useNavigate();
+
+  const [state, setState] = useState({
+    date: new Date(),
+    eventName: "",
+    activities: [],
+  });
+
+  {/*useEffect(() => {
     ValidatorForm.addValidationRule("isInvoiceMatch", (value) => {
       if (value !== state.Invoice) return false;
 
       return true;
     });
     return () => ValidatorForm.removeValidationRule("isInvoiceMatch");
-  }, [state.Invoice]);
+  }, [state.Invoice]);*/}
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const { data, error } = await supabase.from("Activites").select("Name");
+        if (error) {
+          console.error("Error fetching activities:", error);
+        } else {
+          setState((prevState) => ({
+            ...prevState,
+            activities: data.map((activity) => activity.Name),
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching activities:", error);
+      }
+    };
+
+    fetchActivities();
+  }, []);
 
   const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const { data, error } = await supabase.from("Notifications").insert([
+        {
+          heading: "Request",
+          title: "Supplimentary budget request",
+          subtitle: state.eventName,
+          timestamp: state.date,
+          body: `Request an amount of ${state.totalCost} DH to the event ${state.eventName}`,
+          icon: {
+            name: "Message",
+            color: "primary"
+          },
+          path: "finance"
+        },
+      ])
+
+      if (error) {
+        console.error(error);
+      } else {
+        console.log("Request sent successfully:", data);
+        // Redirect to finance page
+        navigate("/finance");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleChange = (event) => {
-    event.persist();
-    setState({ ...state, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+  setState((prevState) => ({
+    ...prevState,
+    [name]: value,
+    }));
   };
 
   const handleDateChange = (date) => setState({ ...state, date });
 
-  const {
-    eventName,
-    totalCost,
-  } = state;
+  const { eventName, totalCost,activities } = state;
 
     return (
         <Container>
@@ -59,16 +114,21 @@ const Supp_Budget = () => {
       <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-            <TextField
-              type="text"
+          <TextField
+              select
               name="eventName"
-              id="standard-basic"
               value={eventName || ""}
               onChange={handleChange}
               errorMessages={["this field is required"]}
               label="Event Name"
               validators={["required"]}
-            />
+            >
+              {activities.map((activity, index) => (
+                <MenuItem key={index} value={activity}>
+                  {activity}
+                </MenuItem>
+              ))}
+            </TextField>
 
             <TextField
               type="number"

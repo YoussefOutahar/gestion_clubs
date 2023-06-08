@@ -3,6 +3,7 @@ import { Span } from "../../../components/Typography";
 import { useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import supabase from "../../../DataBase/Clients/SupabaseClient";
+import { useNavigate } from "react-router-dom";
 
 const TextField = styled(TextValidator)(() => ({
   width: "100%",
@@ -10,6 +11,9 @@ const TextField = styled(TextValidator)(() => ({
 }));
 
 const ChargeForm = () => {
+  
+  const navigate = useNavigate();
+
   const [state, setState] = useState({
     date: new Date(),
     eventName: "",
@@ -36,7 +40,7 @@ const ChargeForm = () => {
     fetchActivities();
   }, []);
 
-  useEffect(() => {
+  {/*useEffect(() => {
     ValidatorForm.addValidationRule("isInvoiceMatch", (value) => {
       if (value !== state.Invoice) return false;
 
@@ -46,19 +50,20 @@ const ChargeForm = () => {
     return () => {
       ValidatorForm.removeValidationRule("isInvoiceMatch");
     };
-  }, [state.Invoice]);
+  }, [state.Invoice]);*/}
 
+  //TODO:
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const { data, error } = await supabase.from("Activites").insert([
+      const { data, error } = await supabase.from("Activites").update([
         {
-          libelle: state.eventName,
-          Budget: state.totalCost,
+          Name: state.eventName,
+          Cost: state.totalCost,
           Earnings: state.Earning,
           Supp_budget: state.suppBudget,
         },
-      ]);
+      ]).eq('Name', state.eventName)
 
       if (error) {
         console.error(error);
@@ -76,20 +81,21 @@ const ChargeForm = () => {
       } else {
         console.log("File uploaded successfully:", fileData);
       }
+      // Redirect to finance page
+      navigate("/finance");
+
     } catch (error) {
       console.error(error);
     }
   };
 
   const handleChange = (event) => {
-    event.persist();
-    setState((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
+    const { name, value } = event.target;
+  setState((prevState) => ({
+    ...prevState,
+    [name]: value,
     }));
   };
-
-  const handleDateChange = (date) => setState({ ...state, date });
 
   const { eventName, totalCost, Earning, suppBudget, Invoice, activities } = state;
 
@@ -98,7 +104,6 @@ const ChargeForm = () => {
       <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-            
             <TextField
               select
               name="eventName"

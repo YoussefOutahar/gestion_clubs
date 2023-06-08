@@ -15,15 +15,10 @@ import { styled,useTheme,Box, Button, Card, Icon, Grid} from "@mui/material";
     [theme.breakpoints.down('sm')]: { margin: '16px' },
   }));
 
-  const cardList = [
-    { name: 'Total Budget', amount: '200000 DH', icon: 'attach_money' },
-    { name: 'Total supplementary budget', amount: '5000 DH', icon: 'attach_money' },
-    { name: 'Total Donations', amount: '10000 DH', icon: 'attach_money' },
-    { name: 'Rest', amount: '3099 DH', icon: 'attach_money' },
-  ];
-
 const FinancePage = () => {
   const [eventsDetail, setEventsDetail] = useState([]);
+  const [budgetValue, setBudgetValue] = useState(null);
+  const [donationsTotal, setDonationsTotal] = useState(0);
 
   useEffect(() => {
     const fetchActivites = async () => {
@@ -38,6 +33,34 @@ const FinancePage = () => {
 
     fetchActivites();
   }, []);
+
+  
+
+  useEffect(() => {
+    const fetchBudgetValue = async () => {
+      const { data, error } = await supabase
+        .from("Budget")
+        .select("budget")
+        .eq("id_club", 1)
+        .limit(1);
+
+      if (error) {
+        console.error("Error fetching Budget value:", error);
+      } else if (data && data.length > 0) {
+        setBudgetValue(data[0].budget);
+      } else {
+        console.log("Budget value not found");
+      }
+    };
+    fetchBudgetValue();
+  }, []);
+
+  const cardList = [
+    { name: "Budget", amount: budgetValue ? `${budgetValue} DH` : "Fetching...", icon: "attach_money" },
+    { name: "Total supplementary budget", amount: "5000 DH", icon: "attach_money" },
+    { name: "Total Donations", amount: "10000 DH", icon: "attach_money" },
+    { name: "Rest", amount: "3099 DH", icon: "attach_money" },
+  ];
 
     return (
         <ContentBox1>
