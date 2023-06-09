@@ -53,21 +53,6 @@ export const getNavigations = async () => {
             icon: "account_balance_wallet",
         },
         {
-            name: "AddCharge",
-            path: "/AddCharge",
-            icon: "account_balance_wallet",
-        },
-        {
-            name: "Supp Budget",
-            path: "/Supp_Budget",
-            icon: "account_balance_wallet",
-        },
-        {
-            name: "AssignBudget",
-            path: "/AssignBudget",
-            icon: "account_balance_wallet",
-        },
-        {
             name: "Admin Finance",
             path: "/AdminFinance",
             icon: "account_balance_wallet",
@@ -118,9 +103,9 @@ export const getNavigations = async () => {
 
     const userNavigations = [
         {
-            name: "Dashboard",
-            path: "/dashboard/default",
-            icon: "dashboard",
+            name: "Account",
+            path: "/Account",
+            icon: "group",
         },
     ];
 
