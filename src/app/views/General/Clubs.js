@@ -4,6 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { getClubs,deleteClub } from '../../DataBase/Clients/ClubsClient';
 
 const Clubs = () => {
   const [showDetails, setShowDetails] = useState(false);
@@ -31,7 +32,18 @@ const Clubs = () => {
     ],
   };
 
-  const clubs = [
+  const [clubs, setClubs] = useState([]);
+
+  const fetchClubs = async () => {
+    const fetchedClubs = await getClubs();
+    if (fetchedClubs) {
+      setClubs(fetchedClubs);
+    }
+  };
+  
+  fetchClubs();
+
+  {/*const clubs = [
     {
       logo: 'https://www.evaair.com/Images/vivn/the-club-logo_tcm43-68807.jpg',
       name: 'Club de débat',
@@ -45,62 +57,7 @@ const Clubs = () => {
       ],
       background: 'white',
     },
-    {
-      logo: 'https://www.evaair.com/Images/vivn/the-club-logo_tcm43-68807.jpg',
-      name: 'Club de théâtre',
-      description: 'Permet aux étudiants passionnés de théâtre de développer leurs talents artistiques.',
-      members: [
-        { name: 'Member 1', email: 'member1@example.com', status: 'Active', position: 'President', startDate: '2022-01-01' },
-        { name: 'Member 2', email: 'member2@example.com', status: 'Inactive', position: 'Assistant', startDate: '2022-02-01' },
-        { name: 'Member 3', email: 'member3@example.com', status: 'Active', position: 'Intern', startDate: '2022-03-01' },
-      ],
-      background: 'white',
-    },
-    {
-      logo: 'https://www.evaair.com/Images/vivn/the-club-logo_tcm43-68807.jpg',
-      name: 'Club Entrepreneuriat',
-      description: 'Encourage les étudiants à explorer et à développer leurs idées commerciales.',
-      members: [
-        { name: 'Member 1', email: 'member1@example.com', status: 'Active', position: 'President', startDate: '2022-01-01' },
-        { name: 'Member 2', email: 'member2@example.com', status: 'Inactive', position: 'Assistant', startDate: '2022-02-01' },
-        { name: 'Member 3', email: 'member3@example.com', status: 'Active', position: 'Intern', startDate: '2022-03-01' },
-      ],
-      background: 'white',
-    },
-    {
-      logo: 'https://www.evaair.com/Images/vivn/the-club-logo_tcm43-68807.jpg',
-      name: 'Club de journalisme',
-      description: 'Offre aux étudiants intéressés par le journalisme et les médias une plateforme pour développer leurs compétences.',
-      members: [
-        { name: 'Member 1', email: 'member1@example.com', status: 'Active', position: 'President', startDate: '2022-01-01' },
-        { name: 'Member 2', email: 'member2@example.com', status: 'Inactive', position: 'Assistant', startDate: '2022-02-01' },
-        { name: 'Member 3', email: 'member3@example.com', status: 'Active', position: 'Intern', startDate: '2022-03-01' },
-      ],
-      background: 'white',
-    },
-    {
-      logo: 'https://www.evaair.com/Images/vivn/the-club-logo_tcm43-68807.jpg',
-      name: 'Club de photographie',
-      description: 'Réunit les amateurs de photographie de l université.',
-      members: [
-        { name: 'Member 1', email: 'member1@example.com', status: 'Active', position: 'President', startDate: '2022-01-01' },
-        { name: 'Member 2', email: 'member2@example.com', status: 'Inactive', position: 'Assistant', startDate: '2022-02-01' },
-        { name: 'Member 3', email: 'member3@example.com', status: 'Active', position: 'Intern', startDate: '2022-03-01' },
-      ],
-      background: 'white',
-    },
-    {
-      logo: 'https://www.evaair.com/Images/vivn/the-club-logo_tcm43-68807.jpg',
-      name: 'Club de bénévolat communautaire',
-      description: 'Encourage les étudiants à s impliquer dans des initiatives de service à la communauté.',
-      members: [
-        { name: 'Member 1', email: 'member1@example.com', status: 'Active', position: 'President', startDate: '2022-01-01' },
-        { name: 'Member 2', email: 'member2@example.com', status: 'Inactive', position: 'Assistant', startDate: '2022-02-01' },
-        { name: 'Member 3', email: 'member3@example.com', status: 'Active', position: 'Intern', startDate: '2022-03-01' },
-      ],
-      background: 'white',
-    },
-  ];
+  ];*/}
 
 
   const handleLearnMore = (index) => {
@@ -113,13 +70,13 @@ const Clubs = () => {
     setActiveClub(null);
   };
 
-  const handleDeleteClub = () => {
+  const handleDeleteClub = async () => {
     if (activeClub !== null) {
       const confirmation = window.confirm('Are you sure you want to delete this club?');
       if (confirmation) {
-        const updatedClubs = [...clubs];
-        updatedClubs.splice(activeClub, 1);
-        // Update the clubs array or perform any other necessary actions
+        const clubToDelete = clubs[activeClub];
+        await deleteClub(clubToDelete.id);
+
         setShowDetails(false);
         setActiveClub(null);
       }
@@ -140,26 +97,25 @@ const Clubs = () => {
         <div className="overflow-x-scroll">
           <div className={`club-details ${activeClub !== null ? 'active' : ''}`}>
             <div className="club-icon">
-              <img src={clubs[activeClub].logo} alt={`Logo ${clubs[activeClub].name}`} />
+              <img src={clubs[activeClub].logo} alt={`Logo ${clubs[activeClub].nom}`} />
             </div>
             <div className="club-info">
               <div className="back-icon" onClick={handleBackToTop}>
                 <FontAwesomeIcon icon={faArrowLeft} />
               </div>
-              <h2>{clubs[activeClub].name}</h2>
+              <h2>{clubs[activeClub].nom}</h2>
               <p>{clubs[activeClub].description}</p>
               <h3>Members:</h3>
               <table>
                 <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Role</th>
+                    <th>Filed</th>
                     <th>Email</th>
-                    <th>Status</th>
-                    <th>Position</th>
-                    <th>Start Date</th>
                   </tr>
                 </thead>
-                <tbody>
+                {/*<tbody>
                   {clubs[activeClub].members.map((member, index) => (
                     <tr key={index}>
                       <td>{member.name}</td>
@@ -169,7 +125,7 @@ const Clubs = () => {
                       <td>{member.startDate}</td>
                     </tr>
                   ))}
-                </tbody>
+                  </tbody>*/}
               </table>
             </div>
           </div>
