@@ -48,6 +48,23 @@ export const deleteClub = async (id) => {
     }
 };
 
+export const getClubMembers = async (id) => {
+    const { data, error } = await supabase.from('Membre').select("*").eq("id_club", id);
+    if (error) {
+        console.error("Error fetching club members:", error);
+    } else {
+        return data;
+    }
+};
+export const getEvents = async () => {
+    const { data, error } = await supabase.from('Activites').select("*");
+    if (error) {
+        console.error("Error fetching events:", error);
+    } else {
+        return data;
+    }
+};
+
 export const getClubEvents = async (id) => {
     let Events = [];
     const { data, error } = await supabase.from('club_activity').select("*").eq("club_id", id);

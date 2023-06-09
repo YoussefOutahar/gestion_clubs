@@ -3,9 +3,6 @@ import { getCurrentUser } from "./DataBase/Clients/UsersClient";
 export const getNavigations = async () => {
     const user = await getCurrentUser();
 
-    console.log(user);
-    console.log(user.user_metadata["role"]);
-
     const adminNavigations = [
         {
             name: "Dashboard",

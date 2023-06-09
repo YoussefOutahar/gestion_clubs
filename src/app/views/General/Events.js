@@ -4,17 +4,29 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { getEvents,getClub } from '../../DataBase/Clients/ClubsClient';
 
 const localizer = momentLocalizer(moment);
 
 const Events = () => {
-  const [events, setEvents] = useState([
-    { id: 1, title: 'Event 1', start: new Date(2023, 5, 10), end: new Date(2023, 5, 12), club: 'Club A', location: 'Location A', description: 'Event 1 description' },
-    { id: 2, title: 'Event 2', start: new Date(2023, 5, 11), end: new Date(2023, 5, 13), club: 'Club B', location: 'Location B', description: 'Event 2 description' },
-    { id: 3, title: 'Event 3', start: new Date(2023, 5, 12), end: new Date(2023, 5, 14), club: 'Club C', location: 'Location C', description: 'Event 3 description' },
-    { id: 4, title: 'Event 4', start: new Date(2023, 5, 13), end: new Date(2023, 5, 15), club: 'Club A', location: 'Location D', description: 'Event 4 description' },
-    { id: 5, title: 'Event 5', start: new Date(2023, 5, 14), end: new Date(2023, 5, 16), club: 'Club B', location: 'Location E', description: 'Event 5 description' },
-  ]);
+  
+  const [events, setEvents] = useState([]);
+  const [club, setClub] = useState([]);
+
+  const fetchEvents = async () => {
+    const fetchedEvents = await getEvents();
+    if (fetchedEvents) {
+      setEvents(fetchedEvents);
+    }
+  };
+  fetchEvents();
+
+  const fetchClub = async (id_club) => {
+    const fetchedClub = await getClub(id_club);
+    if (fetchedClub) {
+      setClub(fetchedClub);
+    }
+  };
 
   const [searchDate, setSearchDate] = useState(null);
   const [searchClub, setSearchClub] = useState('');
@@ -59,9 +71,9 @@ const Events = () => {
             <button className="back-button" onClick={() => setSelectedEvent(null)}>
               <FontAwesomeIcon icon={faArrowLeft} />
             </button>
-            <h3>{selectedEvent.title}</h3>
-            <p>Club: {selectedEvent.club}</p>
-            <p>Location: {selectedEvent.location}</p>
+            <h3>{selectedEvent.Name}</h3>
+            <p>Club: {club.name}</p>
+            <p>Location: {selectedEvent.Location}</p>
             <p>Description: {selectedEvent.description}</p>
           </div>
         </>
@@ -82,9 +94,9 @@ const Events = () => {
             <Calendar
               localizer={localizer}
               events={eventComponents}
-              startAccessor="start"
-              endAccessor="end"
-              titleAccessor="title"
+              startAccessor="Date"
+              endAccessor="Date"
+              titleAccessor="Name"
               views={['month']}
               defaultView="month"
               onSelectEvent={handleEventSelect}
