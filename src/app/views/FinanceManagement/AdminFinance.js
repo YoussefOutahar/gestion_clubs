@@ -25,51 +25,41 @@ import { styled,useTheme,Box, Button, Card, Icon, Grid,Table,TableBody,TableCell
   }));
 
 const AdminFinance = () => {
-  const [eventsDetail, setEventsDetail] = useState([]);
-  const [budgetValue, setBudgetValue] = useState(null);
-  const [donationsTotal, setDonationsTotal] = useState(0);
-  const [SuppBudgetTotal, setSuppBudgetTotal] = useState(0);
-  const [costTotal, setCostTotal] = useState(0);
+  const [totalSuppBudget, setTotalSuppBudget] = useState(0);
+  const [totalBudget, setTotalBudget] = useState(0);
+
+  const [clubs, setClubs] = useState([]);
+  const [clubBudget, setClubBudget] = useState(null);
 
   useEffect(() => {
-    const fetchActivites = async () => {
-      const { data, error } = await supabase.from("Activites").select("Name,Date,Cost,Earnings,Supp_budget");
+    const fetchClubs = async () => {
+      const { data, error } = await supabase.from("Clubs").select("nom, id");
       if (error) {
         console.error("Error fetching Activites:", error);
       } else {
-        setEventsDetail(data);
+        setClubs(data);
         console.log("Fetched data:", data);
       }
     };
 
-    fetchActivites();
+    fetchClubs();
   }, []);
+  
 
   useEffect(() => {
     const fetchInfos = async () => {
       const { data, error } = await supabase
         .from("Activites")
-        .select("Earnings, Cost,Supp_budget")
-        .eq("id_club", 1);
-  
+        .select("Supp_budget")
+        //.eq("Date", new Date().getFullYear()); 
       if (error) {
         console.error("Error fetching Donations:", error);
-      } else {
-        const totalEarnings = data.reduce(
-          (sum, activity) => sum + (activity.Earnings || 0),
-          0
-        );
-        const totalCost = data.reduce(
-          (sum, activity) => sum + (activity.Cost || 0),
-          0
-        );
+    } else {
         const totalSuppBudget = data.reduce(
-          (sum, activity) => sum + (activity.Supp_budget || 0),
+          (sum, item) => sum + (item.Supp_budget || 0),
           0
         );
-        setDonationsTotal(totalEarnings);
-        setCostTotal(totalCost);
-        setSuppBudgetTotal(totalSuppBudget);
+        setTotalSuppBudget(totalSuppBudget);
       }
     };
   
@@ -78,38 +68,36 @@ const AdminFinance = () => {
 
 
   useEffect(() => {
-    const fetchBudgetValue = async () => {
+    const fetchClubBudget = async () => {
       const { data, error } = await supabase
         .from("Budget")
         .select("budget")
-        .eq("id_club", 1)
-        .limit(1);
+        .eq("annee", new Date().getFullYear()); 
 
       if (error) {
         console.error("Error fetching Budget value:", error);
-      } else if (data && data.length > 0) {
-        setBudgetValue(data[0].budget);
+    } else if (data && data.length > 0) {
+        const totalBudget = data.reduce(
+          (sum, item) => sum + (item.budget || 0),
+          0
+        );
+        setTotalBudget(totalBudget);
       } else {
         console.log("Budget value not found");
       }
     };
-    fetchBudgetValue();
+    fetchClubBudget();
   }, []);
 
-  const earningsTotal = donationsTotal + budgetValue + SuppBudgetTotal;
-  const rest = earningsTotal - costTotal;
 
   const cardList = [
-    { name: "Budget", amount: budgetValue ? `${budgetValue} DH` : "Fetching...", icon: "attach_money" },
-    { name: "Total supplementary budget", amount: `${SuppBudgetTotal} DH`, icon: "attach_money" },
-    { name: "Total Donations", amount: `${donationsTotal} DH`, icon: "attach_money" },
-    { name: "Rest", amount: `${rest} DH`, icon: "attach_money" },
+    { name: "Total Budget", amount: `${totalBudget} DH` , icon: "attach_money" },
+    { name: "Total supplementary budget", amount: `${totalSuppBudget} DH`, icon: "attach_money" },
   ];
 
     return (
         <ContentBox1>
             <h1>Finance Management</h1>
-            {/*<StatCards />*/}
             <Grid container spacing={3} sx={{ mb: '24px' }}>
                 {cardList.map((card, index) => (
                     <Grid item xs={12} md={6} key={index}>
@@ -124,36 +112,37 @@ const AdminFinance = () => {
             </Grid>
             <Box display="flex" justifyContent="space-between" alignItems="center">
             <StyledButton variant="contained" href="/addCharge">
-                Request a supplementary budget
+                Assign budget
             </StyledButton>
             <StyledButton variant="contained" color="secondary" href="/addCharge">
                 Add an event charge
             </StyledButton>
             </Box>
+
             <SimpleCard title="Charges Table">
             <Box width="100%" overflow="auto">
       <StyledTable>
         <TableHead>
           <TableRow>
-            <TableCell align="center">Club Name</TableCell>
-            <TableCell align="center">Assigned budget</TableCell>
-            <TableCell align="center">Total supplimentary budget</TableCell>
-            <TableCell align="center">Total Earned</TableCell>
+            <TableCell align="left">Club Name</TableCell>
+            <TableCell align="center">Assigned Budget</TableCell>
+            <TableCell align="center">Total supplementary budget</TableCell>
+            <TableCell align="center">Total earned budget</TableCell>
             <TableCell align="center">Rest</TableCell>
           </TableRow>
         </TableHead>
-{/*}
+
         <TableBody>
-          {subscribarList.map((subscriber, index) => (
+          {clubs.map((club, index) => (
             <TableRow key={index}>
-              <TableCell align="left">{subscriber.name}</TableCell>
-              <TableCell align="center">{subscriber.company}</TableCell>
-              <TableCell align="center">{subscriber.date}</TableCell>
-              <TableCell align="center">{subscriber.status}</TableCell>
-              <TableCell align="center">${subscriber.amount}</TableCell>
+              <TableCell align="left">{club.nom}</TableCell>
+              <TableCell align="center">{club.company}</TableCell>
+              <TableCell align="center">{club.date}</TableCell>
+              <TableCell align="center">{club.status}</TableCell>
+              <TableCell align="center">${club.amount}</TableCell>
             </TableRow>
           ))}
-          </TableBody>*/}
+        </TableBody>
       </StyledTable>
     </Box>
             </SimpleCard>
