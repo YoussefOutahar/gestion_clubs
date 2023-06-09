@@ -110,11 +110,8 @@ const AdminFinance = () => {
                 ))}
             </Grid>
             <Box display="flex" justifyContent="space-between" alignItems="center">
-            <StyledButton variant="contained" href="/addCharge">
+            <StyledButton variant="contained" href="/AssignBudget">
                 Assign budget
-            </StyledButton>
-            <StyledButton variant="contained" color="secondary" href="/addCharge">
-                Add an event charge
             </StyledButton>
             </Box>
 
