@@ -107,7 +107,6 @@ const NotificationBar = ({ container }) => {
               <Icon color="primary">notifications</Icon>
               <h5>Notifications</h5>
             </Notification>
-
             {notifications?.map((notification) => (
               <NotificationCard key={notification.id}>
                 <DeleteButton

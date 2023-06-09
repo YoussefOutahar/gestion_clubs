@@ -99,12 +99,6 @@ export const navigations = [
     icon: 'trending_up',
     children: [{ name: 'Echarts', path: '/charts/echarts', iconText: 'E' }],
   },
-  // {
-  //   name: 'Documentation',
-  //   icon: 'launch',
-  //   type: 'extLink',
-  //   path: 'http://demos.ui-lib.com/matx-react-doc/',
-  // },
   {
     name: 'LandingPage',
     icon: 'store_front',
