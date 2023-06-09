@@ -4,6 +4,7 @@ import { lazy } from "react";
 const Clubs = Loadable(lazy(() => import("./Clubs")));
 const Members = Loadable(lazy(() => import("./Members")));
 const Events = Loadable(lazy(() => import("./Events")));
+const Account = Loadable(lazy(() => import("./Account")));
 
 const generalRoutes = [
     {
@@ -17,6 +18,10 @@ const generalRoutes = [
     {
         path: "/events",
         element: <Events />,
+    },
+    {
+        path: "/account",
+        element: <Account />,
     },
 ];
 

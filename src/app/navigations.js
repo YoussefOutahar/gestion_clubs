@@ -121,9 +121,9 @@ export const getNavigations = async () => {
 
     const userNavigations = [
         {
-            name: "Dashboard",
-            path: "/dashboard/default",
-            icon: "dashboard",
+            name: "Account",
+            path: "/Account",
+            icon: "group",
         },
     ];
 
