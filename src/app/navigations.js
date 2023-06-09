@@ -53,6 +53,11 @@ export const getNavigations = async () => {
             icon: "account_balance_wallet",
         },
         {
+            name: "Meetings",
+            path: "/meetings",
+            icon: "event",
+        },
+        {
             name: "Admin Finance",
             path: "/AdminFinance",
             icon: "account_balance_wallet",

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -33,7 +33,7 @@ const Clubs = () => {
   };
 
   const [clubs, setClubs] = useState([]);
-
+  useEffect(() => {
   const fetchClubs = async () => {
     const fetchedClubs = await getClubs();
     if (fetchedClubs) {
@@ -42,6 +42,7 @@ const Clubs = () => {
   };
   
   fetchClubs();
+}, []);
 
   {/*const clubs = [
     {

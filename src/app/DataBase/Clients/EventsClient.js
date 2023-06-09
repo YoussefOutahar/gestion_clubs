@@ -15,7 +15,6 @@ export const getEvents = async () => {
     if (error) {
         console.error("Error fetching events:", error);
     } else {
-        console.log("Fetched events:", data);
         return data;
     }
 };
@@ -49,7 +48,7 @@ export const deleteEvent = async (id) => {
 };
 
 export const getEventClub = async (id) => {
-    let { data , error } = await supabase.from("club_activity").select("club_id").eq("id", id).limit(1);
+    let { data , error } = await supabase.from("club_activity").select("club_id").eq("activity_id", id).limit(1);
     if (error) {
         console.error("Error fetching event club:", error);
     } else {

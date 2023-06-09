@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { getEvents,getClub } from '../../DataBase/Clients/ClubsClient';
+import { getEvents , getEventClub } from '../../DataBase/Clients/EventsClient';
 
 const localizer = momentLocalizer(moment);
 
@@ -13,6 +13,12 @@ const Events = () => {
   const [events, setEvents] = useState([]);
   const [club, setClub] = useState([]);
 
+  
+  const [searchDate, setSearchDate] = useState(null);
+  const [searchClub, setSearchClub] = useState('');
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  useEffect(() => {
   const fetchEvents = async () => {
     const fetchedEvents = await getEvents();
     if (fetchedEvents) {
@@ -20,17 +26,20 @@ const Events = () => {
     }
   };
   fetchEvents();
+}, []);
 
-  const fetchClub = async (id_club) => {
-    const fetchedClub = await getClub(id_club);
-    if (fetchedClub) {
-      setClub(fetchedClub);
+useEffect(() => {
+  const fetchSelectedClub = async () => {
+    if(selectedEvent != null) {
+      let eventClub = await getEventClub(selectedEvent.id);
+    console.log(eventClub)
+    setClub(eventClub)
+    console.log(club)
     }
-  };
+  }
 
-  const [searchDate, setSearchDate] = useState(null);
-  const [searchClub, setSearchClub] = useState('');
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  fetchSelectedClub();
+}, [selectedEvent]);
 
   const handleSearchDateChange = (date) => {
     setSearchDate(date);
@@ -40,7 +49,7 @@ const Events = () => {
     setSearchClub(event.target.value);
   };
 
-  const handleEventSelect = (event) => {
+  const handleEventSelect = async (event) => {
     setSelectedEvent(event);
   };
 
@@ -72,7 +81,7 @@ const Events = () => {
               <FontAwesomeIcon icon={faArrowLeft} />
             </button>
             <h3>{selectedEvent.Name}</h3>
-            <p>Club: {club.name}</p>
+            {/* <p>Club: {club[0].name}</p> */}
             <p>Location: {selectedEvent.Location}</p>
             <p>Description: {selectedEvent.description}</p>
           </div>

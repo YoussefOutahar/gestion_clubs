@@ -56,14 +56,6 @@ export const getClubMembers = async (id) => {
         return data;
     }
 };
-export const getEvents = async () => {
-    const { data, error } = await supabase.from('Activites').select("*");
-    if (error) {
-        console.error("Error fetching events:", error);
-    } else {
-        return data;
-    }
-};
 
 export const getClubEvents = async (id) => {
     let Events = [];
