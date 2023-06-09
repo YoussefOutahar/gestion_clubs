@@ -39,7 +39,6 @@ const initialValues = {
     name: "",
     phone: "",
     avatar: "",
-    role: "",
     remember: true,
 };
 
@@ -58,7 +57,7 @@ const JwtRegister = () => {
     const handleFormSubmit = (values) => {
         setLoading(true);
         try {
-            register(values.email, values.name, values.password, values.phone, values.avatar, values.role);
+            register(values.email,values.password, values.name, "user" ,  values.phone, values.avatar);
             navigate("/");
             setLoading(false);
         } catch (e) {
@@ -156,29 +155,6 @@ const JwtRegister = () => {
                                             value={values.avatar}
                                             onChange={handleChange}
                                             sx={{ mb: 2 }}
-                                        /><Autocomplete
-                                        freeSolo={false}
-                                        multiple={false}
-                                            options={[
-                                                { label: "admin" },
-                                                { label: "user" },
-                                                { label: "guest" },
-                                            ]}
-                                            getOptionLabel={(option) => option.label}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    fullWidth
-                                                    size="small"
-                                                    label="Role"
-                                                    variant="outlined"
-                                                    onBlur={handleBlur}
-                                                    value={values.avatar}
-                                                    onChange={handleChange}
-                                                    contentEditable={false}
-                                                    sx={{ mb: 2 }}
-                                                />
-                                            )}
                                         />
                                         <FlexBox gap={1} alignItems="center">
                                             <Checkbox

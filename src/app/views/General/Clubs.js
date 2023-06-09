@@ -8,7 +8,6 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 const Clubs = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [activeClub, setActiveClub] = useState(null);
-  const [joinFormVisible, setJoinFormVisible] = useState(false);
 
   const settings = {
     dots: true,
@@ -35,47 +34,74 @@ const Clubs = () => {
   const clubs = [
     {
       logo: 'https://www.evaair.com/Images/vivn/the-club-logo_tcm43-68807.jpg',
-      name: 'Club 1',
-      description: 'Description du Club 1 ',
-      buttonLabel: 'Join Us',
+      name: 'Club de débat',
+      description: 'Offre aux étudiants la possibilité d améliorer leurs compétences.',
+      members: [
+        { name: 'Member 1', email: 'member1@example.com', status: 'Active', position: 'President', startDate: '2022-01-01' },
+        { name: 'Member 2', email: 'member2@example.com', status: 'Inactive', position: 'Assistant', startDate: '2022-02-01' },
+        { name: 'Member 3', email: 'member3@example.com', status: 'Active', position: 'Intern', startDate: '2022-03-01' },
+        { name: 'Member 4', email: 'member2@example.com', status: 'Inactive', position: 'Assistant', startDate: '2022-02-01' },
+        { name: 'Member 5', email: 'member3@example.com', status: 'Active', position: 'Intern', startDate: '2022-03-01' },
+      ],
       background: 'white',
     },
     {
       logo: 'https://www.evaair.com/Images/vivn/the-club-logo_tcm43-68807.jpg',
-      name: 'Club 2',
-      description: 'Description du Club 2',
-      buttonLabel: 'Join Us',
+      name: 'Club de théâtre',
+      description: 'Permet aux étudiants passionnés de théâtre de développer leurs talents artistiques.',
+      members: [
+        { name: 'Member 1', email: 'member1@example.com', status: 'Active', position: 'President', startDate: '2022-01-01' },
+        { name: 'Member 2', email: 'member2@example.com', status: 'Inactive', position: 'Assistant', startDate: '2022-02-01' },
+        { name: 'Member 3', email: 'member3@example.com', status: 'Active', position: 'Intern', startDate: '2022-03-01' },
+      ],
       background: 'white',
     },
     {
       logo: 'https://www.evaair.com/Images/vivn/the-club-logo_tcm43-68807.jpg',
-      name: 'Club 3',
-      description: 'Description du Club 3',
-      buttonLabel: 'Join Us',
+      name: 'Club Entrepreneuriat',
+      description: 'Encourage les étudiants à explorer et à développer leurs idées commerciales.',
+      members: [
+        { name: 'Member 1', email: 'member1@example.com', status: 'Active', position: 'President', startDate: '2022-01-01' },
+        { name: 'Member 2', email: 'member2@example.com', status: 'Inactive', position: 'Assistant', startDate: '2022-02-01' },
+        { name: 'Member 3', email: 'member3@example.com', status: 'Active', position: 'Intern', startDate: '2022-03-01' },
+      ],
       background: 'white',
     },
     {
       logo: 'https://www.evaair.com/Images/vivn/the-club-logo_tcm43-68807.jpg',
-      name: 'Club 4',
-      description: 'Description du Club 4',
-      buttonLabel: 'Join Us',
+      name: 'Club de journalisme',
+      description: 'Offre aux étudiants intéressés par le journalisme et les médias une plateforme pour développer leurs compétences.',
+      members: [
+        { name: 'Member 1', email: 'member1@example.com', status: 'Active', position: 'President', startDate: '2022-01-01' },
+        { name: 'Member 2', email: 'member2@example.com', status: 'Inactive', position: 'Assistant', startDate: '2022-02-01' },
+        { name: 'Member 3', email: 'member3@example.com', status: 'Active', position: 'Intern', startDate: '2022-03-01' },
+      ],
       background: 'white',
     },
     {
       logo: 'https://www.evaair.com/Images/vivn/the-club-logo_tcm43-68807.jpg',
-      name: 'Club 5',
-      description: 'Description du Club 5',
-      buttonLabel: 'Join Us',
+      name: 'Club de photographie',
+      description: 'Réunit les amateurs de photographie de l université.',
+      members: [
+        { name: 'Member 1', email: 'member1@example.com', status: 'Active', position: 'President', startDate: '2022-01-01' },
+        { name: 'Member 2', email: 'member2@example.com', status: 'Inactive', position: 'Assistant', startDate: '2022-02-01' },
+        { name: 'Member 3', email: 'member3@example.com', status: 'Active', position: 'Intern', startDate: '2022-03-01' },
+      ],
       background: 'white',
     },
     {
       logo: 'https://www.evaair.com/Images/vivn/the-club-logo_tcm43-68807.jpg',
-      name: 'Club 6',
-      description: 'Description du Club 6',
-      buttonLabel: 'Join Us',
+      name: 'Club de bénévolat communautaire',
+      description: 'Encourage les étudiants à s impliquer dans des initiatives de service à la communauté.',
+      members: [
+        { name: 'Member 1', email: 'member1@example.com', status: 'Active', position: 'President', startDate: '2022-01-01' },
+        { name: 'Member 2', email: 'member2@example.com', status: 'Inactive', position: 'Assistant', startDate: '2022-02-01' },
+        { name: 'Member 3', email: 'member3@example.com', status: 'Active', position: 'Intern', startDate: '2022-03-01' },
+      ],
       background: 'white',
     },
   ];
+
 
   const handleLearnMore = (index) => {
     setActiveClub(index);
@@ -85,47 +111,66 @@ const Clubs = () => {
   const handleBackToTop = () => {
     setShowDetails(false);
     setActiveClub(null);
-    setJoinFormVisible(false);
   };
 
-  const handleJoinUs = (index) => {
-    setActiveClub(index);
-    setJoinFormVisible(true);
+  const handleDeleteClub = () => {
+    if (activeClub !== null) {
+      const confirmation = window.confirm('Are you sure you want to delete this club?');
+      if (confirmation) {
+        const updatedClubs = [...clubs];
+        updatedClubs.splice(activeClub, 1);
+        // Update the clubs array or perform any other necessary actions
+        setShowDetails(false);
+        setActiveClub(null);
+      }
+    }
   };
 
   return (
     <div className="clubs">
       <h1>Clubs</h1>
-      {showDetails ? (
+      {showDetails && (
         <div>
-          <div onClick={handleBackToTop} className="back-icon">
-            <FontAwesomeIcon icon={faArrowLeft} />
-          </div>
-          <div className="club-details-container">
-            <div className={`club-details ${activeClub !== null ? 'active' : ''}`}>
-              <div className="club-icon">
-                <img src={clubs[activeClub].logo} alt={`Logo ${clubs[activeClub].name}`} />
+          <button className="delete-club-button" onClick={handleDeleteClub}>
+            Delete Club
+          </button>
+        </div>
+      )}
+      {showDetails ? (
+        <div className="overflow-x-scroll">
+          <div className={`club-details ${activeClub !== null ? 'active' : ''}`}>
+            <div className="club-icon">
+              <img src={clubs[activeClub].logo} alt={`Logo ${clubs[activeClub].name}`} />
+            </div>
+            <div className="club-info">
+              <div className="back-icon" onClick={handleBackToTop}>
+                <FontAwesomeIcon icon={faArrowLeft} />
               </div>
-              {joinFormVisible ? (
-                <div className="join-form">
-                  <h3>Join {clubs[activeClub].name}</h3>
-                  <form>
-                    <div className="form-group">
-                      <input type="text" placeholder="Name" />
-                    </div>
-                    <div className="form-group">
-                      <input type="email" placeholder="Email" />
-                    </div>
-                    <button>Submit</button>
-                  </form>
-                </div>
-              ) : (
-                <div className="club-info">
-                  <h2>{clubs[activeClub].name}</h2>
-                  <p>{clubs[activeClub].description}</p>
-                  <button onClick={() => handleJoinUs(activeClub)} className="join-button">Join Us</button>
-                </div>
-              )}
+              <h2>{clubs[activeClub].name}</h2>
+              <p>{clubs[activeClub].description}</p>
+              <h3>Members:</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Position</th>
+                    <th>Start Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {clubs[activeClub].members.map((member, index) => (
+                    <tr key={index}>
+                      <td>{member.name}</td>
+                      <td>{member.email}</td>
+                      <td>{member.status}</td>
+                      <td>{member.position}</td>
+                      <td>{member.startDate}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -146,32 +191,26 @@ const Clubs = () => {
           ))}
         </Slider>
       )}
+      
       <style jsx>{`
-        /* Existing styles... */
-/* Existing styles... */
-
-	.clubs {
+        .clubs {
           text-align: center;
         }
-
         h1 {
           font-family: Montserrat, sans-serif;
           letter-spacing: 2px;
           font-size: 35px;
           font-weight: 400;
-          margin: 15px 10px;
+          margin: 25px 10px;
         }
-
         .card-wrapper {
           margin: 20px 10px;
           background-color: white;
         }
-
         .card {
           padding: 20px;
           border-radius: 5px;
         }
-
         .circle {
           width: 200px;
           height: 200px;
@@ -179,26 +218,21 @@ const Clubs = () => {
           overflow: hidden;
           margin: 0 auto;
         }
-
         img {
           width: 100%;
           height: 100%;
           object-fit: cover;
         }
-
         h2 {
           font-size: 24px;
           margin-bottom: 10px;
         }
-
         h3 {
           margin: 10px 10px;
         }
-
         p {
           margin: 10px 10px;
         }
-
         .card button {
           background-color: #4caf50;
           color: white;
@@ -208,7 +242,6 @@ const Clubs = () => {
           cursor: pointer;
           font-size: 16px;
         }
-
         .card button:hover {
           background-color: #45a049;
         }
@@ -218,29 +251,26 @@ const Clubs = () => {
           flex-wrap: wrap;
           justify-content: center;
           margin-top: 40px;
-          
         }
-
+        
         .club-details {
           display: flex;
           align-items: center;
-          width: 500px;
+          width: 999px;
           background-color: #f5f5f5;
           padding: 20px;
-          margin: 10px;
+          margin: 150px;
           border-radius: 5px;
           text-align: center;
           transition: transform 0.3s ease-in-out;
           border-radius: 5px;
-          text-align: left;
+          text-align: center;
           transition: transform 0.3s ease-in-out;
           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
-
         .club-details.active {
           transform: scale(1.1);
         }
-
         .club-icon {
           width: 100px;
           height: 100px;
@@ -251,6 +281,7 @@ const Clubs = () => {
 
         .club-info {
           text-align: left;
+          overflow-wrap: break-word;
         }
 
         .back-icon {
@@ -259,131 +290,51 @@ const Clubs = () => {
           color: #333;
           margin-bottom: 10px;
         }
-
-        .join-form {
+        .overflow-x-scroll {
+          overflow-x: auto;
+          white-space: nowrap;
+        }
+        
+        table {
+          width: 100%;
+          border-collapse: collapse;
           margin-top: 20px;
+          margin-left: 15px;
+        }
+        th,
+        td {
+          padding: 15px 35px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+        th {
+          background-color: #f2f2f2;
           text-align: center;
         }
-
-        .join-form h3 {
-          margin-bottom: 10px;
+        ul {
+          padding-left: 20px;
+        }
+        .slick-dots {
+          bottom: -30px;
+        }
+        .slick-dots li button:before {
+          font-size: 10px;
+          color: #000;
         }
 
-        .join-form form {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          margin-top: 20px;
-        }
-
-        .join-form input {
-          margin-bottom: 10px;
-          padding: 5px;
-          width: 200px;
-        }
-
-        .join-form button {
-          background-color: #4caf50;
-          color: white;
-          padding: 10px 20px;
+        .delete-club-button {
+          background-color: #E21818;
+          color: #ffffff;
           border: none;
-          border-radius: 5px;
+          padding: 20px 40px;
+          font-size: 17px;
+          border-radius: 4px;
           cursor: pointer;
+          margin-top: 10px;
         }
 
-        .join-form button:hover {
-          background-color: #45a049;
-        }
-
-        .join-button {
-          background-color: #4caf50;
-          color: white;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          font-size: 16px;
-        }
-      
-        .join-button:hover {
-          background-color: #45a049;
-        }
-
-        .join-button {
-          background-color: #4caf50;
-          color: white;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          font-size: 16px;
-        }
-
-        .join-button:hover {
-          background-color: #45a049;
-        }
-        /* Add or modify styles as needed */
-        .join-form {
-          margin-top: 20px;
-          text-align: center;
-        }
-
-        .join-form h3 {
-          margin-bottom: 10px;
-        }
-
-        .join-form form {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          margin-top: 20px;
-        }
-
-        .join-form .form-group {
-          margin-bottom: 15px;
-        }
-
-        .join-form .form-group label {
-          display: block;
-          font-weight: bold;
-          margin-bottom: 5px;
-        }
-
-        .join-form .form-group input,
-        .join-form .form-group textarea {
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          width: 300px;
-          max-width: 100%;
-        }
-
-        .join-form button {
-          background-color: #4caf50;
-          color: white;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          font-size: 16px;
-        }
-
-        .join-form button:hover {
-          background-color: #45a049;
-        }
-
-        .join-button {
-          background-color: #4caf50;
-          color: white;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          font-size: 16px;
-        }
-
-        .join-button:hover {
-          background-color: #45a049;
+        .delete-club-button:hover {
+          background-color: #c40000;
         }
       `}</style>
     </div>

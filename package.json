@@ -9,6 +9,11 @@
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+<<<<<<< HEAD
+    "@fullcalendar/core": "^6.1.8",
+    "@fullcalendar/daygrid": "^6.1.8",
+=======
+>>>>>>> 80d32e940ac4b67908876ca67d65b2b0687e5b7f
     "@material-ui/core": "^5.0.0-beta.5",
     "@material-ui/icons": "^4.11.3",
     "@mui/icons-material": "^5.1.1",
@@ -37,11 +42,12 @@
     "lodash": "^4.17.19",
     "mdb-react-ui-kit": "^6.0.0",
     "merge": "^2.1.1",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "notistack": "^2.0.3",
     "process": "^0.11.10",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
+    "react-big-calendar": "^1.8.1",
     "react-dom": "^17.0.2",
     "react-icons": "^4.9.0",
     "react-material-ui-form-validator": "^3.0.0",

@@ -1,47 +1,5 @@
 import Mock from '../mock'
-import shortId from 'shortid'
-import { getNotifications , deleteNotification , clearNotifications } from '../Clients/NotificationsClient'
-
-const NotificationDB = {
-    list: [
-        {
-            id: shortId.generate(),
-            heading: 'Message',
-            icon: {
-                name: 'chat',
-                color: 'primary',
-            },
-            timestamp: 1570702802573,
-            title: 'New message from Devid',
-            subtitle: 'Hello, Any progress...',
-            path: 'chat',
-        },
-        {
-            id: shortId.generate(),
-            heading: 'Alert',
-            icon: {
-                name: 'notifications',
-                color: 'error',
-            },
-            timestamp: 1570702702573,
-            title: 'Server overloaded',
-            subtitle: 'Traffice reached 2M',
-            path: 'page-layouts/user-profile',
-        },
-        {
-            id: shortId.generate(),
-            heading: 'Message',
-            icon: {
-                name: 'chat',
-                color: 'primary',
-            },
-            timestamp: 1570502502573,
-            title: 'New message from Goustove',
-            subtitle: 'Hello, send me details',
-            path: 'chat',
-        },
-    ],
-}
+import { getNotifications , deleteNotification , clearNotifications , addNotification} from '../Clients/NotificationsClient'
 
 Mock.onGet('/api/notification').reply(async(config) => {
     const response = await getNotifications()
@@ -49,7 +7,8 @@ Mock.onGet('/api/notification').reply(async(config) => {
 })
 
 Mock.onPost('/api/notification/add').reply((config) => {
-    const response = NotificationDB.list
+    const { notification } = JSON.parse(config.data)
+    const response = addNotification(notification)
     return [200, response.data]
 })
 
