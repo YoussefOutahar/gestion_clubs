@@ -1,5 +1,4 @@
 import supabase from "./SupabaseClient";
-import { signIn } from "./AuthClient";
 
 //Get Current User
 export const getCurrentUser = async () => {

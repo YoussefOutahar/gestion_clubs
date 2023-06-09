@@ -46,16 +46,33 @@ Mock.onPost('/api/auth/login').reply(async (config) => {
 
 Mock.onPost('/api/auth/register').reply(async (config) => {
   try {
-    const { email,password,name,role,phone,avatar,  } = JSON.parse(config.data);
+    const {email,password,name,role,phone,avatar} = JSON.parse(config.data);
+
+    console.log(config.data);
+
+    console.log("------------------");
+    console.log("inside auth.js");
+    console.log("email: " + email);
+    console.log("password: " + password);
+    console.log("name: " + name);
+    console.log("role: " + role);
+    console.log("phone: " + phone);
+    console.log("avatar: " + avatar);
+    console.log("------------------");
+
     let { error } = await signUp(email, password,role,name,phone,avatar);
+    
     if (error) {
         return [400, { message: 'Invalid email or password' }];
-    };
+    
+      };
     let user = await getCurrentUser();
     let profile  = await getProfileById(user.id);
+    
     const accessToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
       expiresIn: JWT_VALIDITY,
     });
+    
     return [
       200,
       {
@@ -78,21 +95,14 @@ Mock.onPost('/api/auth/register').reply(async (config) => {
 Mock.onGet('/api/auth/profile').reply(async (config) => {
   try {
     const { Authorization } = config.headers;
-
-    console.log(Authorization);
-
     if (!Authorization) {
       return [401, { message: 'Invalid Authorization token' }];
     }
-    
     const accessToken = Authorization.split(' ')[1];
     const { userId } = jwt.verify(accessToken, JWT_SECRET);
-
     // const user = userList.find((u) => u.id === userId);
-
     let user = await getCurrentUser();
     let profile  = await getProfileById(user.id);
-    
     if (!user) {
       return [401, { message: 'Invalid authorization token' }];
     }
