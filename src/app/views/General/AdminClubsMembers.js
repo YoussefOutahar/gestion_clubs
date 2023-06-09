@@ -20,9 +20,26 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
   const GestionMembers = () => {
 
     const [members, setMembers] = useState([]);
+    const [clubOptions, setClubOptions] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [selectedClub, setSelectedClub] = useState("All clubs");
     const [searchQuery, setSearchQuery] = useState("");
+
+    useEffect(() => {
+      const fetchClubOptions = async () => {
+        const { data, error } = await supabase.from("Clubs").select("nom");
+
+        if (error) {
+          console.error("Error fetching Clubs:", error);
+        } else {
+          setClubOptions(data.map((club) => club.nom));
+          console.log("Fetched data:", data);
+        }
+      };
+  
+      fetchClubOptions();
+    }, []);
 
     useEffect(() => {
       const fetchMembers = async () => {
@@ -32,14 +49,19 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
             id_club,
             role,
             Etudiants (
-              id_etd
-            )
+              id,
+              nom,
+              prenom,
+              niveau,
+              filiere,
+              email
+            )    // Fetch all columns from the Etudiants table
           `
         )
-        //.eq("id_club", 1);
+        .eq("id_club", selectedClub !== "All clubs" ? selectedClub :undefined);
 
         if (error) {
-          console.error("Error fetching Membres:", error.message);
+          console.error("Error fetching Membres:", error);
         } else {
           setMembers(data);
           console.log("Fetched data:", data);
@@ -58,6 +80,11 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
       setPage(0);
     };
   
+    const handleClubChange = (event) => {
+      setSelectedClub(event.target.value);
+      setPage(0);
+    };
+  
     const handleSearchChange = (event) => {
       setSearchQuery(event.target.value);
       setPage(0);
@@ -65,7 +92,8 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
   
     const filtredMembers = members.filter(
       (membre) =>
-        (membre.Etudiants.nom.toLowerCase().includes(searchQuery.toLowerCase()))
+        (selectedClub === "All clubs" || membre.id_club.includes(selectedClub)) &&
+        membre.Etudiants.nom.toLowerCase().includes(searchQuery.toLowerCase())
     );
   
     return (
@@ -88,6 +116,16 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
           bgcolor="background.paper"
           borderRadius={8}
         >
+          <div>
+            <span>Select members by club: </span>
+            <Select value={selectedClub} onChange={handleClubChange}>
+              {clubOptions.map((club, index) => (
+                <MenuItem key={index} value={club}>
+                  {club}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
           <div>
             <TextField
               label="Search by name"
@@ -118,13 +156,13 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
         <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '20px', fontWeight: '400' }}>Name</span>
       </TableCell>
       <TableCell align="center">
+        <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '20px', fontWeight: '400' }}>Clubs</span>
+      </TableCell>
+      <TableCell align="center">
         <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '20px', fontWeight: '400' }}>Field</span>
       </TableCell>
       <TableCell align="center">
         <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '20px', fontWeight: '400' }}>Role</span>
-      </TableCell>
-      <TableCell align="center">
-        <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '20px', fontWeight: '400' }}>Email</span>
       </TableCell>
       <TableCell align="right">
         <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '20px', fontWeight: '400' }}>Action</span>
@@ -137,9 +175,9 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
                 .map((membre, index) => (
                   <TableRow key={index}>
                     <TableCell align="left">{membre.Etudiants.nom}</TableCell>
+                    <TableCell align="center">{membre.id_club}</TableCell>
                     <TableCell align="center">{membre.Etudiants.filiere}</TableCell>
                     <TableCell align="center">{membre.role}</TableCell>
-                    <TableCell align="left">{membre.Etudiants.email}</TableCell>
                     <TableCell align="right">
                       <IconButton>
                         <Icon color="error">close</Icon>
