@@ -6,6 +6,7 @@ const Members = Loadable(lazy(() => import("./Members")));
 const Events = Loadable(lazy(() => import("./Events")));
 const Account = Loadable(lazy(() => import("./Account")));
 const AdminClubsMembers = Loadable(lazy(() => import("./AdminClubsMembers")));
+const Statistics = Loadable(lazy(() => import("./statistics")));
 
 const generalRoutes = [
     {
@@ -28,6 +29,10 @@ const generalRoutes = [
     {
         path: "/adminClubsMembers",
         element: <AdminClubsMembers />,
+    },
+    {
+        path: "/statistics",
+        element: < Statistics />,
     },
 ];
 
