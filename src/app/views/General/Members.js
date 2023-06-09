@@ -39,15 +39,14 @@ const GestionMembers = () => {
 
     useEffect(() => {
         const fetchMembers = async () => {
-            const membres = await getMembres();
+            const data = await getMembres();
             const membresWithEtudiants = await Promise.all(
-                membres.map(async (membre) => {
+                data.map(async (membre) => {
                     const etudiant = await getEtudiantByMembre(membre.id_etd);
-                    return { ...membre, Etudiants: etudiant };
+                    return { ...membre, Etudiants: etudiant[0] };
                 })
             );
             setMembers(membresWithEtudiants);
-            console.log(members);
         };
         fetchMembers();
     }, []);
@@ -66,12 +65,12 @@ const GestionMembers = () => {
         setPage(0);
     };
 
-    const filtredMembers =
-        members == null
-            ? null
-            : members.filter((membre) =>
-                  membre.Etudiants.nom.toLowerCase().includes(searchQuery.toLowerCase())
-              );
+    const filtredMembers = members;
+        // members == null
+        //     ? null
+        //     : members.filter((membre) =>
+                
+        //       );
 
     function renderTableBody(filtredMembers) {
         if (filtredMembers == null) return null;

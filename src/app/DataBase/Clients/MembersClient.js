@@ -37,7 +37,7 @@ export const getMembresByClub = async (id_club) => {
 }
 
 export const getEtudiantByMembre = async (id_etudiant) => {
-    let { data: Etudiant, error } = await supabase.from("Etudiants").select("*").eq("id", id_etudiant);
+    let { data: Etudiant, error } = await supabase.from("Etudiants").select("*").eq("id", id_etudiant).limit(1);
     if (error) console.log("error", error);
     else return Etudiant;
 }
