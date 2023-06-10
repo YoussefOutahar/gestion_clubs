@@ -1,7 +1,13 @@
 import { getCurrentUser } from "./DataBase/Clients/UsersClient";
+import { getMembreByProfile } from "./DataBase/Clients/MembersClient";
 
 export const getNavigations = async () => {
     const user = await getCurrentUser();
+
+    let member;
+    if (user) {
+        member = await getMembreByProfile(user.id);
+    }
 
     // DVE 
 
@@ -214,19 +220,28 @@ export const getNavigations = async () => {
         },
     ];
 
-    
-
     if (user) {
         if (user.user_metadata["role"] === "admin") {
             return adminNavigations;
         } else if (user.user_metadata["role"] === "user") {
+            member = member[0];
+            if (member.role.toLowerCase() === "president" || member.role.toLowerCase() === "vice-president") {
+                console.log("president");
+                return presidentNavigations;
+            }
+            if (member.role.toLowerCase() === "secretaire") {
+                console.log("secretaire");
+                return secretaireNavigations;
+            }
+            if (member.role.toLowerCase() === "tresorier") {
+                console.log("tresorier");
+                return tresorierNavigations;
+            }
+            if (member.role.toLowerCase() === "adherant") {
+                console.log("adherant");
+                return userNavigations;
+            }
             return userNavigations;
-        } else if (user.user_metadata["role"] === "president") {
-            return presidentNavigations;
-        } else if (user.user_metadata["role"] === "secretaire") {
-            return secretaireNavigations;
-        } else if (user.user_metadata["role"] === "tresorier") {
-            return tresorierNavigations;
         }
     }
 };

@@ -54,3 +54,9 @@ export const getMembreClub = async (id_member) => {
     if (error) console.log("error", error);
     else return await getClub(data[0].id_club);
 }
+
+export const getMembreByProfile = async (id_profile) => {
+    let {data,error} = await supabase.from("Membre").select("*").eq("id_profile", id_profile);
+    if (error) console.log("error", error);
+    else return data;
+}

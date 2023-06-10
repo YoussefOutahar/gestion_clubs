@@ -11,7 +11,7 @@ const localizer = momentLocalizer(moment);
 const Events = () => {
   
   const [events, setEvents] = useState([]);
-  const [club] = useState([]);
+  const [club , setClub] = useState([]);
 
   
   const [searchDate, setSearchDate] = useState(null);
