@@ -186,11 +186,11 @@ const GestionMembers = () => {
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((membre, index) => (
                                         <TableRow key={index}>
-                                            <TableCell align="left">{membre.Etudiants.nom}</TableCell>
+                                            <TableCell align="center">{membre.Etudiants.nom}</TableCell>
                                             <TableCell align="center">{membre.Etudiants.filiere}</TableCell>
                                             <TableCell align="center">{membre.role}</TableCell>
-                                            <TableCell align="left">{membre.Etudiants.email}</TableCell>
-                                            <TableCell align="right">
+                                            <TableCell align="center">{membre.Etudiants.email}</TableCell>
+                                            <TableCell align="center">
                                                 <IconButton>
                                                     <Icon color="error">close</Icon>
                                                 </IconButton>

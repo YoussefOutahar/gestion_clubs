@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import supabase from "../../DataBase/Clients/SupabaseClient";
 import { useNavigate } from "react-router-dom";
+import { AddMeeting } from "../../DataBase/Clients/MeetingsClient";
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -34,20 +35,14 @@ const NewMeeting = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const { data, error } = await supabase.from("Meetings").insert([
+      await AddMeeting(
         {
           Date: state.date,
           description: state.description,
           location: state.location,
         },
-      ])
-
-      if (error) {
-        console.error(error);
-      } else {
-        console.log("Data inserted successfully:", data);
+      )
         navigate("/Meetings");
-      }
 
     } catch (error) {
       console.error(error);

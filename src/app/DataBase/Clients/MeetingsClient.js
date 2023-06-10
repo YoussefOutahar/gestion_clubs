@@ -1,4 +1,5 @@
 import supabase from "./SupabaseClient";
+import { addNotification } from "./NotificationsClient";
 
 export const getMeetings = async () => {
     const { data, error } = await supabase.from("Meetings").select("*");
@@ -26,4 +27,29 @@ export const updateMeeting = async (id, meeting) => {
     } else {
         console.log("Meeting updated successfully");
     }
+};
+export const AddMeeting = async (meeting) => {
+    try {
+        const { data, error } = await supabase.from("Meetings").insert(meeting);
+        if (error) {
+          console.error("Error adding Meeting:", error);
+        } else {
+          console.log("Meeting added successfully");
+          // Add a notification
+          await addNotification({
+            heading: "New meeting",
+            title: meeting.description,
+            subtitle: meeting.location,
+            timestamp: meeting.Date,
+            body: "none",
+            icon: {
+              name: "Message",
+              color: "primary"
+            },
+            path: "finance"
+          },);
+        }
+      } catch (error) {
+        console.error(error);
+      }
 };

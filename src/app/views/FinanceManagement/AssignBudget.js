@@ -68,7 +68,7 @@ useEffect(() => {
   if (data) {
     console.log('Budgets inserted successfully:', data);
     // Redirect to finance page
-    navigate("/finance");
+    navigate("/AdminFinance");
   } else {
     console.error('Error inserting budgets:', error);
   }
