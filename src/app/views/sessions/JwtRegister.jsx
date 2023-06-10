@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { LoadingButton } from "@mui/lab";
-import { Card, Checkbox, Grid, TextField, Autocomplete } from "@mui/material";
+import { Card, Checkbox, Grid, TextField } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import { Paragraph } from "../../components/Typography";
 import useAuth from "../../hooks/useAuth";

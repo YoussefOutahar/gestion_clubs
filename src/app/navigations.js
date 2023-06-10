@@ -107,6 +107,11 @@ export const getNavigations = async () => {
             path: "/Account",
             icon: "group",
         },
+        {
+            name: "Forums",
+            path: "/forums",
+            icon: "message",
+        },
     ];
 
     if (user) {

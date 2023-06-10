@@ -43,7 +43,7 @@ const Clubs = () => {
   
   fetchClubs();
 
-  {/*const clubs = [
+  /*const clubs = [
     {
       logo: 'https://www.evaair.com/Images/vivn/the-club-logo_tcm43-68807.jpg',
       name: 'Club de débat',
@@ -57,7 +57,7 @@ const Clubs = () => {
       ],
       background: 'white',
     },
-  ];*/}
+  ];*/
 
 
   const handleLearnMore = (index) => {

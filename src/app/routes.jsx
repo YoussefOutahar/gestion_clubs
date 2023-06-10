@@ -6,6 +6,7 @@ import landingPageRoute from "./views/LandingPage/LandingPageRoute";
 import FinanceRoutes from "./views/FinanceManagement/FinanceRoutes";
 import summaryRoutes from "./views/Summary/summaryRoutes";
 import generalRoutes from "./views/General/generalRoutes";
+import forumRoutes from "./views/Forum/forumRoutes";
 import NotFound from "./views/sessions/NotFound";
 import sessionRoutes from "./views/sessions/SessionRoutes";
 import { Navigate } from "react-router-dom";
@@ -18,7 +19,7 @@ const routes = [
                 <MatxLayout />
             </AuthGuard>
         ),
-        children: [...dashboardRoutes, ...chartsRoute, ...materialRoutes, ...FinanceRoutes, ...summaryRoutes, ...generalRoutes],
+        children: [...dashboardRoutes, ...chartsRoute, ...materialRoutes, ...FinanceRoutes, ...summaryRoutes, ...generalRoutes,...forumRoutes],
     },
     ...sessionRoutes,
     ...landingPageRoute,

@@ -2,7 +2,7 @@ import supabase from "./SupabaseClient";
 import { getEvent } from "./EventsClient";
 
 export const addClub = async (club) => {
-    const { data, error } = await supabase.from("Clubs").insert([club]);
+    const { error } = await supabase.from("Clubs").insert([club]);
     if (error) {
         console.error("Error adding club:", error);
     } else {
@@ -12,26 +12,18 @@ export const addClub = async (club) => {
 
 export const getClubs = async () => {
     const { data, error } = await supabase.from("Clubs").select("*");
-    if (error) {
-        console.error("Error fetching clubs:", error);
-    } else {
-        console.log("Fetched clubs:", data);
-        return data;
-    }
+    if (error) return error;
+    else return data;
 };
 
 export const getClub = async (id) => {
     const { data, error } = await supabase.from("Clubs").select("*").eq("id", id);
-    if (error) {
-        console.error("Error fetching club:", error);
-    } else {
-        console.log("Fetched club:", data);
-        return data;
-    }
+    if (error) return error;
+    else return data;
 };
 
 export const updateClub = async (id, club) => {
-    const { data, error } = await supabase.from("Clubs").update(club).eq("id", id);
+    const { error } = await supabase.from("Clubs").update(club).eq("id", id);
     if (error) {
         console.error("Error updating club:", error);
     } else {
@@ -40,7 +32,7 @@ export const updateClub = async (id, club) => {
 };
 
 export const deleteClub = async (id) => {
-    const { data, error } = await supabase.from("Clubs").delete().eq("id", id);
+    const { error } = await supabase.from("Clubs").delete().eq("id", id);
     if (error) {
         console.error("Error deleting club:", error);
     } else {

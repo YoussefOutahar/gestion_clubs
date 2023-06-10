@@ -1,3 +1,4 @@
+import { getClub } from "./ClubsClient";
 import supabase from "./SupabaseClient";
 
 export const getMembres = async () => {
@@ -46,4 +47,10 @@ export const getMembresByEtudiant = async (id_etudiant) => {
     let { data: Membres, error } = await supabase.from("Membre").select("*").eq("id_etd", id_etudiant);
     if (error) console.log("error", error);
     else return Membres;
+}
+
+export const getMembreClub = async (id_member) => {
+    let {data,error} = await supabase.from("Membre").select("*").eq("id", id_member);
+    if (error) console.log("error", error);
+    else return await getClub(data[0].id_club);
 }

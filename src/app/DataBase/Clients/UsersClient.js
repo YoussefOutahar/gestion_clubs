@@ -53,3 +53,13 @@ export const getProfileByEmail = async (email) => {
         console.log(err);
     }
 };
+
+export const getUserMember = async (id) => {
+    try {
+        const { data, error } = await supabase.from("Membre").select("*").eq("id_profile", id);
+        if (error) throw error;
+        return data;
+    } catch (err) {
+        console.log(err);
+    }
+}

@@ -4,14 +4,14 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { getEvents,getClub } from '../../DataBase/Clients/ClubsClient';
+import { getEvents} from '../../DataBase/Clients/ClubsClient';
 
 const localizer = momentLocalizer(moment);
 
 const Events = () => {
   
   const [events, setEvents] = useState([]);
-  const [club, setClub] = useState([]);
+  const [club] = useState([]);
 
   const fetchEvents = async () => {
     const fetchedEvents = await getEvents();
@@ -21,12 +21,12 @@ const Events = () => {
   };
   fetchEvents();
 
-  const fetchClub = async (id_club) => {
-    const fetchedClub = await getClub(id_club);
-    if (fetchedClub) {
-      setClub(fetchedClub);
-    }
-  };
+  // const fetchClub = async (id_club) => {
+  //   const fetchedClub = await getClub(id_club);
+  //   if (fetchedClub) {
+  //     setClub(fetchedClub);
+  //   }
+  // };
 
   const [searchDate, setSearchDate] = useState(null);
   const [searchClub, setSearchClub] = useState('');
