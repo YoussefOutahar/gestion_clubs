@@ -3,7 +3,7 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
 import SimpleCard from "../../components/SimpleCard";
 import FinanceCards from "./Components/FinanceCards";
 import ChargesTable from "./Components/ChargesTable";
-import { styled,useTheme,Box, Button, Card, Icon, Grid} from "@mui/material";
+import { styled,Box, Button, Grid} from "@mui/material";
 
   const StyledButton = styled(Button)(({ theme }) => ({
     margin: theme.spacing(1),
@@ -114,7 +114,7 @@ const FinancePage = () => {
                 ))}
             </Grid>
             <Box display="flex" justifyContent="space-between" alignItems="center">
-            <StyledButton variant="contained" href="/addCharge">
+            <StyledButton variant="contained" href="/supp_Budget">
                 Request a supplementary budget
             </StyledButton>
             <StyledButton variant="contained" color="secondary" href="/addCharge">

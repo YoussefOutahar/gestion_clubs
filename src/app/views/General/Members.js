@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import React, { useState, useEffect } from "react";
-import { getEtudiantByMembre, getMembres } from "../../DataBase/Clients/MembersClient";
+import { getEtudiantByMembre, getMembresByClub } from "../../DataBase/Clients/MembersClient";
 
 const StyledTable = styled(Table)(() => ({
     whiteSpace: "pre",
@@ -37,7 +37,7 @@ const GestionMembers = () => {
 
     useEffect(() => {
         const fetchMembers = async () => {
-            const data = await getMembres();
+            const data = await getMembresByClub(1);
             const membresWithEtudiants = await Promise.all(
                 data.map(async (membre) => {
                     const etudiant = await getEtudiantByMembre(membre.id_etd);
@@ -184,11 +184,11 @@ const GestionMembers = () => {
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((membre, index) => (
                                         <TableRow key={index}>
-                                            <TableCell align="left">{membre.Etudiants.nom}</TableCell>
+                                            <TableCell align="center">{membre.Etudiants.nom}</TableCell>
                                             <TableCell align="center">{membre.Etudiants.filiere}</TableCell>
                                             <TableCell align="center">{membre.role}</TableCell>
-                                            <TableCell align="left">{membre.Etudiants.email}</TableCell>
-                                            <TableCell align="right">
+                                            <TableCell align="center">{membre.Etudiants.email}</TableCell>
+                                            <TableCell align="center">
                                                 <IconButton>
                                                     <Icon color="error">close</Icon>
                                                 </IconButton>

@@ -3,6 +3,8 @@ import { getCurrentUser } from "./DataBase/Clients/UsersClient";
 export const getNavigations = async () => {
     const user = await getCurrentUser();
 
+    // DVE 
+
     const adminNavigations = [
         {
             name: "Dashboard",
@@ -53,6 +55,11 @@ export const getNavigations = async () => {
             icon: "account_balance_wallet",
         },
         {
+            name: "Meetings",
+            path: "/meetings",
+            icon: "event",
+        },
+        {
             name: "Admin Finance",
             path: "/AdminFinance",
             icon: "account_balance_wallet",
@@ -101,6 +108,9 @@ export const getNavigations = async () => {
         },
     ];
 
+
+    // Membre_secondaire/adherent du club 
+
     const userNavigations = [
         {
             name: "Account",
@@ -114,11 +124,109 @@ export const getNavigations = async () => {
         },
     ];
 
+    // President/Vice-president du club
+
+    const presidentNavigations = [
+        {
+            name: "Account",
+            path: "/Account",
+            icon: "group",
+        },
+        {
+            name: "Events", // Planning Trimestriel !!!!
+            path: "/summary/events",
+            iconText: "E",
+        },
+        {
+            name: "Memebers", // ONLY HIS CLUB'S MEMBERS !!!!!!
+            path: "/summary/members",
+            iconText: "M",
+        },
+        {
+            name: "Statistics",
+            path: "/summary/statistics",
+            iconText: "account_balance_wallet",
+        },
+        {
+            name: "Events", // Planning des reunions !!!!!
+            path: "/summary/events",
+            iconText: "E",
+        },
+    ];
+
+    // Secretaire du club
+
+    const secretaireNavigations = [
+        {
+            name: "Account",
+            path: "/Account",
+            icon: "group",
+        },
+        {
+            name: "Events", // Planning Trimestriel only !!!!
+            path: "/summary/events",
+            iconText: "E",
+        },
+        {
+            name: "Memebers", // ONLY HIS CLUB'S MEMBERS !!!!!!
+            path: "/summary/members",
+            iconText: "M",
+        },
+        {
+            name: "Statistics",
+            path: "/summary/statistics",
+            iconText: "account_balance_wallet",
+        },
+        {
+            name: "Events", // Planning des reunions !!!!!
+            path: "/summary/events",
+            iconText: "E",
+        },
+    ];
+
+    // Tresorier du club
+
+    const tresorierNavigations = [
+        {
+            name: "Account",
+            path: "/Account",
+            icon: "group",
+        },
+        {
+            name: "Events", // Planning Trimestriel only !!!!
+            path: "/summary/events",
+            iconText: "E",
+        },
+        {
+            name: "Memebers", // ONLY HIS CLUB'S MEMBERS !!!!!!
+            path: "/summary/members",
+            iconText: "M",
+        },
+        {
+            name: "Statistics",
+            path: "/summary/statistics",
+            iconText: "account_balance_wallet",
+        },
+        {
+            name: "Events", // Planning des reunions !!!!!
+            path: "/summary/events",
+            iconText: "E",
+        },
+    ];
+
+    
+
     if (user) {
         if (user.user_metadata["role"] === "admin") {
             return adminNavigations;
         } else if (user.user_metadata["role"] === "user") {
             return userNavigations;
+        } else if (user.user_metadata["role"] === "president") {
+            return presidentNavigations;
+        } else if (user.user_metadata["role"] === "secretaire") {
+            return secretaireNavigations;
+        } else if (user.user_metadata["role"] === "tresorier") {
+            return tresorierNavigations;
         }
     }
 };

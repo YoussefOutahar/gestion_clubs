@@ -5,7 +5,9 @@ import { faBell } from '@fortawesome/free-solid-svg-icons';
 const Account = () => {
   const [user, setUser] = useState({
     name: 'ED-DAOUDI Manal',
-    email: 'manal@example.com',
+    email: 'manal@uir.ac.ma',
+    club: 'Club A',
+    position: 'President',
     notifications: [
       'Notification 1',
       'Notification 2',
@@ -58,14 +60,17 @@ const Account = () => {
           </button>
           <div className="notifications-content">
             <h2>Notifications</h2>
-            <div className="notifications-list">
-              {user.notifications.map((notification, index) => (
-                <div key={index} className="notification-item">
+            {user.notifications.map((notification, index) => (
+              <div key={index} className="notification-section">
+                <div className="notification-header">
                   <FontAwesomeIcon icon={faBell} />
+                  <p>Notification {index + 1}</p>
+                </div>
+                <div className="notification-body">
                   <p>{notification}</p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
@@ -74,6 +79,8 @@ const Account = () => {
           <div className="user-info">
             <h2>{user.name}</h2>
             <p>Email: {user.email}</p>
+            <p>Club: {user.club}</p>
+            <p>Position: {user.position}</p>
             <button className="edit-button" onClick={handleEditClick}>
               Edit
             </button>
@@ -84,6 +91,12 @@ const Account = () => {
               <input id="name" type="text" name="name" value={editedUser.name} onChange={handleInputChange} />
               <label htmlFor="email">Email:</label>
               <input id="email" type="email" name="email" value={editedUser.email} onChange={handleInputChange} />
+              <label htmlFor="club">Club:</label>
+              <input id="club" type="text" name="club" value={editedUser.club} onChange={handleInputChange} />
+              <label htmlFor="position">Position:</label>
+              <input id="position" type="text" name="position" value={editedUser.position} onChange={handleInputChange} />
+              <label htmlFor="password">Password:</label>
+              <input id="password" type="password" name="password" value={editedUser.password} onChange={handleInputChange} />
               <button className="save-button" onClick={handleSaveClick}>
                 Save
               </button>
@@ -94,26 +107,23 @@ const Account = () => {
       <style jsx>{`
         .account-container {
           padding: 20px;
-          text-align: center;
+          text-align: left;
         }
 
         .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-          }
-          
-          h1 {
-            font-family: Montserrat, sans-serif;
-            letter-spacing: 2px;
-            font-size: 35px;
-            font-weight: 400;
-            text-align: center;
-            margin-left: 490px;
-          }
-          
-          
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 20px;
+        }
+
+        h1 {
+          font-family: Montserrat, sans-serif;
+          letter-spacing: 2px;
+          font-size: 35px;
+          font-weight: 400;
+          margin-left: 470px;
+        }
 
         .notifications-button {
           position: relative;
@@ -173,20 +183,37 @@ const Account = () => {
           margin-bottom: 10px;
         }
 
-        .notifications-list {
-          margin-top: 10px;
+        .notification-section {
+          margin-bottom: 10px;
+          background-color: #f5f5f5;
+          padding: 10px;
+          border-radius: 4px;
         }
 
-        .notification-item {
+        .notification-header {
           display: flex;
           align-items: center;
-          margin-bottom: 10px;
         }
 
-        .notification-item svg {
+        .notification-header svg {
           width: 16px;
           height: 16px;
           margin-right: 5px;
+        }
+
+        .notification-header p {
+          font-size: 16px;
+          font-weight: 600;
+          margin: 0;
+        }
+
+        .notification-body {
+          margin-top: 5px;
+        }
+
+        .notification-body p {
+          font-size: 14px;
+          margin: 0;
         }
 
         .main-section {
@@ -202,13 +229,11 @@ const Account = () => {
           font-size: 24px;
           font-weight: 600;
           margin-bottom: 10px;
-          text-align: center;
         }
 
         .user-info p {
           font-size: 16px;
           margin-bottom: 5px;
-          text-align: center;
         }
 
         .edit-button,
@@ -230,11 +255,22 @@ const Account = () => {
 
         .edit-form {
           margin-top: 20px;
+          background-color: #f5f5f5;
+          padding: 20px;
+          border-radius: 4px;
         }
 
-        .edit-form label,
-        .edit-form input {
+        .edit-form label {
           display: block;
+          margin-bottom: 10px;
+          font-weight: bold;
+        }
+
+        .edit-form input {
+          width: 100%;
+          padding: 8px;
+          border-radius: 4px;
+          border: 1px solid #ccc;
           margin-bottom: 10px;
         }
 

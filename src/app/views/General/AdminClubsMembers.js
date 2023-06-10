@@ -2,6 +2,8 @@ import { Box,Icon, IconButton, styled, Table, TableBody, TableCell, TableHead, T
   import SearchIcon from "@mui/icons-material/Search";
   import React, { useState, useEffect } from "react";
 import supabase from "../../DataBase/Clients/SupabaseClient";
+import { getEtudiantByMembre, getMembres,getMembresByClub } from "../../DataBase/Clients/MembersClient";
+
   
   const StyledTable = styled(Table)(() => ({
     whiteSpace: "pre",
@@ -43,29 +45,20 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
 
     useEffect(() => {
       const fetchMembers = async () => {
-        const { data, error } = await supabase.from("Member").select(
-          `
-            id_etd,
-            id_club,
-            role,
-            Etudiants (
-              id,
-              nom,
-              prenom,
-              niveau,
-              filiere,
-              email
-            )    // Fetch all columns from the Etudiants table
-          `
-        )
-        .eq("id_club", selectedClub !== "All clubs" ? selectedClub :undefined);
+        let data;
 
-        if (error) {
-          console.error("Error fetching Membres:", error);
-        } else {
-          setMembers(data);
-          console.log("Fetched data:", data);
-        }
+  if (selectedClub === "All clubs") {
+    data = await getMembres();
+  } else {
+    data = await getMembresByClub(selectedClub);
+  }
+            const membresWithEtudiants = await Promise.all(
+                data.map(async (membre) => {
+                    const etudiant = await getEtudiantByMembre(membre.id_etd);
+                    return { ...membre, Etudiants: etudiant[0] };
+                })
+            );
+            setMembers(membresWithEtudiants);
       };
   
       fetchMembers();
@@ -92,7 +85,7 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
   
     const filtredMembers = members.filter(
       (membre) =>
-        (selectedClub === "All clubs" || membre.id_club.includes(selectedClub)) &&
+        (selectedClub === "All clubs" || membre.id_club === selectedClub) &&
         membre.Etudiants.nom.toLowerCase().includes(searchQuery.toLowerCase())
     );
   
