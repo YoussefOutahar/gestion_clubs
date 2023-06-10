@@ -15,7 +15,6 @@ const Events = () => {
 
   
   const [searchDate, setSearchDate] = useState(null);
-  const [searchClub, setSearchClub] = useState('');
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
@@ -45,29 +44,24 @@ useEffect(() => {
     setSearchDate(date);
   };
 
-  const handleSearchClubChange = (event) => {
-    setSearchClub(event.target.value);
-  };
-
   const handleEventSelect = async (event) => {
     setSelectedEvent(event);
   };
 
   const filteredEvents = events.filter((event) => {
-    const eventDate = moment(event.start).startOf('day');
+    const eventDate = moment(event.Date).startOf('day');
     const searchDateFormatted = searchDate ? moment(searchDate).startOf('day') : null;
 
     const isMatchedDate = searchDateFormatted ? eventDate.isSame(searchDateFormatted) : true;
-    const isMatchedClub = searchClub ? event.club.toLowerCase().includes(searchClub.toLowerCase()) : true;
 
-    return isMatchedDate && isMatchedClub;
+    return isMatchedDate;
   });
 
   const eventComponents = filteredEvents.map((event) => {
     return {
       ...event,
-      start: moment(event.start).toDate(),
-      end: moment(event.end).toDate(),
+      start: moment(event.Date).toDate(),
+      end: moment(event.Date).toDate(),
     };
   });
 
@@ -93,10 +87,6 @@ useEffect(() => {
             <div className="search-item">
               <label htmlFor="search-date">Search by Date:</label>
               <input id="search-date" type="date" value={searchDate} onChange={(e) => handleSearchDateChange(e.target.value)} />
-            </div>
-            <div className="search-item">
-              <label htmlFor="search-club">Search by Club:</label>
-              <input id="search-club" type="text" value={searchClub} onChange={handleSearchClubChange} />
             </div>
           </div>
           <div className="calendar-container">

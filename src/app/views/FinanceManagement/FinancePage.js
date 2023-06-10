@@ -114,7 +114,7 @@ const FinancePage = () => {
                 ))}
             </Grid>
             <Box display="flex" justifyContent="space-between" alignItems="center">
-            <StyledButton variant="contained" href="/addCharge">
+            <StyledButton variant="contained" href="/supp_Budget">
                 Request a supplementary budget
             </StyledButton>
             <StyledButton variant="contained" color="secondary" href="/addCharge">

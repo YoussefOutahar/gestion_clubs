@@ -24,6 +24,11 @@ import { useState } from "react";
       setRowsPerPage(+event.target.value);
       setPage(0);
     };
+
+    const formatDate = (timestamp) => {
+      const date = new Date(timestamp);
+      return date.toLocaleDateString();
+    };
   
     return (
       <Box width="100%" overflow="auto">
@@ -43,7 +48,7 @@ import { useState } from "react";
               .map((data, index) => (
                 <TableRow key={index}>
                 <TableCell align="center">{data.Name}</TableCell>
-                <TableCell align="center">{data.Date}</TableCell>
+                <TableCell align="center">{formatDate(data.Date)}</TableCell>
                 <TableCell align="center">{data.Cost}</TableCell>
                 <TableCell align="center">{data.Earnings}</TableCell>
                 <TableCell align="center">{data.Supp_budget}</TableCell>
