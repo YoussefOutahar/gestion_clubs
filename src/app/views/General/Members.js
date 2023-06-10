@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import React, { useState, useEffect } from "react";
-import { getEtudiantByMembre, getMembres } from "../../DataBase/Clients/MembersClient";
+import { getEtudiantByMembre, getMembresByClub } from "../../DataBase/Clients/MembersClient";
 
 const StyledTable = styled(Table)(() => ({
     whiteSpace: "pre",
@@ -39,7 +39,7 @@ const GestionMembers = () => {
 
     useEffect(() => {
         const fetchMembers = async () => {
-            const data = await getMembres();
+            const data = await getMembresByClub(1);
             const membresWithEtudiants = await Promise.all(
                 data.map(async (membre) => {
                     const etudiant = await getEtudiantByMembre(membre.id_etd);

@@ -5,6 +5,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { getClubs,deleteClub } from '../../DataBase/Clients/ClubsClient';
+import { getEtudiantByMembre, getMembresByClub } from "../../DataBase/Clients/MembersClient";
 
 const Clubs = () => {
   const [showDetails, setShowDetails] = useState(false);
@@ -33,6 +34,7 @@ const Clubs = () => {
   };
 
   const [clubs, setClubs] = useState([]);
+  const [members, setMembers] = useState([]);
   useEffect(() => {
   const fetchClubs = async () => {
     const fetchedClubs = await getClubs();
@@ -44,21 +46,21 @@ const Clubs = () => {
   fetchClubs();
 }, []);
 
-  {/*const clubs = [
-    {
-      logo: 'https://www.evaair.com/Images/vivn/the-club-logo_tcm43-68807.jpg',
-      name: 'Club de débat',
-      description: 'Offre aux étudiants la possibilité d améliorer leurs compétences.',
-      members: [
-        { name: 'Member 1', email: 'member1@example.com', status: 'Active', position: 'President', startDate: '2022-01-01' },
-        { name: 'Member 2', email: 'member2@example.com', status: 'Inactive', position: 'Assistant', startDate: '2022-02-01' },
-        { name: 'Member 3', email: 'member3@example.com', status: 'Active', position: 'Intern', startDate: '2022-03-01' },
-        { name: 'Member 4', email: 'member2@example.com', status: 'Inactive', position: 'Assistant', startDate: '2022-02-01' },
-        { name: 'Member 5', email: 'member3@example.com', status: 'Active', position: 'Intern', startDate: '2022-03-01' },
-      ],
-      background: 'white',
-    },
-  ];*/}
+useEffect(() => {
+  const fetchMembers = async () => {
+    if (clubs[activeClub] && activeClub !== null) {
+      const data = await getMembresByClub(clubs[activeClub].id);
+      const membresWithEtudiants = await Promise.all(
+          data.map(async (membre) => {
+              const etudiant = await getEtudiantByMembre(membre.id_etd);
+              return { ...membre, Etudiants: etudiant[0] };
+          })
+      );
+      setMembers(membresWithEtudiants);
+        }
+  };
+  fetchMembers();
+}, [activeClub, clubs]);
 
 
   const handleLearnMore = (index) => {
@@ -116,17 +118,16 @@ const Clubs = () => {
                     <th>Email</th>
                   </tr>
                 </thead>
-                {/*<tbody>
-                  {clubs[activeClub].members.map((member, index) => (
+                <tbody>
+                  {members.map((member, index) => (
                     <tr key={index}>
-                      <td>{member.name}</td>
-                      <td>{member.email}</td>
-                      <td>{member.status}</td>
-                      <td>{member.position}</td>
-                      <td>{member.startDate}</td>
+                      <td>{member.Etudiants.nom}</td>
+                      <td>{member.role}</td>
+                      <td>{member.Etudiants.filiere}</td>
+                      <td>{member.Etudiants.email}</td>
                     </tr>
                   ))}
-                  </tbody>*/}
+                  </tbody>
               </table>
             </div>
           </div>

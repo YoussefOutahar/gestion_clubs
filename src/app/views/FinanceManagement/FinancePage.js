@@ -3,7 +3,7 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
 import SimpleCard from "../../components/SimpleCard";
 import FinanceCards from "./Components/FinanceCards";
 import ChargesTable from "./Components/ChargesTable";
-import { styled,useTheme,Box, Button, Card, Icon, Grid} from "@mui/material";
+import { styled,Box, Button, Grid} from "@mui/material";
 
   const StyledButton = styled(Button)(({ theme }) => ({
     margin: theme.spacing(1),
