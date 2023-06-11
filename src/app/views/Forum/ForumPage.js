@@ -6,13 +6,7 @@ import { getForumFromClub } from "../../DataBase/Clients/ForumsClient";
 import { getMembreClub } from "../../DataBase/Clients/MembersClient";
 import { getCurrentUser, getUserMember } from "../../DataBase/Clients/UsersClient";
 import { getMessagesByForum, addMessage } from "../../DataBase/Clients/MessagesClient";
-import { Fragment } from 'react';
 import SimpleCard from '../../components/SimpleCard';
-
-const ContentBox = styled('div')(({ theme }) => ({
-    margin: '30px',
-    [theme.breakpoints.down('sm')]: { margin: '16px' },
-  }));
 
 const Forums = () => {
     const [user, setUser] = useState();
