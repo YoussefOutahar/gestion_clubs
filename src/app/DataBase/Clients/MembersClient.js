@@ -60,3 +60,9 @@ export const getMembreByProfile = async (id_profile) => {
     if (error) console.log("error", error);
     else return data;
 }
+
+export const getEtudiant = async (id_etudiant) => {
+    let {data,error} = await supabase.from("Etudiants").select("*").eq("id", id_etudiant);
+    if (error) console.log("error", error);
+    else return data;
+}

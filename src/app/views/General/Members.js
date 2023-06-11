@@ -20,8 +20,8 @@ import {
     DialogActions,
     DialogContentText,
 } from "@mui/material";
-import { getAllProfiles, getUserMember } from "../../DataBase/Clients/UsersClient";
-import { getMembreClub } from "../../DataBase/Clients/MembersClient";
+import { getAllProfiles, getUserMember} from "../../DataBase/Clients/UsersClient";
+import { getMembreClub , getEtudiant } from "../../DataBase/Clients/MembersClient";
 
 const GestionMembers = () => {
     const [users, setUsers] = useState([]);
@@ -34,19 +34,21 @@ const GestionMembers = () => {
                 getUserMember(user.id).then((member) => {
                     if (member[0].role.toLowerCase() != "admin") {
                         getMembreClub(member[0].id).then((club) => {
-                            setUsers((users) => [
-                                ...users,
-                                {
-                                    id: user.id,
-                                    name: user.name,
-                                    email: user.email,
-                                    role: user.role,
-                                    club: club[0].nom,
-                                    phone: user.phone,
-                                    studyField: user.studyField,
-                                    niveau: user.niveau,
-                                },
-                            ]);
+                            getEtudiant(member[0].id_etd).then((etudiant) => {
+                                setUsers((users) => [
+                                    ...users,
+                                    {
+                                        id: user.id,
+                                        name: user.name,
+                                        email: user.email,
+                                        role: user.role,
+                                        club: club[0].nom,
+                                        phone: user.phone,
+                                        studyField: etudiant[0].filiere,
+                                        niveau: etudiant[0].niveau,
+                                    },
+                                ]);
+                            });
                         });
                     }
                 });
@@ -65,16 +67,18 @@ const GestionMembers = () => {
 
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [editUser, setEditUser] = useState(null);
+    const [deleteUser, setDeleteUser] = useState(null);
 
     //Opening Dialogs
-    const handleEdit = (userId) => {
+    const handleEdit = (user) => {
         setOpenEditDialog(true);
-        // Handle user edit based on the user ID
-        // ...
+        setEditUser(user);
     };
 
     const handleDelete = (user) => {
         setOpenDeleteDialog(true);
+        setDeleteUser(user);
     };
 
     //Closing Dialogs
@@ -85,14 +89,13 @@ const GestionMembers = () => {
 
     //logic of the dialogs
     const handleSave = async () => {
-        // Save user based on the user ID
-        // ...
+        console.log(editUser);
         setOpenEditDialog(false);
     };
 
     const handleConfirmDelete = async () => {
-        // Delete user based on the user ID
-        // ...
+        // deleteProfile(deleteUserId);
+        console.log(deleteUser);
         setOpenDeleteDialog(false);
     };
 
@@ -154,7 +157,7 @@ const GestionMembers = () => {
                                                 color="primary"
                                                 size="small"
                                                 style={{ marginRight: "8px" }}
-                                                onClick={() => handleEdit(user.id)}
+                                                onClick={() => handleEdit(user)}
                                             >
                                                 Edit
                                             </Button>
@@ -162,7 +165,7 @@ const GestionMembers = () => {
                                                 variant="contained"
                                                 color="secondary"
                                                 size="small"
-                                                onClick={() => handleDelete(user.id)}
+                                                onClick={() => handleDelete(user)}
                                             >
                                                 Delete
                                             </Button>

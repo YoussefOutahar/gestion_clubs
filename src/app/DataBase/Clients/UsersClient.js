@@ -63,3 +63,37 @@ export const getUserMember = async (id) => {
         console.log(err);
     }
 }
+
+//Add profile:
+export const addProfile = async (profile) => {
+    try {
+        const { data, error } = await supabase.from("profiles").insert([profile]);
+        if (error) throw error;
+        return data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+//Update profile:
+export const updateProfile = async (id, profile) => {
+    try {
+        const { data, error } = await supabase.from("profiles").update(profile).eq("id", id);
+        if (error) throw error;
+        return data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+//Delete profile:
+export const deleteProfile = async (id) => {
+    try {
+        const { data, error } = await supabase.from("profiles").delete().eq("id", id);
+        if (error) throw error;
+        return data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+

@@ -158,6 +158,11 @@ export const getNavigations = async () => {
             path: "/summary/events",
             iconText: "E",
         },
+        {
+            name: "Forums",
+            path: "/forums",
+            icon: "message",
+        },
     ];
 
     // Secretaire du club
@@ -188,6 +193,11 @@ export const getNavigations = async () => {
             path: "/summary/events",
             iconText: "E",
         },
+        {
+            name: "Forums",
+            path: "/forums",
+            icon: "message",
+        },
     ];
 
     // Tresorier du club
@@ -217,6 +227,11 @@ export const getNavigations = async () => {
             name: "Events", // Planning des reunions !!!!!
             path: "/summary/events",
             iconText: "E",
+        },
+        {
+            name: "Forums",
+            path: "/forums",
+            icon: "message",
         },
     ];
 
