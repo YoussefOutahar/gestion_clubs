@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, TextField, IconButton, List, ListItem, ListItemText } from "@mui/material";
+import { Box,TextField, IconButton, List, ListItem, ListItemText,styled } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { MatxLoading } from "../../components";
 import { getForumFromClub } from "../../DataBase/Clients/ForumsClient";
 import { getMembreClub } from "../../DataBase/Clients/MembersClient";
 import { getCurrentUser, getUserMember } from "../../DataBase/Clients/UsersClient";
 import { getMessagesByForum, addMessage } from "../../DataBase/Clients/MessagesClient";
+import { Fragment } from 'react';
+import SimpleCard from '../../components/SimpleCard';
+
+const ContentBox = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: { margin: '16px' },
+  }));
 
 const Forums = () => {
     const [user, setUser] = useState();
@@ -54,13 +61,14 @@ const Forums = () => {
         }
     };
     return (
-        <Box sx={{ position: "relative", height: "400px", margin: "2%" }}>
+        <SimpleCard>
+            <Box sx={{ position: "relative", marginLeft: "1%", marginRight: "1%", marginTop: "1%" }}>
             <div className="header">
                 <h1>Forums</h1>
             </div>
 
             {forum ? (
-                <Box sx={{ position: "relative", height: "400px", margin: "2%" }}>
+                <Box sx={{ flex: "1 1 auto", borderRadius: "4px", overflow: "auto", p: 1 }}>
                     <Box
                         sx={{
                             borderRadius: "4px",
@@ -74,25 +82,22 @@ const Forums = () => {
                                 <ListItem
                                     key={msg.id}
                                     sx={{
-                                        textAlign: msg.user_id == user.id ? "right" : "left",
-                                        backgroundColor: msg.user_id == user.id ? "lightBlue" : "grey",
-                                        borderRadius: "4px",
-                                        marginBottom: "8px",
+                                        textAlign: msg.user_id === user.id ? "right" : "left",
+                backgroundColor: msg.user_id === user.id ? "lightBlue" : "grey",
+                borderRadius: "4px",
+                marginBottom: "8px",
+                marginLeft: msg.user_id === user.id ? "auto" : "initial",
+                maxWidth: "65%",
+                wordWrap: "break-word",
                                     }}
                                 >
-                                    <ListItemText primary={msg.content} />
+                                    <ListItemText primary={msg.content} secondary={msg.date_creation}/>
                                 </ListItem>
                             ))}
                         </List>
                     </Box>
                     <Box
-                        sx={{
-                            position: "absolute",
-                            bottom: "0",
-                            width: "100%",
-                            display: "flex",
-                            alignItems: "center",
-                        }}
+                        sx={{ position: "relative", flexShrink: 0, display: "flex", alignItems: "center" }}
                     >
                         <TextField
                             label="Message"
@@ -113,6 +118,7 @@ const Forums = () => {
                 </div>
             )}
         </Box>
+        </SimpleCard>
     );
 };
 
