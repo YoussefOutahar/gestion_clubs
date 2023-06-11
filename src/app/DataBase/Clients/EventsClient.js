@@ -28,6 +28,15 @@ export const getEvent = async (id) => {
         return data;
     }
 };
+export const getEventByName = async (nom) => {
+    const { data, error } = await supabase.from("Activites").select("*").eq("Name", nom);
+    if (error) {
+        console.error("Error fetching event:", error);
+    } else {
+        console.log("Fetched event:", data);
+        return data;
+    }
+};
 
 export const updateEvent = async (id, event) => {
     const { data, error } = await supabase.from("Activites").update(event).eq("id", id);
@@ -65,3 +74,13 @@ export const addClubToEvent = async (club_id, event_id) => {
     }
 }
 
+
+export const getEventsByClub = async (id) => {
+    const { data, error } = await supabase.from("Activites").select("*").eq("id__club", id);
+    if (error) {
+        console.error("Error deleting event:", error);
+    } else {
+        console.log("Event deleted successfully");
+        return data;
+    }
+};

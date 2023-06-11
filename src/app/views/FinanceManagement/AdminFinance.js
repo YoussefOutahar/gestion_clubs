@@ -3,6 +3,9 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
 import SimpleCard from "../../components/SimpleCard";
 import FinanceCards from "./Components/FinanceCards";
 import { styled,Box, Button,Grid,Table,TableBody,TableCell,TableHead,TableRow} from "@mui/material";
+import { getClubs } from "../../DataBase/Clients/ClubsClient";
+import { getEventsByClub } from "../../DataBase/Clients/EventsClient";
+import { getBudgetByClub } from "../../DataBase/Clients/BudgetClient";
 
   const StyledButton = styled(Button)(({ theme }) => ({
     margin: theme.spacing(1),
@@ -26,24 +29,60 @@ import { styled,Box, Button,Grid,Table,TableBody,TableCell,TableHead,TableRow} f
 const AdminFinance = () => {
   const [totalSuppBudget, setTotalSuppBudget] = useState(0);
   const [totalBudget, setTotalBudget] = useState(0);
-
   const [clubs, setClubs] = useState([]);
-  const [clubBudget, setClubBudget] = useState(null);
 
-  useEffect(() => {
-    const fetchClubs = async () => {
-      const { data, error } = await supabase.from("Clubs").select("nom, id");
+    const getTotalSuppEarningsByClub = async (clubId) => {
+      const { data, error } = await supabase
+        .from("Activites")
+        .select("Supp_budget, Earnings")
+        .eq("id_club", clubId);
+
       if (error) {
-        console.error("Error fetching Activites:", error);
-      } else {
-        setClubs(data);
-        console.log("Fetched data:", data);
+        console.error("Error calculating total:", error.message);
+        return { total_supp_budget: 0, total_earnings: 0 };
+    } else {
+      const total_supp_budget = data.reduce(
+        (sum, item) => sum + (item.Supp_budget || 0),
+        0
+      );
+      const total_earnings = data.reduce(
+        (sum, item) => sum + (item.Earnings || 0),
+        0
+      );
+      return { total_supp_budget ,total_earnings};
       }
     };
 
+
+  /*useEffect(() => {
+    const fetchClubs = async () => {
+      const fetchedclubs = await getClubs();
+      if (fetchedclubs) {
+        setClubs(fetchedclubs);
+      }
+    };
     fetchClubs();
   }, []);
-  
+  */
+  useEffect(() => {
+    getClubs().then(async (data) => {
+      const clubData = await Promise.all(
+        data.map(async (club) => {
+          const budget = await getBudgetByClub(club.id);
+          const { total_supp_budget, total_earnings } = await getTotalSuppEarningsByClub(club.id);
+          return {
+            id: club.id,
+            name: club.nom,
+            Budget: budget.budget,
+            Rest: budget.rest,
+            Supp_budget: total_supp_budget,
+            Earnings: total_earnings,
+          };
+        })
+      );
+      setClubs(clubData);
+    });
+  }, []);
 
   useEffect(() => {
     const fetchInfos = async () => {
@@ -131,11 +170,11 @@ const AdminFinance = () => {
         <TableBody>
           {clubs.map((club, index) => (
             <TableRow key={index}>
-              <TableCell align="left">{club.nom}</TableCell>
-              <TableCell align="center">{club.company}</TableCell>
-              <TableCell align="center">{club.date}</TableCell>
-              <TableCell align="center">{club.status}</TableCell>
-              <TableCell align="center">${club.amount}</TableCell>
+              <TableCell align="left">{club.name}</TableCell>
+              <TableCell align="center">{club.Budget}</TableCell>
+              <TableCell align="center">{club.Supp_budget}</TableCell>
+              <TableCell align="center">{club.Earnings}</TableCell>
+              <TableCell align="center">{club.Rest}</TableCell>
             </TableRow>
           ))}
         </TableBody>

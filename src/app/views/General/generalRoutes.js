@@ -7,6 +7,7 @@ const Events = Loadable(lazy(() => import("./Events")));
 const Account = Loadable(lazy(() => import("./Account")));
 const Meetings = Loadable(lazy(() => import("./Meetings")));
 const NewMeeting = Loadable(lazy(() => import("./NewMeeting")));
+const NewEvent = Loadable(lazy(() => import("./NewEvent")));
 const UpdateMeeting = Loadable(lazy(() => import("./UpdateMeeting")));
 const AdminClubsMembers = Loadable(lazy(() => import("./AdminClubsMembers")));
 const Statistics = Loadable(lazy(() => import("./statistics")));
@@ -23,6 +24,10 @@ const generalRoutes = [
     {
         path: "/events",
         element: <Events />,
+    },
+    {
+        path: "/new_event",
+        element: <NewEvent />,
     },
     {
         path: "/account",
