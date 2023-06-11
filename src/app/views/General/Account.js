@@ -1,285 +1,310 @@
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell } from '@fortawesome/free-solid-svg-icons';
+import React, { useState, useEffect } from "react";
+import {
+    Typography,
+    Avatar,
+    Grid,
+    Box,
+    Fab,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button,
+    TextField,
+} from "@mui/material";
+import { getCurrentUser, getUserMember, getProfileById } from "../../DataBase/Clients/UsersClient";
+import { getMembreClub } from "../../DataBase/Clients/MembersClient";
+import EditIcon from "@mui/icons-material/Edit";
+import { SimpleCard } from "../../components";
+import * as Yup from "yup";
+import { Formik } from "formik";
+import { Span } from "../../components/Typography";
+
+import supabase from "../../DataBase/Clients/SupabaseClient";
+import { updateMembre } from "../../DataBase/Clients/MembersClient";
+import { updateProfile } from "../../DataBase/Clients/UsersClient";
+
+// form field validation schema
+const validationSchema = Yup.object().shape({
+    password: Yup.string().min(6, "Password must be 6 character length").required("Password is required!"),
+    email: Yup.string().email("Invalid Email address").required("Email is required!"),
+});
 
 const Account = () => {
-  const [user, setUser] = useState({
-    name: 'ED-DAOUDI Manal',
-    email: 'manal@uir.ac.ma',
-    club: 'Club A',
-    position: 'President',
-    notifications: [
-      'Notification 1',
-      'Notification 2',
-      'Notification 3',
-      'Notification 4',
-      'Notification 5',
-    ],
-  });
+    const [user, setUser] = useState(null);
+    const [profile, setProfile] = useState(null);
+    const [member, setMember] = useState(null);
+    const [club, setClub] = useState(null);
 
-  const [editMode, setEditMode] = useState(false);
-  const [editedUser, setEditedUser] = useState(user);
-  const [showNotifications, setShowNotifications] = useState(false);
+    useEffect(() => {
+        getCurrentUser().then((currentUser) => {
+            getProfileById(currentUser.id).then((profile) => {
+                if (profile[0].role.toLowerCase() != "admin") {
+                    getUserMember(currentUser.id).then((member) => {
+                        getMembreClub(member[0].id).then((club) => {
+                            setUser([
+                                {
+                                    id: profile[0].id,
+                                    role: member[0].role,
+                                    name: profile[0].name,
+                                    email: currentUser.email,
+                                    avatar: profile[0].avatar,
+                                    phone: profile[0].phone,
+                                    club: club[0].nom,
+                                },
+                            ]);
+                            setProfile(profile[0]);
+                            setMember(member[0]);
+                            setClub(club[0]);
+                        });
+                    });
+                }
+            });
+        });
+    }, []);
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setEditedUser((prevUser) => ({
-      ...prevUser,
-      [name]: value,
-    }));
-  };
+    const [openEditDialog, setOpenEditDialog] = useState(false);
 
-  const handleEditClick = () => {
-    setEditMode(true);
-  };
+    const initialValues = {
+        role: "",
+        name: "",
+        email: "",
+        phone: "",
+        club: "",
+        password: "",
+    };
 
-  const handleSaveClick = () => {
-    setUser(editedUser);
-    setEditMode(false);
-  };
+    //Opening Dialogs
+    const handleEdit = () => {
+        setOpenEditDialog(true);
+    };
 
-  const handleNotificationsClick = () => {
-    setShowNotifications(!showNotifications);
-  };
+    //Closing Dialogs
+    const handleClose = () => {
+        setOpenEditDialog(false);
+    };
 
-  const notificationCount = user.notifications.length;
+    //logic of the dialogs
+    const handleEditFormSubmit = async (values) => {
+        try {
+            const { file, error } = await supabase.storage
+                .from("Avatars")
+                .upload(selectedFile.name, selectedFile);
+            if (error) {
+                console.error("Error uploading file:", error.message);
+            } else {
+                const fileUrl =
+                    "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Avatars/" +
+                    selectedFile.name;
+                const { role, name, email, phone, club, password, filliere, annee } = values;
+                // Update email
+                await supabase.auth.update({ id: user.id, email: email });
 
-  return (
-    <div className="account-container">
-      <div className="header">
-        <h1>Account</h1>
-        <button className="notifications-button" onClick={handleNotificationsClick}>
-          {notificationCount > 0 && <span className="notification-count">{notificationCount}</span>}
-          <FontAwesomeIcon icon={faBell} />
-        </button>
-      </div>
-      {showNotifications && (
-        <div className="notifications-section">
-          <button className="back-button" onClick={handleNotificationsClick}>
-            Back
-          </button>
-          <div className="notifications-content">
-            <h2>Notifications</h2>
-            {user.notifications.map((notification, index) => (
-              <div key={index} className="notification-section">
-                <div className="notification-header">
-                  <FontAwesomeIcon icon={faBell} />
-                  <p>Notification {index + 1}</p>
-                </div>
-                <div className="notification-body">
-                  <p>{notification}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      {!showNotifications && (
-        <div className="main-section">
-          <div className="user-info">
-            <h2>{user.name}</h2>
-            <p>Email: {user.email}</p>
-            <p>Club: {user.club}</p>
-            <p>Position: {user.position}</p>
-            <button className="edit-button" onClick={handleEditClick}>
-              Edit
-            </button>
-          </div>
-          {editMode && (
-            <div className="edit-form">
-              <label htmlFor="name">Name:</label>
-              <input id="name" type="text" name="name" value={editedUser.name} onChange={handleInputChange} />
-              <label htmlFor="email">Email:</label>
-              <input id="email" type="email" name="email" value={editedUser.email} onChange={handleInputChange} />
-              <label htmlFor="club">Club:</label>
-              <input id="club" type="text" name="club" value={editedUser.club} onChange={handleInputChange} />
-              <label htmlFor="position">Position:</label>
-              <input id="position" type="text" name="position" value={editedUser.position} onChange={handleInputChange} />
-              <label htmlFor="password">Password:</label>
-              <input id="password" type="password" name="password" value={editedUser.password} onChange={handleInputChange} />
-              <button className="save-button" onClick={handleSaveClick}>
-                Save
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-      <style jsx>{`
-        .account-container {
-          padding: 20px;
-          text-align: left;
+                // Update password
+                await supabase.auth.update({ id: user.id, password: password });
+
+                await updateProfile(profile.id, {
+                    role: "user",
+                    name: name,
+                    avatar: selectedFile ? fileUrl : profile.avatar,
+                    phone: phone,
+                    filliere: filliere,
+                    annee: annee,
+                    email: email,
+                });
+                await updateMembre(member.id, {
+                    role: role,
+                });
+                if (error) {
+                    console.error(error);
+                } else {
+                    console.log("Data inserted successfully");
+                }
+                console.log("File uploaded and reference saved successfully.");
+            }
+        } catch (e) {
+            console.log(e);
         }
+    };
 
-        .header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 20px;
-        }
+    //fileUpload
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [uploading, setUploading] = useState(false);
 
-        h1 {
-          font-family: Montserrat, sans-serif;
-          letter-spacing: 2px;
-          font-size: 35px;
-          font-weight: 400;
-          margin-left: 470px;
-        }
+    const handleFileChange = (event) => {
+        setSelectedFile(event.target.files[0]);
+    };
 
-        .notifications-button {
-          position: relative;
-          width: 30px;
-          height: 30px;
-          background-color: transparent;
-          border: none;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
+    if (user && profile && member && club) {
+        return (
+            <>
+                <SimpleCard style={{ margin: "20px" }}>
+                    <Grid container spacing={2} alignItems="center">
+                        <Grid item>
+                            <Avatar
+                                alt={user[0].name}
+                                src="/path-to-profile-picture.jpg"
+                                sx={{ width: 120, height: 120, margin: "2%" }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="h5">{user[0].name}</Typography>
+                        </Grid>
+                    </Grid>
+                    <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
+                        <Typography>Email: {user[0].email}</Typography>
+                    </Box>
+                    <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
+                        <Typography>Club: {user[0].club}</Typography>
+                    </Box>
+                    <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
+                        <Typography>Club: {user[0].role}</Typography>
+                    </Box>
+                    <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
+                        <Typography>Phone: {user[0].phone}</Typography>
+                    </Box>
+                    <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
+                        <Typography>Niveau: {user[0].niveau}</Typography>
+                    </Box>
+                    <Fab
+                        color="primary"
+                        aria-label="Edit"
+                        sx={{ position: "fixed", bottom: 16, right: 16 }}
+                        onClick={handleEdit}
+                    >
+                        <EditIcon />
+                    </Fab>
+                </SimpleCard>
+                <Dialog open={openEditDialog} onClose={handleClose}>
+                    <Formik
+                        validationSchema={validationSchema}
+                        onSubmit={handleEditFormSubmit}
+                        initialValues={initialValues}
+                    >
+                        {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <DialogTitle>Edit User</DialogTitle>
+                                <DialogContent>
+                                    <Grid container spacing={2}>
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            type="text"
+                                            name="name"
+                                            label="Name"
+                                            variant="outlined"
+                                            onBlur={handleBlur}
+                                            value={values.name}
+                                            onChange={handleChange}
+                                            helperText={touched.name && errors.name}
+                                            error={Boolean(errors.name && touched.name)}
+                                            sx={{ mb: 3 }}
+                                        />
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            type="email"
+                                            name="email"
+                                            label="Email"
+                                            variant="outlined"
+                                            onBlur={handleBlur}
+                                            value={values.email}
+                                            onChange={handleChange}
+                                            helperText={touched.email && errors.email}
+                                            error={Boolean(errors.email && touched.email)}
+                                            sx={{ mb: 3 }}
+                                        />
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            name="password"
+                                            type="password"
+                                            label="Password"
+                                            variant="outlined"
+                                            onBlur={handleBlur}
+                                            value={values.password}
+                                            onChange={handleChange}
+                                            helperText={touched.password && errors.password}
+                                            error={Boolean(errors.password && touched.password)}
+                                            sx={{ mb: 2 }}
+                                        />
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            name="phone"
+                                            type="phone"
+                                            label="Phone"
+                                            variant="outlined"
+                                            onBlur={handleBlur}
+                                            value={values.phone}
+                                            onChange={handleChange}
+                                            sx={{ mb: 2 }}
+                                        />
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            name="filliere"
+                                            type="text"
+                                            label="Filliere"
+                                            variant="outlined"
+                                            onBlur={handleBlur}
+                                            value={values.filliere}
+                                            onChange={handleChange}
+                                            sx={{ mb: 2 }}
+                                        />
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            name="annee"
+                                            type="text"
+                                            label="Annee"
+                                            variant="outlined"
+                                            onBlur={handleBlur}
+                                            value={values.annee}
+                                            onChange={handleChange}
+                                            sx={{ mb: 2 }}
+                                        />
+                                        <input
+                                            type="file"
+                                            onChange={handleFileChange}
+                                            accept=".png,.jpeg"
+                                            id="invoice-input"
+                                            style={{ display: "none" }}
+                                        />
+                                        <label htmlFor="invoice-input">
+                                            <Button
+                                                sx={{ mb: 4 }}
+                                                color="primary"
+                                                component="span"
+                                                variant="outlined"
+                                            >
+                                                Upload Invoice
+                                            </Button>
+                                        </label>
 
-        .notification-count {
-          position: absolute;
-          top: -8px;
-          right: -8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background-color: #e53935;
-          color: #fff;
-          font-size: 12px;
-          font-weight: bold;
-        }
-
-        .back-button {
-          background-color: #4285f4;
-          color: #fff;
-          border: none;
-          border-radius: 4px;
-          font-size: 14px;
-          cursor: pointer;
-          position: absolute;
-          top: 20px;
-          left: 20px;
-          font-family: Montserrat, sans-serif;
-          font-weight: 500;
-          padding: 10px 20px;
-        }
-
-        .notifications-section {
-          text-align: left;
-        }
-
-        .notifications-content {
-          padding: 20px;
-        }
-
-        .notifications-content h2 {
-          font-family: Montserrat, sans-serif;
-          font-size: 24px;
-          font-weight: 600;
-          margin-bottom: 10px;
-        }
-
-        .notification-section {
-          margin-bottom: 10px;
-          background-color: #f5f5f5;
-          padding: 10px;
-          border-radius: 4px;
-        }
-
-        .notification-header {
-          display: flex;
-          align-items: center;
-        }
-
-        .notification-header svg {
-          width: 16px;
-          height: 16px;
-          margin-right: 5px;
-        }
-
-        .notification-header p {
-          font-size: 16px;
-          font-weight: 600;
-          margin: 0;
-        }
-
-        .notification-body {
-          margin-top: 5px;
-        }
-
-        .notification-body p {
-          font-size: 14px;
-          margin: 0;
-        }
-
-        .main-section {
-          margin-top: 20px;
-        }
-
-        .user-info {
-          margin-bottom: 20px;
-        }
-
-        .user-info h2 {
-          font-family: Montserrat, sans-serif;
-          font-size: 24px;
-          font-weight: 600;
-          margin-bottom: 10px;
-        }
-
-        .user-info p {
-          font-size: 16px;
-          margin-bottom: 5px;
-        }
-
-        .edit-button,
-        .save-button {
-          background-color: #4285f4;
-          color: #fff;
-          border: none;
-          border-radius: 4px;
-          padding: 10px 20px;
-          font-size: 14px;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-        }
-
-        .edit-button:hover,
-        .save-button:hover {
-          background-color: #1a73e8;
-        }
-
-        .edit-form {
-          margin-top: 20px;
-          background-color: #f5f5f5;
-          padding: 20px;
-          border-radius: 4px;
-        }
-
-        .edit-form label {
-          display: block;
-          margin-bottom: 10px;
-          font-weight: bold;
-        }
-
-        .edit-form input {
-          width: 100%;
-          padding: 8px;
-          border-radius: 4px;
-          border: 1px solid #ccc;
-          margin-bottom: 10px;
-        }
-
-        .save-button {
-          margin-top: 10px;
-        }
-      `}</style>
-    </div>
-  );
+                                        <Span style={{ display: "inline-flex", verticalAlign: "middle" }}>
+                                            {uploading ? "Uploading ..." : null}
+                                            {selectedFile ? selectedFile.name : null}
+                                        </Span>
+                                    </Grid>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleClose} color="secondary">
+                                        Cancel
+                                    </Button>
+                                    <Button color="primary" type="submit">
+                                        Save
+                                    </Button>
+                                </DialogActions>
+                            </form>
+                        )}
+                    </Formik>
+                </Dialog>
+            </>
+        );
+    } else {
+        return <p></p>;
+    }
 };
 
 export default Account;

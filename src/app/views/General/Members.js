@@ -54,7 +54,6 @@ const GestionMembers = () => {
                 });
             });
         });
-        console.log(users);
     }, []);
 
     const handleSearchChange = (event) => {
