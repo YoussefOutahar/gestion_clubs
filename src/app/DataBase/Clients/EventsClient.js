@@ -65,3 +65,13 @@ export const addClubToEvent = async (club_id, event_id) => {
     }
 }
 
+
+export const getEventsByClub = async (id) => {
+    const { data, error } = await supabase.from("Activites").select("*").eq("id__club", id);
+    if (error) {
+        console.error("Error deleting event:", error);
+    } else {
+        console.log("Event deleted successfully");
+        return data;
+    }
+};

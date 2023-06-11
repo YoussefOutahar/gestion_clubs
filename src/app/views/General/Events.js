@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
+import {styled,Box,Button} from "@mui/material";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { getEvents , getEventClub } from '../../DataBase/Clients/EventsClient';
 
 const localizer = momentLocalizer(moment);
+const StyledButton = styled(Button)(({ theme }) => ({
+  margin: theme.spacing(1),
+}));
 
 const Events = () => {
   
@@ -71,7 +75,7 @@ useEffect(() => {
         <>
           <h2>Event's Details</h2>
           <div className="event-details">
-            <button className="back-button" onClick={() => setSelectedEvent(null)}>
+            <button className="back-button" onClick={() => setSelectedEvent(false)}>
               <FontAwesomeIcon icon={faArrowLeft} />
             </button>
             <h3>{selectedEvent.Name}</h3>
@@ -88,6 +92,11 @@ useEffect(() => {
               <label htmlFor="search-date">Search by Date:</label>
               <input id="search-date" type="date" value={searchDate} onChange={(e) => handleSearchDateChange(e.target.value)} />
             </div>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+            <StyledButton variant="contained" color="secondary" href="/new_event">
+                New Event
+            </StyledButton>
+            </Box>
           </div>
           <div className="calendar-container">
             <Calendar
