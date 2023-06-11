@@ -1,3 +1,4 @@
+import { eq } from 'lodash';
 import supabase from './SupabaseClient';
 
 export const addNotification = async (notification) => {
@@ -7,6 +8,16 @@ export const addNotification = async (notification) => {
 
 export const getNotifications = async () => {
     const { data, error } = await supabase.from('Notifications').select('*');
+    return { data, error };
+}
+
+export const getNotificationByIHeading= async (heading) => {
+    const { data, error } = await supabase.from('Notifications').select('*');eq("heading", heading);
+    return { data, error };
+}
+
+export const getNotificationById= async (id) => {
+    const { data, error } = await supabase.from('Notifications').select('*').eq("id", id);
     return { data, error };
 }
 

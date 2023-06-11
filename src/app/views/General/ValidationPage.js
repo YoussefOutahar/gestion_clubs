@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import { ValidatorForm } from "react-material-ui-form-validator";
 import supabase from "../../DataBase/Clients/SupabaseClient";
 import { useNavigate } from "react-router-dom";
+import { getNotificationById } from "../../DataBase/Clients/NotificationsClient";
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -18,23 +19,45 @@ const Container = styled("div")(({ theme }) => ({
     },
   }));
 
-const ValidationSuppBudget = () => {
+const ValidationPage = () => {
 
+  const [notification, setNotification] = useState(null);
 
   //TODO:
   const handleSubmit = async (event) => {
     event.preventDefault();
   };
 
+  const { notifId } = useParams();
 
+  useEffect(() => {
+    const fetchNotification = async () => {
+      const { data, error } = await getNotificationById(notifId);
+      if (error) {
+        console.error(error);
+      } else {
+        setNotification(data);
+      }
+    };
 
+    fetchNotification();
+  }, []);
+
+  useEffect(() => {
+    console.log(notification)
+  },[notification])
+if(notifId){
     return (
         <Container>
           <Box className="breadcrumb">
             <Breadcrumb routeSegments={[{ name: "Dashboard", path: "/Dashboard" }, { name: "Validation" }]} />
           </Box>
           <Stack spacing={3}>
-            <SimpleCard title="Add new meeting">
+            <SimpleCard title={"Notification"}>
+              <p>{notification[0].title}</p>
+              <p>{notification[0].subtitle}</p>
+              <p>{notification[0].title}</p>
+            
                 <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
                     <Button color="primary" variant="contained" type="submit" marginTop="20px">
                         <Icon>check-circle</Icon>
@@ -49,6 +72,9 @@ const ValidationSuppBudget = () => {
           </Stack>
         </Container>
       );
+}else{
+  return <p></p>
+}
 };
 
-export default ValidationSuppBudget;
+export default ValidationPage;
