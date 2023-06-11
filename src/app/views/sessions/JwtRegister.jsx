@@ -6,8 +6,9 @@ import { Paragraph } from "../../components/Typography";
 import useAuth from "../../hooks/useAuth";
 import { Formik } from "formik";
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink,useParams , useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+
 
 const FlexBox = styled(Box)(() => ({ display: "flex", alignItems: "center" }));
 
@@ -53,6 +54,9 @@ const JwtRegister = () => {
     const { register } = useAuth();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+
+    const {clubId} = useParams();
+    console.log("the id passed by param :",clubId);
 
     const handleFormSubmit = (values) => {
         setLoading(true);

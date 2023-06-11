@@ -114,7 +114,7 @@ function NavBar() {
             >
             <Button type="primary" style={{ backgroundColor: '#d0d700', color: '#003667' }} onClick={
                 () => {
-                    navigate("/authentification");
+                    navigate("/session/signin");
                 }
             }>Login</Button>
             </ConfigProvider>

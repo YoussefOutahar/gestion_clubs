@@ -1,6 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination, EffectCoverflow, Autoplay } from 'swiper'
 import { useEffect, useState,React } from "react";
+import { Link } from 'react-router-dom';
 import supabase from "../../../DataBase/Clients/SupabaseClient";
 
 import 'swiper/swiper-bundle.min.css'
@@ -73,7 +74,9 @@ const [clubs, setClubs] = useState([]);
                         <div>
                             <h2>{club.nom}</h2>
                             <p>{club.description}</p>
-                            <a href={`${club.logo}`} target="_blank" className='slider-btn'>explore</a>
+                            <Link to={`/session/signup/${club.id}`} className='slider-btn'>
+                Join us
+              </Link>
                         </div>
                     </SwiperSlide>
                 ))
