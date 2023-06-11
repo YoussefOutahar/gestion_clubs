@@ -41,7 +41,7 @@ const UpdateMeeting = () => {
           description: state.description,
           location: state.location,
         },
-      ])
+      ]).eq("id", meetingId);
 
       if (error) {
         console.error(error);
@@ -105,7 +105,7 @@ const UpdateMeeting = () => {
               name="date"
               label="Date"
               onChange={handleChange}
-              value={state.date ? state.date.toISOString().split("T")[0] : ""}
+              value={state.date ? state.date : ""}
               validators={["required"]}
               errorMessages={["this field is required"]}
             />
