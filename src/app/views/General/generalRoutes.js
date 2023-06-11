@@ -11,6 +11,7 @@ const NewEvent = Loadable(lazy(() => import("./NewEvent")));
 const UpdateMeeting = Loadable(lazy(() => import("./UpdateMeeting")));
 const AdminClubsMembers = Loadable(lazy(() => import("./AdminClubsMembers")));
 const Statistics = Loadable(lazy(() => import("./statistics")));
+const ValidationPage = Loadable(lazy(() => import("./ValidationPage")));
 
 const generalRoutes = [
     {
@@ -53,6 +54,10 @@ const generalRoutes = [
         path: "/statistics",
         element: < Statistics />,
     },
+    {
+        path: "/validationPage/:notifId",
+        element: <ValidationPage/>
+    }
 ];
 
 export default generalRoutes;

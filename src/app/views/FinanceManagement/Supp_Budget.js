@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import supabase from "../../DataBase/Clients/SupabaseClient";
 import { useNavigate } from "react-router-dom";
-import { addNotification } from "../../DataBase/Clients/NotificationsClient";
+import { addNotification ,getNotificationByIHeading } from "../../DataBase/Clients/NotificationsClient";
 
 
 const Container = styled("div")(({ theme }) => ({
@@ -64,7 +64,7 @@ const Supp_Budget = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await addNotification(
+      const {notification , error} = await addNotification(
         {
           heading: "Request",
           title: "Supplimentary budget request",
@@ -75,10 +75,10 @@ const Supp_Budget = () => {
             name: "Message",
             color: "primary"
           },
-          path: "finance"
+          path: 'validationPage'
         },
       )
-        navigate("/finance");
+       navigate("/finance");
     } catch (error) {
       console.error(error);
     }

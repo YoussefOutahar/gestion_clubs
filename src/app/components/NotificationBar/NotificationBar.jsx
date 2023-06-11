@@ -117,7 +117,7 @@ const NotificationBar = ({ container }) => {
                   <Icon className="icon">clear</Icon>
                 </DeleteButton>
                 <Link
-                  to={`/${notification.path}`}
+                  to={`/${notification.path}/${notification.id}`}
                   onClick={handleDrawerToggle}
                   style={{ textDecoration: 'none' }}
                 >
