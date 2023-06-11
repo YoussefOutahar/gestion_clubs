@@ -70,3 +70,4 @@ export const addEventToClub = async (club_id, event_id) => {
         console.log("Event added to club successfully");
     }
 };
+
