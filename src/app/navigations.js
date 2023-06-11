@@ -47,18 +47,13 @@ export const getNavigations = async () => {
         },
         {
             name: "Memebers",
-            path: "/members",
+            path: "/adminClubsMembers",
             icon: "group",
         },
         {
             name: "Events",
             path: "/events",
             icon: "event",
-        },
-        {
-            name: "Finances",
-            path: "/finance",
-            icon: "account_balance_wallet",
         },
         {
             name: "Meetings",
@@ -103,11 +98,6 @@ export const getNavigations = async () => {
             ],
         },
         {
-            name: "Charts",
-            icon: "trending_up",
-            children: [{ name: "Echarts", path: "/charts/echarts", iconText: "E" }],
-        },
-        {
             name: "LandingPage",
             icon: "store_front",
             path: "/LandingPage",
@@ -116,17 +106,13 @@ export const getNavigations = async () => {
 
 
     // Membre_secondaire/adherent du club 
+    //TODO: remove this
 
     const userNavigations = [
         {
             name: "Account",
             path: "/Account",
             icon: "group",
-        },
-        {
-            name: "Forums",
-            path: "/forums",
-            icon: "message",
         },
     ];
 
@@ -147,11 +133,6 @@ export const getNavigations = async () => {
             name: "Memebers", // ONLY HIS CLUB'S MEMBERS !!!!!!
             path: "/summary/members",
             iconText: "M",
-        },
-        {
-            name: "Statistics",
-            path: "/summary/statistics",
-            iconText: "account_balance_wallet",
         },
         {
             name: "Events", // Planning des reunions !!!!!
@@ -217,6 +198,11 @@ export const getNavigations = async () => {
             name: "Memebers", // ONLY HIS CLUB'S MEMBERS !!!!!!
             path: "/summary/members",
             iconText: "M",
+        },
+        {
+            name: "Finances", // ONLY HIS CLUB'S MEMBERS !!!!!!
+            path: "/finances",
+            iconText: "F",
         },
         {
             name: "Statistics",

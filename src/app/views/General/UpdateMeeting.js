@@ -87,7 +87,6 @@ const UpdateMeeting = () => {
   };
 
   const {location, date, description } = state;
-  const formattedDate = new Date(state.date).toISOString().split("T")[0];
 
     return (
         <Container>
