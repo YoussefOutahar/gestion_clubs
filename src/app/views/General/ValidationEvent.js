@@ -123,6 +123,13 @@ const ValidationEvent = () => {
       console.error(error);
     }
   }
+  const handleClickDocument = () => {
+    if (document && document.length > 0) {
+      const docUrl = document[0].path;
+      console.log("path : ",docUrl);
+      window.open(docUrl, "_blank");
+    }
+  };
 
 if(notification){
     return (
@@ -136,10 +143,8 @@ if(notification){
               <p style={{ fontSize: "18px", marginBottom: "8px" }}>{notification[0].subtitle}</p>
               <p style={{ fontSize: "15px", marginBottom: "20px"}}>{notification[0].body}</p>
               {document && (
-                <StyledLinkWrapper>
-                <Link href={document[0].path} target="_blank" rel="noopener noreferrer" underline="none" color="inherit">
+                <StyledLinkWrapper  onClick={handleClickDocument}>
                 {docName}
-              </Link>
               </StyledLinkWrapper>
             )}
             
