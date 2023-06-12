@@ -8,6 +8,10 @@ import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import supabase from "../../DataBase/Clients/SupabaseClient";
 import { useNavigate } from "react-router-dom";
 import { AddMeeting } from "../../DataBase/Clients/MeetingsClient";
+import {addNotification, getNotificationById } from "../../DataBase/Clients/NotificationsClient";
+import { getCurrentUser,getUserMember } from "../../DataBase/Clients/UsersClient";
+import { getMembreClub } from "../../DataBase/Clients/MembersClient";
+
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -24,12 +28,23 @@ const Container = styled("div")(({ theme }) => ({
 
 const NewMeeting = () => {
     const navigate = useNavigate();
+    const [clubId, setClubId] = useState(null);
 
   const [state, setState] = useState({
     date: new Date(),
     description: "",
     location: ""
   });
+
+  useEffect(() => {
+    getCurrentUser().then((user) => {
+      getUserMember(user.id).then((member) => {
+        getMembreClub(member[0].id).then((club) => {
+          setClubId(club[0].id);
+        });
+      });
+    })
+  }, []);
 
   //TODO:
   const handleSubmit = async (event) => {
@@ -40,6 +55,21 @@ const NewMeeting = () => {
           Date: state.date,
           description: state.description,
           location: state.location,
+        },
+      )
+      await addNotification(
+        {
+          heading: "New meeting",
+          title: state.description,
+          subtitle: state.location,
+          timestamp: state.date,
+          body: " ",
+          icon: {
+            name: "Message",
+            color: "primary"
+          },
+          path: `none`,
+          id_club: clubId,
         },
       )
         navigate("/Meetings");
