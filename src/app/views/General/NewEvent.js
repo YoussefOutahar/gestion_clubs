@@ -8,6 +8,9 @@ import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import supabase from "../../DataBase/Clients/SupabaseClient";
 import { useNavigate } from "react-router-dom";
 import { addEvent,getEventByName } from "../../DataBase/Clients/EventsClient";
+import {addNotification, getNotificationById } from "../../DataBase/Clients/NotificationsClient";
+import { getCurrentUser,getUserMember } from "../../DataBase/Clients/UsersClient";
+import { getMembreClub } from "../../DataBase/Clients/MembersClient";
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -24,6 +27,17 @@ const Container = styled("div")(({ theme }) => ({
 
 const NewEvent = () => {
     const navigate = useNavigate();
+    const [clubId, setClubId] = useState(null);
+
+    useEffect(() => {
+      getCurrentUser().then((user) => {
+        getUserMember(user.id).then((member) => {
+          getMembreClub(member[0].id).then((club) => {
+            setClubId(club[0].id);
+          });
+        });
+      })
+    }, []);
 
   const [state, setState] = useState({
     date: new Date(),
@@ -36,6 +50,10 @@ const NewEvent = () => {
     event.preventDefault();
     if (selectedFile) {
         try {
+          const Name = state.name ;
+          const Date = state.date;
+          const Description = state.description;
+          const Location = state.location;
             setUploading(true);
             const { file, error } = await supabase.storage
                 .from("Documents")
@@ -47,31 +65,42 @@ const NewEvent = () => {
                 console.error("Error uploading file:", error);
             } else {
                 const fileUrl = "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Documents/" + selectedFile.name;
-                await addEvent(
+                {/*await addEvent(
                     {
                       Name: state.name, 
                       Date: state.date,
                       description: state.description,
                       Location: state.location,
-                    },);
-                    const eventid = await getEventByName(state.name);
-                    console.log( eventid )
-                const { data, error } = await supabase
-                    .from("Documents")
-                    .insert([
+                    },);*/}
+                const eventid = await getEventByName(state.name);
+                const { data, error } = await supabase.from("Documents").insert([
                         {
                             nom: `Fiche explicative ${state.name}`,
                             path: fileUrl,
                             id_activité : eventid.id,
                         },
                     ])
-
                 if (error) {
                     console.error(error);
                 } else {
                     console.log("Data inserted successfully:", data);
                 }
                 console.log("File uploaded and reference saved successfully.");
+                await addNotification(
+                  {
+                    heading: "Request",
+                    title: "Request new Event",
+                    subtitle: state.name,
+                    timestamp: state.date,
+                    body: `we want to make an event :${state.name}`,
+                    icon: {
+                      name: "Message",
+                      color: "primary"
+                    },
+                    path: `validationEvent/${Name}/${Date}/${Description}/${Location}`,
+                    id_club: clubId,
+                  },
+                )
                 navigate("/events");
             }
         } catch (error) {

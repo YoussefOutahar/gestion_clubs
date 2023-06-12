@@ -1,6 +1,6 @@
 import { Stack } from "@mui/material";
 import { Box, styled } from "@mui/system";
-import { Button, Grid, Icon, MenuItem } from "@mui/material";
+import { Button, Grid, Icon, Link } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "../../components";
 import { Span } from "../../components/Typography";
 import { useEffect, useState } from "react";
@@ -11,7 +11,8 @@ import { useNavigate } from "react-router-dom";
 import {addNotification, getNotificationById } from "../../DataBase/Clients/NotificationsClient";
 import { getCurrentUser,getUserMember } from "../../DataBase/Clients/UsersClient";
 import { getMembreClub } from "../../DataBase/Clients/MembersClient";
-import { getEventByName,updateEvent } from "../../DataBase/Clients/EventsClient";
+import { addEvent } from "../../DataBase/Clients/EventsClient";
+import { getDocByName } from "../../DataBase/Clients/DocumentsClient";
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -21,13 +22,17 @@ const Container = styled("div")(({ theme }) => ({
       [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
     },
   }));
+  const StyledLinkWrapper = styled("div")(({ theme }) => ({
+    marginBottom: "20px",
+  }));
 
-const ValidationPage = () => {
+const ValidationEvent = () => {
 
   const [notification, setNotification] = useState(null);
   const [clubId, setClubId] = useState(null);
+  const [document, setDocument] = useState(null);
   const navigate = useNavigate();
-  const { Cost, Event, notifId } = useParams();
+  const { Name, Date, Description, Location, notifId } = useParams();
 
   useEffect(() => {
     const fetchNotification = async () => {
@@ -50,13 +55,32 @@ const ValidationPage = () => {
       });
     })
   }, []);
+  const docName = `Fiche explicative ${Name}`;
+  console.log(docName);
+
+  useEffect(() => {
+    const fetchDocument = async () => {
+      const { url, error } = await getDocByName(docName);
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(url);
+        setDocument(url);
+      }
+    };
+
+    fetchDocument();
+  }, []);
+
+
+
 
   const handleRefuse = async () => {
     try {
     const {notification , error} = await addNotification(
       {
         heading: "Answer",
-        title: "Supplimentary budget refused",
+        title: `Event ${Name} refused`,
         subtitle: Event,
         timestamp: null,
         body: `your request is refused`,
@@ -79,7 +103,7 @@ const ValidationPage = () => {
       const {notification , error} = await addNotification(
         {
           heading: "Answer",
-          title: "Supplimentary budget accepted",
+          title: "Event accepted",
           subtitle: Event,
           timestamp: null,
           body: `your request is accepted`,
@@ -91,15 +115,9 @@ const ValidationPage = () => {
           id_club: clubId,
         },
       )
-      const event = await getEventByName(Event);
-    if (!event || event.length === 0) {
-      console.error("Event not found");
-      return;
-    }
 
-    const eventId = event[0].id;
-    await updateEvent(eventId,{Supp_budget: Cost});
-    console.log("Event updated successfully");
+    await addEvent({Name: Name, Date: Date, description: Description, Location: Location,});
+    console.log("Event added successfully");
        navigate("/finance");
     } catch (error) {
       console.error(error);
@@ -117,7 +135,13 @@ if(notification){
               <p style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "8px" }}>{notification[0].title}</p>
               <p style={{ fontSize: "18px", marginBottom: "8px" }}>{notification[0].subtitle}</p>
               <p style={{ fontSize: "15px", marginBottom: "20px"}}>{notification[0].body}</p>
-            
+              {document && (
+                <StyledLinkWrapper>
+                <Link href={document[0].path} target="_blank" rel="noopener noreferrer" underline="none" color="inherit">
+                {docName}
+              </Link>
+              </StyledLinkWrapper>
+            )}
             
                     <Button color="primary" variant="contained" type="submit" marginTop="20px" onClick={handleConfirm}>
                         <Icon>check-circle</Icon>
@@ -136,4 +160,4 @@ if(notification){
 }
 };
 
-export default ValidationPage;
+export default ValidationEvent;

@@ -12,6 +12,7 @@ const UpdateMeeting = Loadable(lazy(() => import("./UpdateMeeting")));
 const AdminClubsMembers = Loadable(lazy(() => import("./AdminClubsMembers")));
 const Statistics = Loadable(lazy(() => import("./statistics")));
 const ValidationPage = Loadable(lazy(() => import("./ValidationPage")));
+const ValidationEvent = Loadable(lazy(() => import("./ValidationEvent")));
 
 const generalRoutes = [
     {
@@ -55,8 +56,13 @@ const generalRoutes = [
         element: < Statistics />,
     },
     {
-        path: "/validationPage/:notifId",
+        path: "/validationPage/:Cost/:Event/:notifId",
         element: <ValidationPage/>
+    },
+    
+    {
+        path: "/validationEvent/:Name/:Date/:Description/:Location/:notifId",
+        element: <ValidationEvent/>
     }
 ];
 

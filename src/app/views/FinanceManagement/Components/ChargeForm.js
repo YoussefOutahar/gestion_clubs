@@ -74,7 +74,7 @@ const ChargeForm = () => {
                                 Name: state.eventName,
                                 Cost: state.totalCost,
                                 Earnings: state.Earning,
-                                Supp_budget: state.suppBudget,
+                                //Supp_budget: state.suppBudget,
                                 file_name: selectedFile.name,
                                 url: fileUrl,
                             },
@@ -173,7 +173,7 @@ const ChargeForm = () => {
                             validators={["required"]}
                         />
 
-                        <TextField
+                        {/*<TextField
                             type="text"
                             name="suppBudget"
                             value={suppBudget || ""}
@@ -181,7 +181,7 @@ const ChargeForm = () => {
                             onChange={handleChange}
                             validators={["required"]}
                             errorMessages={["this field is required"]}
-                        />
+                            />*/}
                         <Grid container direction="row" justifyContent="center" alignItems="center" gap={2}>
                             <input
                                 type="file"

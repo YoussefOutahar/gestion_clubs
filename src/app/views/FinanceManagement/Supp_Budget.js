@@ -7,6 +7,8 @@ import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import supabase from "../../DataBase/Clients/SupabaseClient";
 import { useNavigate } from "react-router-dom";
 import { addNotification ,getNotificationByIHeading } from "../../DataBase/Clients/NotificationsClient";
+import { getCurrentUser,getUserMember } from "../../DataBase/Clients/UsersClient";
+import { getMembreClub } from "../../DataBase/Clients/MembersClient";
 
 
 const Container = styled("div")(({ theme }) => ({
@@ -32,14 +34,17 @@ const Supp_Budget = () => {
     activities: [],
   });
 
-  {/*useEffect(() => {
-    ValidatorForm.addValidationRule("isInvoiceMatch", (value) => {
-      if (value !== state.Invoice) return false;
+  const [clubId, setClubId] = useState(null);
 
-      return true;
-    });
-    return () => ValidatorForm.removeValidationRule("isInvoiceMatch");
-  }, [state.Invoice]);*/}
+  useEffect(() => {
+    getCurrentUser().then((user) => {
+      getUserMember(user.id).then((member) => {
+        getMembreClub(member[0].id).then((club) => {
+          setClubId(club[0].id);
+        });
+      });
+    })
+  }, []);
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -64,6 +69,8 @@ const Supp_Budget = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      const Cost = state.totalCost ;
+      const Event = state.eventName;
       const {notification , error} = await addNotification(
         {
           heading: "Request",
@@ -75,7 +82,8 @@ const Supp_Budget = () => {
             name: "Message",
             color: "primary"
           },
-          path: 'validationPage'
+          path: `validationPage/${Cost}/${Event}`,
+          id_club: clubId,
         },
       )
        navigate("/finance");
