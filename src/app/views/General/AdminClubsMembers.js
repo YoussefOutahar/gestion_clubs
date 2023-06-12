@@ -22,39 +22,53 @@ import {
 } from "@mui/material";
 import { getAllProfiles, getUserMember} from "../../DataBase/Clients/UsersClient";
 import { getMembreClub , getEtudiant } from "../../DataBase/Clients/MembersClient";
+import { getCurrentUser } from "../../DataBase/Clients/UsersClient";
 
 const AdminClubsMembers = () => {
     const [users, setUsers] = useState([]);
     const [searchText, setSearchText] = useState("");
     const [filter, setFilter] = useState("all");
 
-    useEffect(() => {
+    useEffect(() => { 
         getAllProfiles().then((data) => {
             data.forEach(async (user) => {
                 getUserMember(user.id).then((member) => {
-                    if (member[0].role.toLowerCase() != "admin") {
-                        getMembreClub(member[0].id).then((club) => {
-                            getEtudiant(member[0].id_etd).then((etudiant) => {
-                                setUsers((users) => [
-                                    ...users,
-                                    {
-                                        id: user.id,
-                                        name: user.name,
-                                        email: user.email,
-                                        role: user.role,
-                                        club: club[0].nom,
-                                        phone: user.phone,
-                                        studyField: etudiant[0].filiere,
-                                        niveau: etudiant[0].niveau,
-                                    },
-                                ]);
-                            });
-                        });
-                    }
+                    getMembreClub(member[0].id).then((club) => {
+                        if (user.role.toLowerCase() != "admin") {
+                            setUsers((users) => [
+                                ...users,
+                                {
+                                    id: user.id,
+                                    name: user.name,
+                                    email: user.email,
+                                    role: member[0].role,
+                                    club: club[0].nom,
+                                    phone: user.phone,
+                                    filliere: user.filliere,
+                                    annee: user.annee,
+                                    bureau: "----",
+                                },
+                            ]);
+                        } else {
+                            setUsers((users) => [
+                                ...users,
+                                {
+                                    id: user.id,
+                                    name: user.name,
+                                    email: user.email,
+                                    role: member[0].role,
+                                    club: "----",
+                                    phone: user.phone,
+                                    filliere: "----",
+                                    annee: "----",
+                                    bureau: user.bureau,
+                                },
+                            ]);
+                        }
+                    });
                 });
             });
         });
-        console.log(users);
     }, []);
 
     const handleSearchChange = (event) => {
@@ -117,7 +131,11 @@ const AdminClubsMembers = () => {
                         <Select value={filter} onChange={handleFilterChange} label="Filter">
                             <MenuItem value="all">All</MenuItem>
                             <MenuItem value="admin">Admin</MenuItem>
-                            <MenuItem value="user">User</MenuItem>
+                            <MenuItem value="president">President</MenuItem>
+                            <MenuItem value="vice-president">Vice President</MenuItem>
+                            <MenuItem value="tresorier">Tresorier</MenuItem>
+                            <MenuItem value="secretaire">Secretaire</MenuItem>
+                            <MenuItem value="membre">Membre</MenuItem>
                             {/* Add more filter options here */}
                         </Select>
                     </FormControl>
@@ -133,7 +151,8 @@ const AdminClubsMembers = () => {
                             <TableCell>Club</TableCell>
                             <TableCell>Phone</TableCell>
                             <TableCell>Study Field</TableCell>
-                            <TableCell>Niveau</TableCell>
+                            <TableCell>Annee</TableCell>
+                            <TableCell>Bureau</TableCell>
                             <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
@@ -149,8 +168,9 @@ const AdminClubsMembers = () => {
                                         <TableCell>{user.role}</TableCell>
                                         <TableCell>{user.club}</TableCell>
                                         <TableCell>{user.phone}</TableCell>
-                                        <TableCell>{user.studyField}</TableCell>
-                                        <TableCell>{user.niveau}</TableCell>
+                                        <TableCell>{user.filliere}</TableCell>
+                                        <TableCell>{user.annee}</TableCell>
+                                        <TableCell>{user.bureau}</TableCell>
                                         <TableCell>
                                             <Button
                                                 variant="contained"

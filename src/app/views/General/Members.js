@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import { getAllProfiles, getUserMember} from "../../DataBase/Clients/UsersClient";
 import { getMembreClub , getEtudiant } from "../../DataBase/Clients/MembersClient";
+import { getCurrentUser } from "../../DataBase/Clients/UsersClient";
 
 const GestionMembers = () => {
     const [users, setUsers] = useState([]);
@@ -29,31 +30,33 @@ const GestionMembers = () => {
     const [filter, setFilter] = useState("all");
 
     useEffect(() => {
-        getAllProfiles().then((data) => {
-            data.forEach(async (user) => {
-                getUserMember(user.id).then((member) => {
-                    if (member[0].role.toLowerCase() != "admin") {
-                        getMembreClub(member[0].id).then((club) => {
-                            getEtudiant(member[0].id_etd).then((etudiant) => {
-                                setUsers((users) => [
-                                    ...users,
-                                    {
-                                        id: user.id,
-                                        name: user.name,
-                                        email: user.email,
-                                        role: user.role,
-                                        club: club[0].nom,
-                                        phone: user.phone,
-                                        studyField: etudiant[0].filiere,
-                                        niveau: etudiant[0].niveau,
-                                    },
-                                ]);
+        getCurrentUser().then((currentUser) => {
+            getUserMember(currentUser.id).then((currentUserMembre) => {
+                getAllProfiles().then((data) => {
+                    data.forEach(async (user) => {
+                        getUserMember(user.id).then((member) => {
+                            getMembreClub(member[0].id).then((club) => {
+                                if (user.role.toLowerCase() != "admin" && currentUserMembre[0].id_club == club[0].id) {
+                                    setUsers((users) => [
+                                        ...users,
+                                        {
+                                            id: user.id,
+                                            name: user.name,
+                                            email: user.email,
+                                            role: member[0].role,
+                                            club: club[0].nom,
+                                            phone: user.phone,
+                                            filliere: user.filliere,
+                                            annee: user.annee,
+                                        },
+                                    ]);
+                                }
                             });
                         });
-                    }
+                    });
                 });
             });
-        });
+        }); 
     }, []);
 
     const handleSearchChange = (event) => {
@@ -132,8 +135,7 @@ const GestionMembers = () => {
                             <TableCell>Club</TableCell>
                             <TableCell>Phone</TableCell>
                             <TableCell>Study Field</TableCell>
-                            <TableCell>Niveau</TableCell>
-                            <TableCell>Actions</TableCell>
+                            <TableCell>Annee</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -149,26 +151,7 @@ const GestionMembers = () => {
                                         <TableCell>{user.club}</TableCell>
                                         <TableCell>{user.phone}</TableCell>
                                         <TableCell>{user.studyField}</TableCell>
-                                        <TableCell>{user.niveau}</TableCell>
-                                        <TableCell>
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                size="small"
-                                                style={{ marginRight: "8px" }}
-                                                onClick={() => handleEdit(user)}
-                                            >
-                                                Edit
-                                            </Button>
-                                            <Button
-                                                variant="contained"
-                                                color="secondary"
-                                                size="small"
-                                                onClick={() => handleDelete(user)}
-                                            >
-                                                Delete
-                                            </Button>
-                                        </TableCell>
+                                        <TableCell>{user.annee}</TableCell>
                                     </TableRow>
                                 )
                         )}

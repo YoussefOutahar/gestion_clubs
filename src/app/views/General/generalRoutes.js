@@ -12,6 +12,7 @@ const UpdateMeeting = Loadable(lazy(() => import("./UpdateMeeting")));
 const AdminClubsMembers = Loadable(lazy(() => import("./AdminClubsMembers")));
 const Statistics = Loadable(lazy(() => import("./statistics")));
 const ValidationPage = Loadable(lazy(() => import("./ValidationPage")));
+const MyCLub = Loadable(lazy(() => import("./MyClubPage")));
 
 const generalRoutes = [
     {
@@ -57,6 +58,10 @@ const generalRoutes = [
     {
         path: "/validationPage/:notifId",
         element: <ValidationPage/>
+    },
+    {
+        path: "/UserClub",
+        element: <MyCLub/>
     }
 ];
 

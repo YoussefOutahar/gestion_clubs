@@ -8,6 +8,9 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { getMeetings,deleteMeeting } from '../../DataBase/Clients/MeetingsClient';
 import {styled,Box,Button} from "@mui/material";
 
+import { getMembreByProfile } from "../../DataBase/Clients/MembersClient";
+import { getCurrentUser ,getProfileById } from "../../DataBase/Clients/UsersClient";
+
 const StyledButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(1),
 }));
@@ -22,15 +25,27 @@ const Meetings = () => {
   const [searchDate, setSearchDate] = useState(null);
   const [searchClub, setSearchClub] = useState('');
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [role, setRole] = useState("");
 
   useEffect(() => {
-  const fetchEvents = async () => {
-    const fetchedEvents = await getMeetings();
-    if (fetchedEvents) {
-      setEvents(fetchedEvents);
-    }
-  };
-  fetchEvents();
+    getMeetings().then((res) => {
+      getCurrentUser().then((user) => {
+        getProfileById(user.id).then((profile) => {
+          setRole(profile[0].role);
+          if(profile[0].role == "admin"){
+            setEvents(res);
+           } else {
+            getMembreByProfile(user.id).then((member) => {
+              res.forEach((event) => {
+                if (event.id_club == member[0].id_club) {
+                  setEvents((events) => [...events, event]);
+                }
+              });
+            });
+          }
+        });
+      });
+    });
 }, []);
 
   const handleSearchDateChange = (date) => {
@@ -114,9 +129,14 @@ const Meetings = () => {
               <input id="search-date" type="date" value={searchDate} onChange={(e) => handleSearchDateChange(e.target.value)} />
             </div>
             <Box display="flex" justifyContent="space-between" alignItems="center">
-            <StyledButton variant="contained" color="secondary" href="/new_meeting">
-                New meeting
-            </StyledButton>
+            {role == "admin" ? (
+              <StyledButton variant="contained" color="secondary" href="/new_meeting">
+              New meeting
+          </StyledButton>
+            ) : (
+              <></>  
+            )
+            }
             </Box>
           </div>
           <div className="calendar-container">

@@ -51,6 +51,8 @@ const Account = () => {
                                     avatar: profile[0].avatar,
                                     phone: profile[0].phone,
                                     club: club[0].nom,
+                                    filliere: profile[0].filliere,
+                                    annee: profile[0].annee,
                                 },
                             ]);
                             setProfile(profile[0]);
@@ -58,6 +60,19 @@ const Account = () => {
                             setClub(club[0]);
                         });
                     });
+                } else {
+                    setUser([
+                        {
+                            id: profile[0].id,
+                            role: profile[0].role,
+                            name: profile[0].name,
+                            email: currentUser.email,
+                            avatar: profile[0].avatar,
+                            phone: profile[0].phone,
+                            bureau: profile[0].bureau,
+                        },
+                    ]);
+                    setProfile(profile[0]);
                 }
             });
         });
@@ -68,10 +83,11 @@ const Account = () => {
     const initialValues = {
         role: "",
         name: "",
-        email: "",
         phone: "",
         club: "",
-        password: "",
+        filliere: "",
+        annee: "",
+        bureau: "",
     };
 
     //Opening Dialogs
@@ -86,45 +102,71 @@ const Account = () => {
 
     //logic of the dialogs
     const handleEditFormSubmit = async (values) => {
+        console.log(values);
         try {
-            const { file, error } = await supabase.storage
-                .from("Avatars")
-                .upload(selectedFile.name, selectedFile);
-            if (error) {
-                console.error("Error uploading file:", error.message);
-            } else {
-                const fileUrl =
-                    "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Avatars/" +
-                    selectedFile.name;
-                const { role, name, email, phone, club, password, filliere, annee } = values;
-                // Update email
-                await supabase.auth.update({ id: user.id, email: email });
-
-                // Update password
-                await supabase.auth.update({ id: user.id, password: password });
-
-                await updateProfile(profile.id, {
-                    role: "user",
-                    name: name,
-                    avatar: selectedFile ? fileUrl : profile.avatar,
-                    phone: phone,
-                    filliere: filliere,
-                    annee: annee,
-                    email: email,
-                });
-                await updateMembre(member.id, {
-                    role: role,
-                });
+            if (user[0].role == "admin") {
+                console.log("admin");
+                const { error } = await supabase.storage
+                    .from("Avatars")
+                    .upload(selectedFile.name, selectedFile);
                 if (error) {
-                    console.error(error);
+                    console.error("Error uploading file:", error.message);
                 } else {
-                    console.log("Data inserted successfully");
+                    const fileUrl =
+                        "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Avatars/" +
+                        selectedFile.name;
+                    const { role, name, phone, club, filliere, annee, bureau } = values;
+
+                    await updateProfile(profile.id, {
+                        role: "admin",
+                        name: name,
+                        phone: phone,
+                        avatar: selectedFile ? fileUrl : profile.avatar,
+                        bureau: bureau,
+                    });
+                    if (error) {
+                        console.error(error);
+                    } else {
+                        console.log("Data inserted successfully");
+                    }
+                    console.log("File uploaded and reference saved successfully.");
                 }
-                console.log("File uploaded and reference saved successfully.");
+            } else {
+                console.log("user");
+                const { error } = await supabase.storage
+                    .from("Avatars")
+                    .upload(selectedFile.name, selectedFile);
+                if (error) {
+                    console.error("Error uploading file:", error.message);
+                } else {
+                    const fileUrl =
+                        "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Avatars/" +
+                        selectedFile.name;
+                    const { role, name, phone, club, filliere, annee } = values;
+
+                    await updateProfile(profile.id, {
+                        role: "user",
+                        name: name,
+                        avatar: selectedFile ? fileUrl : profile.avatar,
+                        phone: phone,
+                        filliere: filliere,
+                        annee: annee,
+                    });
+                    await updateMembre(member.id, {
+                        role: role,
+                    });
+                    if (error) {
+                        console.error(error);
+                    } else {
+                        console.log("Data inserted successfully");
+                    }
+                    console.log("File uploaded and reference saved successfully.");
+                }
             }
         } catch (e) {
             console.log(e);
         }
+        setOpenEditDialog(false);
     };
 
     //fileUpload
@@ -135,7 +177,7 @@ const Account = () => {
         setSelectedFile(event.target.files[0]);
     };
 
-    if (user && profile && member && club) {
+    if (user && profile) {
         return (
             <>
                 <SimpleCard style={{ margin: "20px" }}>
@@ -143,7 +185,7 @@ const Account = () => {
                         <Grid item>
                             <Avatar
                                 alt={user[0].name}
-                                src="/path-to-profile-picture.jpg"
+                                src={user[0].avatar}
                                 sx={{ width: 120, height: 120, margin: "2%" }}
                             />
                         </Grid>
@@ -154,18 +196,32 @@ const Account = () => {
                     <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
                         <Typography>Email: {user[0].email}</Typography>
                     </Box>
+                    {user[0].role.toLowerCase() != "admin" ? (
+                        <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
+                            <Typography>Club: {user[0].club}</Typography>
+                        </Box>
+                    ) : null}
                     <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
-                        <Typography>Club: {user[0].club}</Typography>
-                    </Box>
-                    <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
-                        <Typography>Club: {user[0].role}</Typography>
+                        <Typography>Role: {user[0].role}</Typography>
                     </Box>
                     <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
                         <Typography>Phone: {user[0].phone}</Typography>
                     </Box>
-                    <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
-                        <Typography>Niveau: {user[0].niveau}</Typography>
-                    </Box>
+                    {user[0].role.toLowerCase() != "admin" ? (
+                        <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
+                            <Typography>Filliere: {user[0].filliere}</Typography>
+                        </Box>
+                    ) : null}
+                    {user[0].role.toLowerCase() != "admin" ? (
+                        <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
+                            <Typography>Annee: {user[0].annee}</Typography>
+                        </Box>
+                    ) : null}
+                    {user[0].role.toLowerCase() == "admin" ? (
+                        <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
+                            <Typography>Bureau: {user[0].bureau}</Typography>
+                        </Box>
+                    ) : null}
                     <Fab
                         color="primary"
                         aria-label="Edit"
@@ -176,16 +232,16 @@ const Account = () => {
                     </Fab>
                 </SimpleCard>
                 <Dialog open={openEditDialog} onClose={handleClose}>
+                    <DialogTitle>Edit User</DialogTitle>
                     <Formik
                         validationSchema={validationSchema}
                         onSubmit={handleEditFormSubmit}
                         initialValues={initialValues}
                     >
-                        {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
+                        {({ values, errors, touched, handleChange, handleBlur, handleSubmit , submitForm}) => (
                             <form onSubmit={handleSubmit}>
-                                <DialogTitle>Edit User</DialogTitle>
                                 <DialogContent>
-                                    <Grid container spacing={2}>
+                                    <Grid container spacing={2} marginTop={2}>
                                         <TextField
                                             fullWidth
                                             size="small"
@@ -200,34 +256,20 @@ const Account = () => {
                                             error={Boolean(errors.name && touched.name)}
                                             sx={{ mb: 3 }}
                                         />
-                                        <TextField
-                                            fullWidth
-                                            size="small"
-                                            type="email"
-                                            name="email"
-                                            label="Email"
-                                            variant="outlined"
-                                            onBlur={handleBlur}
-                                            value={values.email}
-                                            onChange={handleChange}
-                                            helperText={touched.email && errors.email}
-                                            error={Boolean(errors.email && touched.email)}
-                                            sx={{ mb: 3 }}
-                                        />
-                                        <TextField
-                                            fullWidth
-                                            size="small"
-                                            name="password"
-                                            type="password"
-                                            label="Password"
-                                            variant="outlined"
-                                            onBlur={handleBlur}
-                                            value={values.password}
-                                            onChange={handleChange}
-                                            helperText={touched.password && errors.password}
-                                            error={Boolean(errors.password && touched.password)}
-                                            sx={{ mb: 2 }}
-                                        />
+                                        {user[0].role.toLowerCase() != "admin" ? (
+                                            <TextField
+                                                fullWidth
+                                                size="small"
+                                                name="role"
+                                                type="text"
+                                                label="Role"
+                                                variant="outlined"
+                                                onBlur={handleBlur}
+                                                value={values.role}
+                                                onChange={handleChange}
+                                                sx={{ mb: 2 }}
+                                            />
+                                        ) : null}
                                         <TextField
                                             fullWidth
                                             size="small"
@@ -240,30 +282,62 @@ const Account = () => {
                                             onChange={handleChange}
                                             sx={{ mb: 2 }}
                                         />
-                                        <TextField
-                                            fullWidth
-                                            size="small"
-                                            name="filliere"
-                                            type="text"
-                                            label="Filliere"
-                                            variant="outlined"
-                                            onBlur={handleBlur}
-                                            value={values.filliere}
-                                            onChange={handleChange}
-                                            sx={{ mb: 2 }}
-                                        />
-                                        <TextField
-                                            fullWidth
-                                            size="small"
-                                            name="annee"
-                                            type="text"
-                                            label="Annee"
-                                            variant="outlined"
-                                            onBlur={handleBlur}
-                                            value={values.annee}
-                                            onChange={handleChange}
-                                            sx={{ mb: 2 }}
-                                        />
+                                        {user[0].role.toLowerCase() != "admin" ? (
+                                            <TextField
+                                                fullWidth
+                                                size="small"
+                                                name="filliere"
+                                                type="text"
+                                                label="Filliere"
+                                                variant="outlined"
+                                                onBlur={handleBlur}
+                                                value={values.filliere}
+                                                onChange={handleChange}
+                                                sx={{ mb: 2 }}
+                                            />
+                                        ) : null}
+                                        {user[0].role.toLowerCase() != "admin" ? (
+                                            <TextField
+                                                fullWidth
+                                                size="small"
+                                                name="annee"
+                                                type="text"
+                                                label="Annee"
+                                                variant="outlined"
+                                                onBlur={handleBlur}
+                                                value={values.annee}
+                                                onChange={handleChange}
+                                                sx={{ mb: 2 }}
+                                            />
+                                        ) : null}
+                                        {user[0].role.toLowerCase() != "admin" ? (
+                                            <TextField
+                                                fullWidth
+                                                size="small"
+                                                name="club"
+                                                type="text"
+                                                label="Club"
+                                                variant="outlined"
+                                                onBlur={handleBlur}
+                                                value={values.club}
+                                                onChange={handleChange}
+                                                sx={{ mb: 2 }}
+                                            />
+                                        ) : null}
+                                        {user[0].role.toLowerCase() == "admin" ? (
+                                            <TextField
+                                                fullWidth
+                                                size="small"
+                                                name="bureau"
+                                                type="text"
+                                                label="Bureau"
+                                                variant="outlined"
+                                                onBlur={handleBlur}
+                                                value={values.bureau}
+                                                onChange={handleChange}
+                                                sx={{ mb: 2 }}
+                                            />
+                                        ) : null}
                                         <input
                                             type="file"
                                             onChange={handleFileChange}
@@ -289,11 +363,9 @@ const Account = () => {
                                     </Grid>
                                 </DialogContent>
                                 <DialogActions>
-                                    <Button onClick={handleClose} color="secondary">
-                                        Cancel
-                                    </Button>
-                                    <Button color="primary" type="submit">
-                                        Save
+                                    <Button onClick={handleClose}>Cancel</Button>
+                                    <Button color="primary" onClick={submitForm}>
+                                        <input type="submit" value="Save" />
                                     </Button>
                                 </DialogActions>
                             </form>

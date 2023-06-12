@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { Span } from '../../../components/Typography';
 import NotificationBar from '../../NotificationBar/NotificationBar';
 import ShoppingCart from '../../ShoppingCart';
+import { NavLink } from 'react-router-dom';
 
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
@@ -101,30 +102,16 @@ const Layout1Topbar = () => {
           <StyledIconButton onClick={handleSidebarToggle}>
             <Icon>menu</Icon>
           </StyledIconButton>
-
-          <IconBox>
-            <StyledIconButton>
-              <Icon>mail_outline</Icon>
-            </StyledIconButton>
-
-            <StyledIconButton>
-              <Icon>web_asset</Icon>
-            </StyledIconButton>
-
-            <StyledIconButton>
-              <Icon>star_outline</Icon>
-            </StyledIconButton>
-          </IconBox>
         </Box>
 
         <Box display="flex" alignItems="center">
-          <MatxSearchBox />
+          {/* <MatxSearchBox /> */}
 
           <NotificationProvider>
             <NotificationBar />
           </NotificationProvider>
 
-          <ShoppingCart />
+          {/* <ShoppingCart /> */}
 
           <MatxMenu
             menuButton={
@@ -146,7 +133,7 @@ const Layout1Topbar = () => {
             </StyledItem>
 
             <StyledItem>
-              <Link to="/page-layouts/user-profile">
+              <Link to="/Account">
                 <Icon> person </Icon>
                 <Span> Profile </Span>
               </Link>

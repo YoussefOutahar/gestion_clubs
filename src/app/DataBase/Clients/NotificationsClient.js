@@ -37,3 +37,4 @@ export const updateNotification = async (id, notification) => {
     const { data, error } = await supabase.from('Notifications').update(notification).match({ id });
     return { data, error };
 }
+
