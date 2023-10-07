@@ -223,28 +223,30 @@ export const getNavigations = async () => {
         },
     ];
 
-    if (user) {
-        if (user.user_metadata["role"] === "admin") {
-            return adminNavigations;
-        } else if (user.user_metadata["role"] === "user") {
-            member = member[0];
-            if (member.role.toLowerCase() === "president" || member.role.toLowerCase() === "vice-president") {
-                console.log("president");
-                return presidentNavigations;
-            }
-            if (member.role.toLowerCase() === "secretaire") {
-                console.log("secretaire");
-                return secretaireNavigations;
-            }
-            if (member.role.toLowerCase() === "tresorier") {
-                console.log("tresorier");
-                return tresorierNavigations;
-            }
-            if (member.role.toLowerCase() === "adherant") {
-                console.log("adherant");
-                return memberNavigations;
-            }
-            return memberNavigations;
-        }
-    }
+    // if (user) {
+    //     if (user.user_metadata["role"] === "admin") {
+    //         return adminNavigations;
+    //     } else if (user.user_metadata["role"] === "user") {
+    //         member = member[0];
+    //         if (member.role.toLowerCase() === "president" || member.role.toLowerCase() === "vice-president") {
+    //             console.log("president");
+    //             return presidentNavigations;
+    //         }
+    //         if (member.role.toLowerCase() === "secretaire") {
+    //             console.log("secretaire");
+    //             return secretaireNavigations;
+    //         }
+    //         if (member.role.toLowerCase() === "tresorier") {
+    //             console.log("tresorier");
+    //             return tresorierNavigations;
+    //         }
+    //         if (member.role.toLowerCase() === "adherant") {
+    //             console.log("adherant");
+    //             return memberNavigations;
+    //         }
+    //         return memberNavigations;
+    //     }
+    // }
+
+    return [{ label: "Admin", type: "label" },...adminNavigations,{ label: "Member", type: "label" },...memberNavigations,{ label: "President", type: "label" },...presidentNavigations,{ label: "Secretqire", type: "label" },...secretaireNavigations,{ label: "flous", type: "label" },...tresorierNavigations];
 };
