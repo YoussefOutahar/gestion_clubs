@@ -99,6 +99,7 @@ function NavBar() {
                 <Link to="/" style={linkStyle}>Recherche</Link>
                 <Link to="/" style={linkStyle}>Internationale</Link>
                 <Link to="/" style={linkStyle}>Vie dans le compus</Link>
+                <Link to="/Createclub" style={linkStyle}>Creer un club</Link>
             </NavUnlisted>
             </>
             <Spacer />
