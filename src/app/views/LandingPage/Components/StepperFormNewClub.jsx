@@ -88,7 +88,7 @@ function FormFields() {
           Full Name :
         </label>
         <input
-          placeholder="Enter your full name"
+          placeholder="Enter full name"
           type="text"
           id="fullName"
           style={{ ...inputGroup, ...inputStyle }}
@@ -98,7 +98,7 @@ function FormFields() {
           Field :
         </label>
         <input
-          placeholder="Enter your field"
+          placeholder="Enter field"
           type="text"
           id="field"
           style={{ ...inputGroup, ...inputStyle }}
@@ -108,7 +108,7 @@ function FormFields() {
           Year :
         </label>
         <input
-          placeholder="Enter your year"
+          placeholder="Enter year"
           type="number"
           id="year"
           style={{ ...inputGroup, ...inputStyle }}
@@ -118,7 +118,7 @@ function FormFields() {
           Phone :
         </label>
         <input
-          placeholder="Enter your phone number"
+          placeholder="Enter phone number"
           type="text"
           id="phone"
           style={{ ...inputGroup, ...inputStyle }}
@@ -128,7 +128,7 @@ function FormFields() {
           Email :
         </label>
         <input
-          placeholder="Enter your email address"
+          placeholder="Enter email address"
           type="email"
           id="email"
           style={{ ...inputGroup, ...inputStyle }}
@@ -138,7 +138,7 @@ function FormFields() {
   );
 }
 
-function getStepContent(stepIndex, textareaHeight, handleTextareaChange, handleImageUpload) {
+function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleImageUpload) {
   switch (stepIndex) {
     case 0:
       return (
@@ -173,7 +173,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange, handleI
               style={{ ...inputGroup, ...textareaStyle, height: textareaHeight, minHeight: "100px" }}
               onChange={handleTextareaChange}
             />
-            <label htmlFor="image" style={{ ...h5Style }}>
+             <label htmlFor="image" style={{ ...h5Style }}>
               Upload Club's logo:
             </label>
             <input
@@ -194,7 +194,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange, handleI
             Full Name :
           </label>
           <input
-            placeholder="Enter your full name"
+            placeholder="Enter full name"
             type="text"
             id="fullName"
             style={{ ...inputGroup, ...inputStyle }}
@@ -204,7 +204,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange, handleI
             Function :
           </label>
           <input
-            placeholder="Enter your field and year"
+            placeholder="Enter function"
             type="text"
             id="function"
             style={{ ...inputGroup, ...inputStyle }}
@@ -214,7 +214,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange, handleI
             Phone :
           </label>
           <input
-            placeholder="Enter your phone number"
+            placeholder="Enter phone number"
             type="text"
             id="phone"
             style={{ ...inputGroup, ...inputStyle }}
@@ -224,7 +224,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange, handleI
             Email :
           </label>
           <input
-            placeholder="Enter your email address"
+            placeholder="Enter email address"
             type="email"
             id="email"
             style={{ ...inputGroup, ...inputStyle }}
@@ -243,15 +243,11 @@ export default function StepperForm() {
   const [textareaHeight, setTextareaHeight] = useState("auto");
   const [selectedImage, setSelectedImage] = useState(null);
 
-
   const handleNext = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
   const handleBack = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
 
-  const handleReset = () => {
-    setActiveStep(0);
-    setSelectedImage(null); // Reset selected image
-  };
+  const handleReset = () => setActiveStep(0);
 
   const handleTextareaChange = (event) => {
     event.target.style.height = "auto";
@@ -292,7 +288,7 @@ export default function StepperForm() {
         ) : (
           <Box>
             <Typography>
-              {getStepContent(activeStep, textareaHeight, handleTextareaChange, handleImageUpload)}
+              {getStepContent(activeStep, textareaHeight, handleTextareaChange,handleImageUpload)}
             </Typography>
 
             <Box pt={2}>

@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import supabase from "../../DataBase/Clients/SupabaseClient";
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import StepperForm from "./Components/StepperFormNewClub";
-
 //import '../../Resources/authStyle.css';
 
 
@@ -14,9 +13,6 @@ function Createclub() {
     }
 
     const navigate = useNavigate();
-
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
 
 
           const mainRegister = {
