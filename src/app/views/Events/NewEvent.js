@@ -7,10 +7,10 @@ import { useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import supabase from "../../DataBase/Clients/SupabaseClient";
 import { useNavigate } from "react-router-dom";
-import { addEvent,getEventByName } from "../../DataBase/Clients/EventsClient";
-import {addNotification, getNotificationById } from "../../DataBase/Clients/NotificationsClient";
-import { getCurrentUser,getUserMember } from "../../DataBase/Clients/UsersClient";
-import { getMembreClub } from "../../DataBase/Clients/MembersClient";
+import { addEvent,getEventByName } from "../../DataBase/services/EventsService";
+import {addNotification, getNotificationById } from "../../DataBase/services/NotificationsService";
+import { getCurrentUser,getUserMember } from "../../DataBase/services/UsersService";
+import { getMembreClub } from "../../DataBase/services/MembersService";
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",

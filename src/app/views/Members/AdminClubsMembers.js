@@ -20,43 +20,57 @@ import {
     DialogActions,
     DialogContentText,
 } from "@mui/material";
-import { getAllProfiles, getUserMember} from "../../DataBase/Clients/UsersClient";
-import { getMembreClub , getEtudiant } from "../../DataBase/Clients/MembersClient";
-import { getCurrentUser } from "../../DataBase/Clients/UsersClient";
+import { getAllProfiles, getUserMember} from "../../DataBase/services/UsersService";
+import { getMembreClub , getEtudiant } from "../../DataBase/services/MembersService";
 
-const GestionMembers = () => {
+const AdminClubsMembers = () => {
     const [users, setUsers] = useState([]);
     const [searchText, setSearchText] = useState("");
     const [filter, setFilter] = useState("all");
 
-    useEffect(() => {
-        getCurrentUser().then((currentUser) => {
-            getUserMember(currentUser.id).then((currentUserMembre) => {
-                getAllProfiles().then((data) => {
-                    data.forEach(async (user) => {
-                        getUserMember(user.id).then((member) => {
-                            getMembreClub(member[0].id).then((club) => {
-                                if (user.role.toLowerCase() != "admin" && currentUserMembre[0].id_club == club[0].id) {
-                                    setUsers((users) => [
-                                        ...users,
-                                        {
-                                            id: user.id,
-                                            name: user.name,
-                                            email: user.email,
-                                            role: member[0].role,
-                                            club: club[0].nom,
-                                            phone: user.phone,
-                                            filliere: user.filliere,
-                                            annee: user.annee,
-                                        },
-                                    ]);
-                                }
-                            });
-                        });
+    useEffect(() => { 
+        getAllProfiles().then((data) => {
+            console.log(data);
+            data.forEach((user) => {
+                getUserMember(user.id).then((member) => {
+                    console.log(member);
+                    getMembreClub(member[0].id).then((club) => {
+                        console.log(club);
+                        if (user.role.toLowerCase() != "admin") {
+                            setUsers((users) => [
+                                ...users,
+                                {
+                                    id: user.id,
+                                    name: user.name,
+                                    email: user.email,
+                                    role: member[0].role,
+                                    club: club[0].nom,
+                                    phone: user.phone,
+                                    filliere: user.filliere,
+                                    annee: user.annee,
+                                    bureau: "----",
+                                },
+                            ]);
+                        } else {
+                            setUsers((users) => [
+                                ...users,
+                                {
+                                    id: user.id,
+                                    name: user.name,
+                                    email: user.email,
+                                    role: member[0].role,
+                                    club: "----",
+                                    phone: user.phone,
+                                    filliere: "----",
+                                    annee: "----",
+                                    bureau: user.bureau,
+                                },
+                            ]);
+                        }
                     });
                 });
             });
-        }); 
+        });
     }, []);
 
     const handleSearchChange = (event) => {
@@ -119,7 +133,11 @@ const GestionMembers = () => {
                         <Select value={filter} onChange={handleFilterChange} label="Filter">
                             <MenuItem value="all">All</MenuItem>
                             <MenuItem value="admin">Admin</MenuItem>
-                            <MenuItem value="user">User</MenuItem>
+                            <MenuItem value="president">President</MenuItem>
+                            <MenuItem value="vice-president">Vice President</MenuItem>
+                            <MenuItem value="tresorier">Tresorier</MenuItem>
+                            <MenuItem value="secretaire">Secretaire</MenuItem>
+                            <MenuItem value="membre">Membre</MenuItem>
                             {/* Add more filter options here */}
                         </Select>
                     </FormControl>
@@ -136,6 +154,8 @@ const GestionMembers = () => {
                             <TableCell>Phone</TableCell>
                             <TableCell>Study Field</TableCell>
                             <TableCell>Annee</TableCell>
+                            <TableCell>Bureau</TableCell>
+                            <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -150,8 +170,28 @@ const GestionMembers = () => {
                                         <TableCell>{user.role}</TableCell>
                                         <TableCell>{user.club}</TableCell>
                                         <TableCell>{user.phone}</TableCell>
-                                        <TableCell>{user.studyField}</TableCell>
+                                        <TableCell>{user.filliere}</TableCell>
                                         <TableCell>{user.annee}</TableCell>
+                                        <TableCell>{user.bureau}</TableCell>
+                                        <TableCell>
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                size="small"
+                                                style={{ marginRight: "8px" }}
+                                                onClick={() => handleEdit(user)}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                variant="contained"
+                                                color="secondary"
+                                                size="small"
+                                                onClick={() => handleDelete(user)}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </TableCell>
                                     </TableRow>
                                 )
                         )}
@@ -207,4 +247,4 @@ const GestionMembers = () => {
     );
 };
 
-export default GestionMembers;
+export default AdminClubsMembers;

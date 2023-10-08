@@ -1,4 +1,4 @@
-import supabase from "./SupabaseClient";
+import supabase from "../Clients/SupabaseClient";
 
 export const signUp = async (email, password,role,name,phone,avatar) => {
     const { user, session, error } = await supabase.auth.signUp({

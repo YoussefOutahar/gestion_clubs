@@ -1,5 +1,5 @@
-import { getClub } from "./ClubsClient";
-import supabase from "./SupabaseClient";
+import { getClub } from "./ClubsService";
+import supabase from "../Clients/SupabaseClient";
 
 export const getMembres = async () => {
     let { data: Membres, error } = await supabase.from("Membre").select("*");

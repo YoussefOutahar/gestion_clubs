@@ -1,92 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
+import {styled,Box,Button} from "@mui/material";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { getMeetings,deleteMeeting } from '../../DataBase/Clients/MeetingsClient';
-import {styled,Box,Button} from "@mui/material";
+import { getEvents , getEventClub } from '../../DataBase/services/EventsService';
 
-import { getMembreByProfile } from "../../DataBase/Clients/MembersClient";
-import { getCurrentUser ,getProfileById } from "../../DataBase/Clients/UsersClient";
-
+const localizer = momentLocalizer(moment);
 const StyledButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(1),
 }));
 
-const localizer = momentLocalizer(moment);
-
-const Meetings = () => {
+const Events = () => {
   
   const [events, setEvents] = useState([]);
+  const [club , setClub] = useState([]);
 
   
   const [searchDate, setSearchDate] = useState(null);
-  const [searchClub, setSearchClub] = useState('');
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [role, setRole] = useState("");
 
   useEffect(() => {
-    getMeetings().then((res) => {
-      getCurrentUser().then((user) => {
-        getProfileById(user.id).then((profile) => {
-          setRole(profile[0].role);
-          if(profile[0].role == "admin"){
-            setEvents(res);
-           } else {
-            getMembreByProfile(user.id).then((member) => {
-              res.forEach((event) => {
-                if (event.id_club == member[0].id_club) {
-                  setEvents((events) => [...events, event]);
-                }
-              });
-            });
-          }
-        });
-      });
-    });
+  const fetchEvents = async () => {
+    const fetchedEvents = await getEvents();
+    if (fetchedEvents) {
+      setEvents(fetchedEvents);
+    }
+  };
+  fetchEvents();
 }, []);
+
+useEffect(() => {
+  const fetchSelectedClub = async () => {
+    if(selectedEvent != null) {
+      let eventClub = await getEventClub(selectedEvent.id);
+    console.log(eventClub)
+    setClub(eventClub)
+    console.log(club)
+    }
+  }
+
+  fetchSelectedClub();
+}, [selectedEvent]);
 
   const handleSearchDateChange = (date) => {
     setSearchDate(date);
-  };
-
-  const handleSearchClubChange = (event) => {
-    setSearchClub(event.target.value);
   };
 
   const handleEventSelect = async (event) => {
     setSelectedEvent(event);
   };
 
-  const handleDeleteMeeting = async () => {
-    if (selectedEvent !== null) {
-      const confirmation = window.confirm('Are you sure you want to delete this club?');
-      if (confirmation) {
-        const { id } = selectedEvent;
-      console.log("Deleting meeting:", selectedEvent);
-      await deleteMeeting(id);
-        setSelectedEvent(null);
-      }
-    }
-  };
-
   const filteredEvents = events.filter((event) => {
-    const eventDate = moment(event.start).startOf('day');
+    const eventDate = moment(event.Date).startOf('day');
     const searchDateFormatted = searchDate ? moment(searchDate).startOf('day') : null;
 
     const isMatchedDate = searchDateFormatted ? eventDate.isSame(searchDateFormatted) : true;
-    const isMatchedClub = searchClub ? event.club.toLowerCase().includes(searchClub.toLowerCase()) : true;
 
-    return isMatchedDate && isMatchedClub;
+    return isMatchedDate;
   });
 
   const eventComponents = filteredEvents.map((event) => {
     return {
       ...event,
-      start: moment(event.start).toDate(),
-      end: moment(event.end).toDate(),
+      start: moment(event.Date).toDate(),
+      end: moment(event.Date).toDate(),
     };
   });
 
@@ -96,47 +75,27 @@ const Meetings = () => {
         <>
           <h2>Event's Details</h2>
           <div className="event-details">
-            <button className="back-button" onClick={() => setSelectedEvent(null)}>
+            <button className="back-button" onClick={() => setSelectedEvent(false)}>
               <FontAwesomeIcon icon={faArrowLeft} />
             </button>
-            {/*<h3>{selectedEvent.Name}</h3>*/}
-            <p>Location: {selectedEvent.location}</p>
+            <h3>{selectedEvent.Name}</h3>
+            {/* <p>Club: {club[0].name}</p> */}
+            <p>Location: {selectedEvent.Location}</p>
             <p>Description: {selectedEvent.description}</p>
-            <div>
-          {/*<button className="delete-club-button" onClick={handleDeleteMeeting}>
-            Delete Club
-      </button>*/}
-          <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Link to={`/update_meeting/${selectedEvent.id}`}>
-          <StyledButton variant="contained" color="inherit" >
-                Edit
-            </StyledButton>
-            </Link>
-            <StyledButton variant="contained" color="secondary" onClick={handleDeleteMeeting}>
-                Delete
-            </StyledButton>
-            </Box>
-        </div>
-
           </div>
         </>
       ) : (
         <>
-          <h1>Meetings</h1>
+          <h1>Events</h1>
           <div className="search-section">
             <div className="search-item">
               <label htmlFor="search-date">Search by Date:</label>
               <input id="search-date" type="date" value={searchDate} onChange={(e) => handleSearchDateChange(e.target.value)} />
             </div>
             <Box display="flex" justifyContent="space-between" alignItems="center">
-            {role == "admin" ? (
-              <StyledButton variant="contained" color="secondary" href="/new_meeting">
-              New meeting
-          </StyledButton>
-            ) : (
-              <></>  
-            )
-            }
+            <StyledButton variant="contained" color="secondary" href="/new_event">
+                New Event
+            </StyledButton>
             </Box>
           </div>
           <div className="calendar-container">
@@ -145,7 +104,7 @@ const Meetings = () => {
               events={eventComponents}
               startAccessor="Date"
               endAccessor="Date"
-              titleAccessor="description"
+              titleAccessor="Name"
               views={['month']}
               defaultView="month"
               onSelectEvent={handleEventSelect}
@@ -274,10 +233,9 @@ const Meetings = () => {
           margin-bottom: 10px;
         }
         
-        
       `}</style>
     </div>
   );
 };
 
-export default Meetings;
+export default Events;

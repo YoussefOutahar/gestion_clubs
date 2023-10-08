@@ -4,11 +4,12 @@ import { Span } from "../../components/Typography";
 import { Breadcrumb, SimpleCard } from "../../components";
 import { useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
-import supabase from "../../DataBase/Clients/SupabaseClient";
 import { useNavigate } from "react-router-dom";
-import { addNotification ,getNotificationByIHeading } from "../../DataBase/Clients/NotificationsClient";
-import { getCurrentUser,getUserMember } from "../../DataBase/Clients/UsersClient";
-import { getMembreClub } from "../../DataBase/Clients/MembersClient";
+
+import supabase from "../../DataBase/Clients/SupabaseClient";
+import { addNotification ,getNotificationByIHeading } from "../../DataBase/services/NotificationsService";
+import { getCurrentUser,getUserMember } from "../../DataBase/services/UsersService";
+import { getMembreClub } from "../../DataBase/services/MembersService";
 
 
 const Container = styled("div")(({ theme }) => ({

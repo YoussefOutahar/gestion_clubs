@@ -5,12 +5,12 @@ import { Breadcrumb, SimpleCard } from "../../components";
 import { Span } from "../../components/Typography";
 import { useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
-import supabase from "../../DataBase/Clients/SupabaseClient";
 import { useNavigate } from "react-router-dom";
-import { AddMeeting } from "../../DataBase/Clients/MeetingsClient";
-import {addNotification, getNotificationById } from "../../DataBase/Clients/NotificationsClient";
-import { getCurrentUser,getUserMember } from "../../DataBase/Clients/UsersClient";
-import { getMembreClub } from "../../DataBase/Clients/MembersClient";
+
+import { AddMeeting } from "../../DataBase/services/MeetingsService";
+import {addNotification, getNotificationById } from "../../DataBase/services/NotificationsService";
+import { getCurrentUser,getUserMember } from "../../DataBase/services/UsersService";
+import { getMembreClub } from "../../DataBase/services/MembersService";
 
 
 const Container = styled("div")(({ theme }) => ({

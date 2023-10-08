@@ -1,4 +1,4 @@
-import supabase from "./SupabaseClient";
+import supabase from "../Clients/SupabaseClient";
 
 export const getForumFromClub = async (clubId) => {
     const { data, error } = await supabase.from("Forums").select("*").eq("club_id", clubId);

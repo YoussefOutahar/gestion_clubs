@@ -1,18 +1,15 @@
 import { Stack } from "@mui/material";
 import { Box, styled } from "@mui/system";
-import { Button, Grid, Icon, Link } from "@mui/material";
+import { Button,Icon} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "../../components";
 import { Span } from "../../components/Typography";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ValidatorForm } from "react-material-ui-form-validator";
-import supabase from "../../DataBase/Clients/SupabaseClient";
 import { useNavigate } from "react-router-dom";
-import {addNotification, getNotificationById } from "../../DataBase/Clients/NotificationsClient";
-import { getCurrentUser,getUserMember } from "../../DataBase/Clients/UsersClient";
-import { getMembreClub } from "../../DataBase/Clients/MembersClient";
-import { addEvent } from "../../DataBase/Clients/EventsClient";
-import { getDocByName } from "../../DataBase/Clients/DocumentsClient";
+import {addNotification, getNotificationById } from "../../DataBase/services/NotificationsService";
+import { getCurrentUser,getUserMember } from "../../DataBase/services/UsersService";
+import { getMembreClub } from "../../DataBase/services/MembersService";
+import { getEventByName,updateEvent } from "../../DataBase/services/EventsService";
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -22,17 +19,13 @@ const Container = styled("div")(({ theme }) => ({
       [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
     },
   }));
-  const StyledLinkWrapper = styled("div")(({ theme }) => ({
-    marginBottom: "20px",
-  }));
 
-const ValidationEvent = () => {
+const ValidationPage = () => {
 
   const [notification, setNotification] = useState(null);
   const [clubId, setClubId] = useState(null);
-  const [document, setDocument] = useState(null);
   const navigate = useNavigate();
-  const { Name, Date, Description, Location, notifId } = useParams();
+  const { Cost, Event, notifId } = useParams();
 
   useEffect(() => {
     const fetchNotification = async () => {
@@ -55,32 +48,13 @@ const ValidationEvent = () => {
       });
     })
   }, []);
-  const docName = `Fiche explicative ${Name}`;
-  console.log(docName);
-
-  useEffect(() => {
-    const fetchDocument = async () => {
-      const { url, error } = await getDocByName(docName);
-      if (error) {
-        console.error(error);
-      } else {
-        console.log(url);
-        setDocument(url);
-      }
-    };
-
-    fetchDocument();
-  }, []);
-
-
-
 
   const handleRefuse = async () => {
     try {
     const {notification , error} = await addNotification(
       {
         heading: "Answer",
-        title: `Event ${Name} refused`,
+        title: "Supplimentary budget refused",
         subtitle: Event,
         timestamp: null,
         body: `your request is refused`,
@@ -103,7 +77,7 @@ const ValidationEvent = () => {
       const {notification , error} = await addNotification(
         {
           heading: "Answer",
-          title: "Event accepted",
+          title: "Supplimentary budget accepted",
           subtitle: Event,
           timestamp: null,
           body: `your request is accepted`,
@@ -115,21 +89,20 @@ const ValidationEvent = () => {
           id_club: clubId,
         },
       )
+      const event = await getEventByName(Event);
+    if (!event || event.length === 0) {
+      console.error("Event not found");
+      return;
+    }
 
-    await addEvent({Name: Name, Date: Date, description: Description, Location: Location,});
-    console.log("Event added successfully");
+    const eventId = event[0].id;
+    await updateEvent(eventId,{Supp_budget: Cost});
+    console.log("Event updated successfully");
        navigate("/finance");
     } catch (error) {
       console.error(error);
     }
   }
-  const handleClickDocument = () => {
-    if (document && document.length > 0) {
-      const docUrl = document[0].path;
-      console.log("path : ",docUrl);
-      window.open(docUrl, "_blank");
-    }
-  };
 
 if(notification){
     return (
@@ -142,11 +115,7 @@ if(notification){
               <p style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "8px" }}>{notification[0].title}</p>
               <p style={{ fontSize: "18px", marginBottom: "8px" }}>{notification[0].subtitle}</p>
               <p style={{ fontSize: "15px", marginBottom: "20px"}}>{notification[0].body}</p>
-              {document && (
-                <StyledLinkWrapper  onClick={handleClickDocument}>
-                {docName}
-              </StyledLinkWrapper>
-            )}
+            
             
                     <Button color="primary" variant="contained" type="submit" marginTop="20px" onClick={handleConfirm}>
                         <Icon>check-circle</Icon>
@@ -165,4 +134,4 @@ if(notification){
 }
 };
 
-export default ValidationEvent;
+export default ValidationPage;

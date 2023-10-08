@@ -1,6 +1,6 @@
 import Mock from '../mock'
-import { getNotifications , deleteNotification , clearNotifications , addNotification} from '../Clients/NotificationsClient'
-import { getCurrentUser , getProfileById } from '../Clients/UsersClient';
+import { getNotifications , deleteNotification , clearNotifications , addNotification} from '../services/NotificationsService'
+import { getCurrentUser , getProfileById } from '../services/UsersService';
 
 Mock.onGet('/api/notification').reply(async(config) => {
     let user = await getCurrentUser()

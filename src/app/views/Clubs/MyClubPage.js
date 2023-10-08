@@ -1,8 +1,9 @@
 import { Typography, Grid, Card, CardContent, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { getCurrentUser,getProfileById } from '../../DataBase/Clients/UsersClient'
-import { getMembreByProfile,getMembreClub } from '../../DataBase/Clients/MembersClient'
+
 import  supabase  from '../../DataBase/Clients/SupabaseClient'
+import { getCurrentUser,getProfileById } from '../../DataBase/services/UsersService'
+import { getMembreByProfile,getMembreClub } from '../../DataBase/services/MembersService'
 
 const MyClubPage = () => {
     const [activeClub, setActiveClub] = useState({})

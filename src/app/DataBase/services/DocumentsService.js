@@ -1,4 +1,4 @@
-import supabase from "./SupabaseClient";
+import supabase from "../Clients/SupabaseClient";
 
 export const getDocs = async () => {
     const { data, error } = await supabase.from("Documents").select("*");

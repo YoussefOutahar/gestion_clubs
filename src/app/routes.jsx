@@ -1,14 +1,20 @@
-import AuthGuard from "./auth/AuthGuard";
 import chartsRoute from "./views/charts/ChartsRoute";
 import dashboardRoutes from "./views/dashboard/DashboardRoutes";
 import materialRoutes from "./views/material-kit/MaterialRoutes";
-import landingPageRoute from "./views/LandingPage/LandingPageRoute";
-import FinanceRoutes from "./views/FinanceManagement/FinanceRoutes";
 import summaryRoutes from "./views/Summary/summaryRoutes";
 import generalRoutes from "./views/General/generalRoutes";
+import FinanceRoutes from "./views/FinanceManagement/FinanceRoutes";
 import forumRoutes from "./views/Forum/forumRoutes";
-import NotFound from "./views/sessions/NotFound";
+import membersRoutes from "./views/Members/membersRoutes";
+import eventsRoutes from "./views/Events/eventRoutes";
+import meetingRoutes from "./views/Meetings/meetingsRoutes";
+
+import landingPageRoute from "./views/LandingPage/LandingPageRoute";
+
+import AuthGuard from "./auth/AuthGuard";
 import sessionRoutes from "./views/sessions/SessionRoutes";
+import NotFound from "./views/sessions/NotFound";
+
 import { Navigate } from "react-router-dom";
 import MatxLayout from "./components/MatxLayout/MatxLayout";
 
@@ -19,7 +25,18 @@ const routes = [
                 <MatxLayout />
             </AuthGuard>
         ),
-        children: [...dashboardRoutes, ...chartsRoute, ...materialRoutes, ...FinanceRoutes, ...summaryRoutes, ...generalRoutes,...forumRoutes],
+        children: [
+            ...dashboardRoutes,
+            ...summaryRoutes,
+            ...membersRoutes,
+            ...eventsRoutes,
+            ...meetingRoutes,
+            ...FinanceRoutes,
+            ...forumRoutes,
+            ...generalRoutes,
+            ...materialRoutes,
+            ...chartsRoute,
+        ],
     },
     ...sessionRoutes,
     ...landingPageRoute,

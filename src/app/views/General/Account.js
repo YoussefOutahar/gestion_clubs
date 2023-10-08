@@ -12,8 +12,6 @@ import {
     Button,
     TextField,
 } from "@mui/material";
-import { getCurrentUser, getUserMember, getProfileById } from "../../DataBase/Clients/UsersClient";
-import { getMembreClub } from "../../DataBase/Clients/MembersClient";
 import EditIcon from "@mui/icons-material/Edit";
 import { SimpleCard } from "../../components";
 import * as Yup from "yup";
@@ -21,8 +19,10 @@ import { Formik } from "formik";
 import { Span } from "../../components/Typography";
 
 import supabase from "../../DataBase/Clients/SupabaseClient";
-import { updateMembre } from "../../DataBase/Clients/MembersClient";
-import { updateProfile } from "../../DataBase/Clients/UsersClient";
+import { getCurrentUser, getUserMember, getProfileById } from "../../DataBase/services/UsersService";
+import { getMembreClub } from "../../DataBase/services/MembersService";
+import { updateMembre } from "../../DataBase/services/MembersService";
+import { updateProfile } from "../../DataBase/services/UsersService";
 
 // form field validation schema
 const validationSchema = Yup.object().shape({
