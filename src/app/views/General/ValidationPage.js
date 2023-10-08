@@ -1,17 +1,15 @@
 import { Stack } from "@mui/material";
 import { Box, styled } from "@mui/system";
-import { Button, Grid, Icon, MenuItem } from "@mui/material";
+import { Button,Icon} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "../../components";
 import { Span } from "../../components/Typography";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ValidatorForm } from "react-material-ui-form-validator";
-import supabase from "../../DataBase/Clients/SupabaseClient";
 import { useNavigate } from "react-router-dom";
-import {addNotification, getNotificationById } from "../../DataBase/Clients/NotificationsClient";
-import { getCurrentUser,getUserMember } from "../../DataBase/Clients/UsersClient";
-import { getMembreClub } from "../../DataBase/Clients/MembersClient";
-import { getEventByName,updateEvent } from "../../DataBase/Clients/EventsClient";
+import {addNotification, getNotificationById } from "../../DataBase/services/NotificationsService";
+import { getCurrentUser,getUserMember } from "../../DataBase/services/UsersService";
+import { getMembreClub } from "../../DataBase/services/MembersService";
+import { getEventByName,updateEvent } from "../../DataBase/services/EventsService";
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",

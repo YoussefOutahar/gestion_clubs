@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { getClubs,deleteClub } from '../../DataBase/Clients/ClubsClient';
-import { getEtudiantByMembre, getMembresByClub } from "../../DataBase/Clients/MembersClient";
 
 import { Grid, Card,Button, CardMedia, CardContent, Typography, IconButton, Box,Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import {Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions} from '@mui/material';
@@ -10,7 +8,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import MoreInfoIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ArrowBack } from '@mui/icons-material';
+
 import supabase from '../../DataBase/Clients/SupabaseClient';
+import { getClubs,deleteClub } from '../../DataBase/services/ClubsService';
+import { getEtudiantByMembre, getMembresByClub } from "../../DataBase/services/MembersService";
 
 const Clubs = () => {
   const [showDetails, setShowDetails] = useState(false);

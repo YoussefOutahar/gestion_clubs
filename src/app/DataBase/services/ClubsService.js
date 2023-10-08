@@ -1,5 +1,5 @@
-import supabase from "./SupabaseClient";
-import { getEvent } from "./EventsClient";
+import supabase from "../Clients/SupabaseClient";
+import { getEvent } from "./EventsService";
 
 export const addClub = async (club) => {
     const { error } = await supabase.from("Clubs").insert([club]);

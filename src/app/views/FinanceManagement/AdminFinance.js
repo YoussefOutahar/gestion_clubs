@@ -3,9 +3,8 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
 import SimpleCard from "../../components/SimpleCard";
 import FinanceCards from "./Components/FinanceCards";
 import { styled,Box, Button,Grid,Table,TableBody,TableCell,TableHead,TableRow} from "@mui/material";
-import { getClubs } from "../../DataBase/Clients/ClubsClient";
-import { getEventsByClub } from "../../DataBase/Clients/EventsClient";
-import { getBudgetByClub } from "../../DataBase/Clients/BudgetClient";
+import { getClubs } from "../../DataBase/services/ClubsService";
+import { getBudgetByClub } from "../../DataBase/services/BudgetService";
 
   const StyledButton = styled(Button)(({ theme }) => ({
     margin: theme.spacing(1),

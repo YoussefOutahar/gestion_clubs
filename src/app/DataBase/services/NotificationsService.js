@@ -1,5 +1,5 @@
 import { eq } from 'lodash';
-import supabase from './SupabaseClient';
+import supabase from '../Clients/SupabaseClient';
 
 export const addNotification = async (notification) => {
     const { data, error } = await supabase.from('Notifications').insert([notification]);

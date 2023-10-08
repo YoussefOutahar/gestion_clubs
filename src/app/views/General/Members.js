@@ -20,9 +20,9 @@ import {
     DialogActions,
     DialogContentText,
 } from "@mui/material";
-import { getAllProfiles, getUserMember} from "../../DataBase/Clients/UsersClient";
-import { getMembreClub , getEtudiant } from "../../DataBase/Clients/MembersClient";
-import { getCurrentUser } from "../../DataBase/Clients/UsersClient";
+import { getAllProfiles, getUserMember} from "../../DataBase/services/UsersService";
+import { getMembreClub , getEtudiant } from "../../DataBase/services/MembersService";
+import { getCurrentUser } from "../../DataBase/services/UsersService";
 
 const GestionMembers = () => {
     const [users, setUsers] = useState([]);

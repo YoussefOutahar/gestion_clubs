@@ -1,5 +1,5 @@
-import { getCurrentUser } from "./DataBase/Clients/UsersClient";
-import { getMembreByProfile } from "./DataBase/Clients/MembersClient";
+import { getCurrentUser } from "./DataBase/services/UsersService";
+import { getMembreByProfile } from "./DataBase/services/MembersService";
 
 export const getNavigations = async () => {
     const user = await getCurrentUser();
@@ -9,7 +9,7 @@ export const getNavigations = async () => {
         member = await getMembreByProfile(user.id);
     }
 
-    // DVE 
+    // DVE
 
     const adminNavigations = [
         {
@@ -89,7 +89,7 @@ export const getNavigations = async () => {
             path: "/events",
             icon: "event",
         },
-        
+
         {
             name: "Meetings",
             path: "/meetings",
@@ -130,7 +130,7 @@ export const getNavigations = async () => {
             path: "/events",
             icon: "event",
         },
-        
+
         {
             name: "Meetings",
             path: "/meetings",
@@ -205,7 +205,7 @@ export const getNavigations = async () => {
             path: "/events",
             icon: "event",
         },
-        
+
         {
             name: "Meetings",
             path: "/meetings",
@@ -224,27 +224,40 @@ export const getNavigations = async () => {
     ];
 
     if (user) {
-        if (user.user_metadata["role"] === "admin") {
-            return adminNavigations;
-        } else if (user.user_metadata["role"] === "user") {
-            member = member[0];
-            if (member.role.toLowerCase() === "president" || member.role.toLowerCase() === "vice-president") {
-                console.log("president");
-                return presidentNavigations;
-            }
-            if (member.role.toLowerCase() === "secretaire") {
-                console.log("secretaire");
-                return secretaireNavigations;
-            }
-            if (member.role.toLowerCase() === "tresorier") {
-                console.log("tresorier");
-                return tresorierNavigations;
-            }
-            if (member.role.toLowerCase() === "adherant") {
-                console.log("adherant");
-                return memberNavigations;
-            }
-            return memberNavigations;
-        }
+        // if (user.user_metadata["role"] === "admin") {
+        //     return adminNavigations;
+        // } else if (user.user_metadata["role"] === "user") {
+        //     member = member[0];
+        //     if (member.role.toLowerCase() === "president" || member.role.toLowerCase() === "vice-president") {
+        //         console.log("president");
+        //         return presidentNavigations;
+        //     }
+        //     if (member.role.toLowerCase() === "secretaire") {
+        //         console.log("secretaire");
+        //         return secretaireNavigations;
+        //     }
+        //     if (member.role.toLowerCase() === "tresorier") {
+        //         console.log("tresorier");
+        //         return tresorierNavigations;
+        //     }
+        //     if (member.role.toLowerCase() === "adherant") {
+        //         console.log("adherant");
+        //         return memberNavigations;
+        //     }
+        //     return memberNavigations;
+        // }
+
+        return [
+            { label: "Admin", type: "label" },
+            ...adminNavigations,
+            { label: "President", type: "label" },
+            ...presidentNavigations,
+            { label: "Secretaire", type: "label" },
+            ...secretaireNavigations,
+            { label: "Tresorie", type: "label" },
+            ...tresorierNavigations,
+            { label: "Membre", type: "label" },
+            ...memberNavigations,
+        ];
     }
 };

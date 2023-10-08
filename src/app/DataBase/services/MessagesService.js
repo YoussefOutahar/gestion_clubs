@@ -1,4 +1,4 @@
-import supabase from "./SupabaseClient";
+import supabase from "../Clients/SupabaseClient";
 
 export const addMessage = async (message) => {
     const { error } = await supabase.from("Messages").insert([message]);

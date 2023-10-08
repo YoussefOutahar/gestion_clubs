@@ -5,7 +5,7 @@ import {styled,Box,Button} from "@mui/material";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { getEvents , getEventClub } from '../../DataBase/Clients/EventsClient';
+import { getEvents , getEventClub } from '../../DataBase/services/EventsService';
 
 const localizer = momentLocalizer(moment);
 const StyledButton = styled(Button)(({ theme }) => ({

@@ -1,5 +1,5 @@
-import supabase from "./SupabaseClient";
-import { addNotification } from "./NotificationsClient";
+import supabase from "../Clients/SupabaseClient";
+import { addNotification } from "./NotificationsService";
 
 export const getMeetings = async () => {
     const { data, error } = await supabase.from("Meetings").select("*");

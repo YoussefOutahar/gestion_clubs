@@ -5,11 +5,11 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { getMeetings,deleteMeeting } from '../../DataBase/Clients/MeetingsClient';
 import {styled,Box,Button} from "@mui/material";
 
-import { getMembreByProfile } from "../../DataBase/Clients/MembersClient";
-import { getCurrentUser ,getProfileById } from "../../DataBase/Clients/UsersClient";
+import { getMeetings,deleteMeeting } from '../../DataBase/services/MeetingsService';
+import { getMembreByProfile } from "../../DataBase/services/MembersService";
+import { getCurrentUser ,getProfileById } from "../../DataBase/services/UsersService";
 
 const StyledButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(1),

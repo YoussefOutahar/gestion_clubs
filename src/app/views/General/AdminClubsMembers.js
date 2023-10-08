@@ -20,9 +20,8 @@ import {
     DialogActions,
     DialogContentText,
 } from "@mui/material";
-import { getAllProfiles, getUserMember} from "../../DataBase/Clients/UsersClient";
-import { getMembreClub , getEtudiant } from "../../DataBase/Clients/MembersClient";
-import { getCurrentUser } from "../../DataBase/Clients/UsersClient";
+import { getAllProfiles, getUserMember} from "../../DataBase/services/UsersService";
+import { getMembreClub , getEtudiant } from "../../DataBase/services/MembersService";
 
 const AdminClubsMembers = () => {
     const [users, setUsers] = useState([]);
@@ -31,9 +30,12 @@ const AdminClubsMembers = () => {
 
     useEffect(() => { 
         getAllProfiles().then((data) => {
-            data.forEach(async (user) => {
+            console.log(data);
+            data.forEach((user) => {
                 getUserMember(user.id).then((member) => {
+                    console.log(member);
                     getMembreClub(member[0].id).then((club) => {
+                        console.log(club);
                         if (user.role.toLowerCase() != "admin") {
                             setUsers((users) => [
                                 ...users,

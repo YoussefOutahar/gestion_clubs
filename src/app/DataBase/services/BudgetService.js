@@ -1,4 +1,4 @@
-import supabase from "./SupabaseClient";
+import supabase from "../Clients/SupabaseClient";
 
 export const addBudget = async (budget) => {
     const { data, error } = await supabase.from("budget").insert([budget]);

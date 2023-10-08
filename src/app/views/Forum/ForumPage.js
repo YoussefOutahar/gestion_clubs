@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Box,TextField, IconButton, List, ListItem, ListItemText,styled } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { MatxLoading } from "../../components";
-import { getForumFromClub } from "../../DataBase/Clients/ForumsClient";
-import { getMembreClub } from "../../DataBase/Clients/MembersClient";
-import { getCurrentUser, getUserMember } from "../../DataBase/Clients/UsersClient";
-import { getMessagesByForum, addMessage } from "../../DataBase/Clients/MessagesClient";
+import { getForumFromClub } from "../../DataBase/services/ForumsService";
+import { getMembreClub } from "../../DataBase/services/MembersService";
+import { getCurrentUser, getUserMember } from "../../DataBase/services/UsersService";
+import { getMessagesByForum, addMessage } from "../../DataBase/services/MessagesService";
 import SimpleCard from '../../components/SimpleCard';
 
 const Forums = () => {
