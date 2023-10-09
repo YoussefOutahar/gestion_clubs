@@ -1,6 +1,7 @@
 import supabase from "../Clients/SupabaseClient";
 
-export const addBudget = async (budget) => {
+export default class BudgetService {
+  static async addBudget(budget) {
     const { data, error } = await supabase.from("budget").insert([budget]);
     if (error) {
         console.error("Error adding budget:", error);
@@ -8,7 +9,8 @@ export const addBudget = async (budget) => {
         console.log("budget added successfully");
     }
 };
-export const getBudgetByClub = async (id) => {
+
+static async getBudgetByClub(id) {
     const { data , error } = await supabase.from("Budget").select("budget, rest").eq("id_club", id);
     if (error) {
         console.error("Error getting budget:", error);
@@ -20,3 +22,6 @@ export const getBudgetByClub = async (id) => {
         return { budget: 0, rest: 0 };
       }
 };
+
+}
+

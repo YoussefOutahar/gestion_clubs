@@ -6,11 +6,11 @@ import { Span } from "../../components/Typography";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import {addNotification, getNotificationById } from "../../DataBase/services/NotificationsService";
 import { getCurrentUser,getUserMember } from "../../DataBase/services/UsersService";
 import { getMembreClub } from "../../DataBase/services/MembersService";
 import { addEvent } from "../../DataBase/services/EventsService";
-import { getDocByName } from "../../DataBase/services/DocumentsService";
+import NotificationsService from "../../DataBase/services/NotificationsService";
+import DocumentsService from "../../DataBase/services/DocumentsService";
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -34,7 +34,7 @@ const ValidationEvent = () => {
 
   useEffect(() => {
     const fetchNotification = async () => {
-      const { data, error } = await getNotificationById(notifId);
+      const { data, error } = await NotificationsService.getNotificationById(notifId);
       if (error) {
         console.error(error);
       } else {
@@ -58,7 +58,7 @@ const ValidationEvent = () => {
 
   useEffect(() => {
     const fetchDocument = async () => {
-      const { url, error } = await getDocByName(docName);
+      const { url, error } = await DocumentsService.getDocByName(docName);
       if (error) {
         console.error(error);
       } else {
@@ -75,7 +75,7 @@ const ValidationEvent = () => {
 
   const handleRefuse = async () => {
     try {
-    const {notification , error} = await addNotification(
+    const {notification , error} = await NotificationsService.addNotification(
       {
         heading: "Answer",
         title: `Event ${Name} refused`,
@@ -98,7 +98,7 @@ const ValidationEvent = () => {
   
   const handleConfirm = async () => {
     try {
-      const {notification , error} = await addNotification(
+      const {notification , error} = await NotificationsService.addNotification(
         {
           heading: "Answer",
           title: "Event accepted",

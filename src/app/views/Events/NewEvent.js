@@ -8,7 +8,7 @@ import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import supabase from "../../DataBase/Clients/SupabaseClient";
 import { useNavigate } from "react-router-dom";
 import { addEvent,getEventByName } from "../../DataBase/services/EventsService";
-import {addNotification, getNotificationById } from "../../DataBase/services/NotificationsService";
+import NotificationsService from "../../DataBase/services/NotificationsService";
 import { getCurrentUser,getUserMember } from "../../DataBase/services/UsersService";
 import { getMembreClub } from "../../DataBase/services/MembersService";
 
@@ -86,7 +86,7 @@ const NewEvent = () => {
                     console.log("Data inserted successfully:", data);
                 }
                 console.log("File uploaded and reference saved successfully.");
-                await addNotification(
+                await NotificationsService.addNotification(
                   {
                     heading: "Request",
                     title: "Request new Event",

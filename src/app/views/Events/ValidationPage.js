@@ -6,7 +6,7 @@ import { Span } from "../../components/Typography";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import {addNotification, getNotificationById } from "../../DataBase/services/NotificationsService";
+import NotificationsService from "../../DataBase/services/NotificationsService";
 import { getCurrentUser,getUserMember } from "../../DataBase/services/UsersService";
 import { getMembreClub } from "../../DataBase/services/MembersService";
 import { getEventByName,updateEvent } from "../../DataBase/services/EventsService";
@@ -29,7 +29,7 @@ const ValidationPage = () => {
 
   useEffect(() => {
     const fetchNotification = async () => {
-      const { data, error } = await getNotificationById(notifId);
+      const { data, error } = await NotificationsService.getNotificationById(notifId);
       if (error) {
         console.error(error);
       } else {
@@ -51,7 +51,7 @@ const ValidationPage = () => {
 
   const handleRefuse = async () => {
     try {
-    const {notification , error} = await addNotification(
+    const {notification , error} = await NotificationsService.addNotification(
       {
         heading: "Answer",
         title: "Supplimentary budget refused",
@@ -74,7 +74,7 @@ const ValidationPage = () => {
   
   const handleConfirm = async () => {
     try {
-      const {notification , error} = await addNotification(
+      const {notification , error} = await NotificationsService.addNotification(
         {
           heading: "Answer",
           title: "Supplimentary budget accepted",

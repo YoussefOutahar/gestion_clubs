@@ -1,7 +1,9 @@
 import supabase from "../Clients/SupabaseClient";
-import { addNotification } from "./NotificationsService";
+import NotificationsService from "./NotificationsService";
 
-export const getMeetings = async () => {
+export default class MeetingsService {
+
+  static async getMeetings () {
     const { data, error } = await supabase.from("Meetings").select("*");
     if (error) {
         console.error("Error fetching meetings :", error);
@@ -11,7 +13,7 @@ export const getMeetings = async () => {
     }
 };
 
-export const deleteMeeting= async (id) => {
+static async deleteMeeting(id) {
     const { data, error } = await supabase.from("Meetings").delete().eq("id", id);
     if (error) {
         console.error("Error deleting meetings:", error);
@@ -20,7 +22,7 @@ export const deleteMeeting= async (id) => {
     }
 };
 
-export const updateMeeting = async (id, meeting) => {
+static async updateMeeting(id, meeting) {
     const { data, error } = await supabase.from("Meetings").update(meeting).eq("id", id);
     if (error) {
         console.error("Error updating Meeting:", error);
@@ -28,7 +30,7 @@ export const updateMeeting = async (id, meeting) => {
         console.log("Meeting updated successfully");
     }
 };
-export const AddMeeting = async (meeting) => {
+static async AddMeeting(meeting) {
     try {
         const { data, error } = await supabase.from("Meetings").insert(meeting);
         if (error) {
@@ -36,7 +38,7 @@ export const AddMeeting = async (meeting) => {
         } else {
           console.log("Meeting added successfully");
           // Add a notification
-          await addNotification({
+          await NotificationsService.addNotification({
             heading: "New meeting",
             title: meeting.description,
             subtitle: meeting.location,
@@ -53,3 +55,5 @@ export const AddMeeting = async (meeting) => {
         console.error(error);
       }
 };
+
+}

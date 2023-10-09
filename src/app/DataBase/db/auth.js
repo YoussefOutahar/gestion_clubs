@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import Mock from '../mock';
 
-import { signIn , signUp} from '../services/AuthService';
+import AuthService from '../services/AuthService';
 import { getCurrentUser, getProfileById } from '../services/UsersService';
 
 const JWT_SECRET = 'jwt_secret_key';
@@ -16,8 +16,9 @@ Mock.onPost('/api/auth/login').reply(async (config) => {
   try {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const { email , password } = JSON.parse(config.data);
-    let { error } = await signIn(email, password)
+    let { error } = await AuthService.signIn(email, password)
     if (error) {
+      console.log(error);
         return [400, { message: 'Invalid email or password' }];
     };
     let user = await getCurrentUser();
@@ -48,19 +49,7 @@ Mock.onPost('/api/auth/register').reply(async (config) => {
   try {
     const {email,password,name,role,phone,avatar} = JSON.parse(config.data);
 
-    console.log(config.data);
-
-    console.log("------------------");
-    console.log("inside auth.js");
-    console.log("email: " + email);
-    console.log("password: " + password);
-    console.log("name: " + name);
-    console.log("role: " + role);
-    console.log("phone: " + phone);
-    console.log("avatar: " + avatar);
-    console.log("------------------");
-
-    let { error } = await signUp(email, password,role,name,phone,avatar);
+    let { error } = await AuthService.signUp(email, password,role,name,phone,avatar);
     
     if (error) {
         return [400, { message: 'Invalid email or password' }];
