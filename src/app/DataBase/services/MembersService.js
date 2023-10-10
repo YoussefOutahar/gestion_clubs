@@ -18,6 +18,16 @@ export const addMembre = async (Membre) => {
     if (error) console.log("error", error);
     else return newMembre;
 };
+//µµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµ
+export const addMembreTest = async (Membre) => {
+    let { data: newMembre, error } = await supabase.from("Membre").insert([
+        {
+          role: newMembre.role,
+        },
+      ]);
+    if (error) console.log("error", error);
+    else return newMembre;
+};
 
 export const updateMembre = async (id, Membre) => {
     let { data: updatedMembre, error } = await supabase.from("Membre").update(Membre).eq("id_etd", id);

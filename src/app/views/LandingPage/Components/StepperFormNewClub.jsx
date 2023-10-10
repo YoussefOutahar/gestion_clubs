@@ -6,6 +6,10 @@ import Stepper from "@mui/material/Stepper";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 
+import { addClubTest } from "../../../DataBase/services/ClubsService";
+import {addSuperviser} from "../../../DataBase/services/SupervisersService";
+import { addMembreTest } from "../../../DataBase/services/MembersService";
+
 const formStyle = {
   width: "100%",
   height: "100%",
@@ -190,13 +194,13 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
         return (
           <div className="container">
         <form style={formStyle}>
-          <label htmlFor="fullName" style={{ ...h5Style }}>
+          <label htmlFor="superviserName" style={{ ...h5Style }}>
             Full Name :
           </label>
           <input
             placeholder="Enter full name"
             type="text"
-            id="fullName"
+            id="superviserName"
             style={{ ...inputGroup, ...inputStyle }}
           />
   
@@ -242,12 +246,94 @@ export default function StepperForm() {
   const steps = getSteps();
   const [textareaHeight, setTextareaHeight] = useState("auto");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [clubData, setClubData] = useState({});
+  const [supervisorData, setSupervisorData] = useState({});
+  const [presidentData, setPresidentData] = useState({});
+  const [vicepresidentData, setVicePresidentData] = useState({});
+  const [financerData, setFinancerData] = useState({});
+  const [secretaryData, setSecretaryData] = useState({});
 
-  const handleNext = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const handleNext = () => {
+    switch (activeStep) {
+      case 0:
+        setClubData({
+          clubName: document.getElementById("clubName").value,
+          mission: document.getElementById("mission").value,
+          kpo: document.getElementById("kpo").value,
+        });
+        break;
+      case 1:
+        setSupervisorData({
+          fullName: document.getElementById("superviserName").value,
+          function: document.getElementById("function").value,
+          phone: document.getElementById("phone").value,
+          email: document.getElementById("email").value,
+        });
+        break;
+      case 2:
+        setPresidentData({
+          presidentName: document.getElementById("fullName").value,
+          presidentField: document.getElementById("field").value,
+          presidentYear: document.getElementById("year").value,
+          presidentPhone: document.getElementById("phone").value,
+          presidentEmail: document.getElementById("email").value,
+          role: "President",
+        });
+        break;
+      case 3:
+        setVicePresidentData({
+          vicepresidentName: document.getElementById("fullName").value,
+          vicepresidentField: document.getElementById("field").value,
+          vicepresidentYear: document.getElementById("year").value,
+          vicepresidentPhone: document.getElementById("phone").value,
+          vicepresidentEmail: document.getElementById("email").value,
+          role: "Vice President",
+        });
+        break;
+      case 4:
+        setFinancerData({
+          financerName: document.getElementById("fullName").value,
+          financerField: document.getElementById("field").value,
+          financerPhone: document.getElementById("phone").value,
+          financerEmail: document.getElementById("email").value,
+          role: "Financier",
+        });
+        break;
+      case 5:
+        setSecretaryData({
+          secretaryName: document.getElementById("fullName").value,
+          secretaryField: document.getElementById("field").value,
+          secretaryYear: document.getElementById("year").value,
+          secretaryPhone: document.getElementById("phone").value,
+          secretaryEmail: document.getElementById("email").value,
+          role: "Secretary",
+        });
+        break;
+      default:
+        break;
+    }
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+  
 
   const handleBack = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
 
   const handleReset = () => setActiveStep(0);
+
+  const handleSubmit = () => {
+    // Submit clubData using addClubTest
+    addClubTest(clubData);
+  
+    // Submit supervisorData using addSuperviser
+    addSuperviser(supervisorData);
+  
+    // Submit presidentData, vicepresidentData, financerData, and secretaryData using addMember function
+    addMembreTest(presidentData);
+    addMembreTest(vicepresidentData);
+    addMembreTest(financerData);
+    addMembreTest(secretaryData);
+  };
+  
 
   const handleTextareaChange = (event) => {
     event.target.style.height = "auto";
@@ -305,7 +391,7 @@ export default function StepperForm() {
                 sx={{ ml: 2 }}
                 variant="contained"
                 color="primary"
-                onClick={handleNext}
+                onClick={ activeStep === steps.length - 1 ? handleSubmit : handleNext}
               >
                 {activeStep === steps.length - 1 ? "Finish" : "Next"}
               </Button>
