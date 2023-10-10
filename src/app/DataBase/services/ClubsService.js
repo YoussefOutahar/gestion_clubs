@@ -10,6 +10,21 @@ export const addClub = async (club) => {
     }
 };
 
+export const addClubTest = async (club) => {
+    const { error } = await supabase.from("Clubs").insert([
+      {
+        nom: club.clubName,
+        description: club.mission,
+        kpo: club.kpo,
+      },
+    ]);
+    if (error) {
+      console.error("Error adding club:", error);
+    } else {
+      console.log("Club added successfully");
+    }
+  };
+
 export const getClubs = async () => {
     const { data, error } = await supabase.from("Clubs").select("*");
     if (error) return error;
