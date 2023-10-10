@@ -3,8 +3,9 @@ import supabase from "../../DataBase/Clients/SupabaseClient";
 import SimpleCard from "../../components/SimpleCard";
 import FinanceCards from "./Components/FinanceCards";
 import { styled,Box, Button,Grid,Table,TableBody,TableCell,TableHead,TableRow} from "@mui/material";
-import { getClubs } from "../../DataBase/services/ClubsService";
-import { getBudgetByClub } from "../../DataBase/services/BudgetService";
+
+import ClubsService from "../../DataBase/services/ClubsService";
+import BudgetService from "../../DataBase/services/BudgetService";
 
   const StyledButton = styled(Button)(({ theme }) => ({
     margin: theme.spacing(1),
@@ -64,10 +65,10 @@ const AdminFinance = () => {
   }, []);
   */
   useEffect(() => {
-    getClubs().then(async (data) => {
+    ClubsService.getClubs().then(async (data) => {
       const clubData = await Promise.all(
         data.map(async (club) => {
-          const budget = await getBudgetByClub(club.id);
+          const budget = await BudgetService.getBudgetByClub(club.id);
           const { total_supp_budget, total_earnings } = await getTotalSuppEarningsByClub(club.id);
           return {
             id: club.id,

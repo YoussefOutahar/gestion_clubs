@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { useNavigate } from "react-router-dom";
 
-import { AddMeeting } from "../../DataBase/services/MeetingsService";
-import {addNotification, getNotificationById } from "../../DataBase/services/NotificationsService";
+import MeetingsService from "../../DataBase/services/MeetingsService";
+import NotificationsService from "../../DataBase/services/NotificationsService";
 import { getCurrentUser,getUserMember } from "../../DataBase/services/UsersService";
 import { getMembreClub } from "../../DataBase/services/MembersService";
 
@@ -50,14 +50,14 @@ const NewMeeting = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await AddMeeting(
+      await MeetingsService.AddMeeting(
         {
           Date: state.date,
           description: state.description,
           location: state.location,
         },
       )
-      await addNotification(
+      await NotificationsService.addNotification(
         {
           heading: "New meeting",
           title: state.description,

@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import {styled,Box,Button} from "@mui/material";
 
-import { getMeetings,deleteMeeting } from '../../DataBase/services/MeetingsService';
+import MeetingsService from '../../DataBase/services/MeetingsService';
 import { getMembreByProfile } from "../../DataBase/services/MembersService";
 import { getCurrentUser ,getProfileById } from "../../DataBase/services/UsersService";
 
@@ -28,7 +28,7 @@ const Meetings = () => {
   const [role, setRole] = useState("");
 
   useEffect(() => {
-    getMeetings().then((res) => {
+    MeetingsService.getMeetings().then((res) => {
       getCurrentUser().then((user) => {
         getProfileById(user.id).then((profile) => {
           setRole(profile[0].role);
@@ -66,7 +66,7 @@ const Meetings = () => {
       if (confirmation) {
         const { id } = selectedEvent;
       console.log("Deleting meeting:", selectedEvent);
-      await deleteMeeting(id);
+      await MeetingsService.deleteMeeting(id);
         setSelectedEvent(null);
       }
     }

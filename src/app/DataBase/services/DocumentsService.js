@@ -1,24 +1,26 @@
 import supabase from "../Clients/SupabaseClient";
 
-export const getDocs = async () => {
+export default class DocumentsService {
+
+  static async getDocs() {
     const { data, error } = await supabase.from("Documents").select("*");
     if (error) return error;
     else return data;
 };
 
-export const getDoc = async (id) => {
+static async getDoc(id) {
     const { data, error } = await supabase.from("Documents").select("*").eq("id", id);
     if (error) return error;
     else return data;
 };
 
-{/*export const getDocByName = async (name) => {
-    const { data, error } = await supabase.from("Documents").select("*").eq("nom", name);
-    if (error) console.log("error", error);
-    else return data;
-};*/}
+// {/*export const getDocByName = async (name) => {
+//     const { data, error } = await supabase.from("Documents").select("*").eq("nom", name);
+//     if (error) console.log("error", error);
+//     else return data;
+// };*/}
 
-export const getDocByName = async (name) => {
+static async getDocByName(name) {
 try {
     const { data, error } = await supabase.from("Documents").select("*").eq("nom", name);
     if (error) {
@@ -32,3 +34,5 @@ try {
     return { error: "Error retrieving document" }; // Return an error object
   }
 };
+
+}

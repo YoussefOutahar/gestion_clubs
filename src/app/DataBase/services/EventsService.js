@@ -1,5 +1,5 @@
 import supabase from "../Clients/SupabaseClient";
-import { getClub } from "./ClubsService";
+import ClubsService from "./ClubsService";
 
 export const addEvent = async (event) => {
     const { data, error } = await supabase.from("Activites").insert([event]);
@@ -61,7 +61,7 @@ export const getEventClub = async (id) => {
     if (error) {
         console.error("Error fetching event club:", error);
     } else {
-        return getClub(data[0].club_id);
+        return ClubsService.getClub(data[0].club_id);
     }
 };
 

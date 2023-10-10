@@ -7,7 +7,7 @@ import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { useNavigate } from "react-router-dom";
 
 import supabase from "../../DataBase/Clients/SupabaseClient";
-import { addNotification ,getNotificationByIHeading } from "../../DataBase/services/NotificationsService";
+import NotificationsService from "../../DataBase/services/NotificationsService";
 import { getCurrentUser,getUserMember } from "../../DataBase/services/UsersService";
 import { getMembreClub } from "../../DataBase/services/MembersService";
 
@@ -72,7 +72,7 @@ const Supp_Budget = () => {
     try {
       const Cost = state.totalCost ;
       const Event = state.eventName;
-      const {notification , error} = await addNotification(
+      const {notification , error} = await NotificationsService.addNotification(
         {
           heading: "Request",
           title: "Supplimentary budget request",

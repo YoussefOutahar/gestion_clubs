@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Box,TextField, IconButton, List, ListItem, ListItemText,styled } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { MatxLoading } from "../../components";
-import { getForumFromClub } from "../../DataBase/services/ForumsService";
+import ForumsService from "../../DataBase/services/ForumsService";
 import { getMembreClub } from "../../DataBase/services/MembersService";
 import { getCurrentUser, getUserMember } from "../../DataBase/services/UsersService";
-import { getMessagesByForum, addMessage } from "../../DataBase/services/MessagesService";
+import MessagesService from "../../DataBase/services/MessagesService";
 import SimpleCard from '../../components/SimpleCard';
 
 const Forums = () => {
@@ -16,7 +16,7 @@ const Forums = () => {
         getCurrentUser().then((CurrentUser) => {
             getUserMember(CurrentUser.id).then((member) => {
                 getMembreClub(member[0].id).then((club) => {
-                    getForumFromClub(club[0].id).then((forum) => {
+                    ForumsService.getForumFromClub(club[0].id).then((forum) => {
                         setUser(CurrentUser);
                         setforums(forum[0]);
                     });
@@ -30,7 +30,7 @@ const Forums = () => {
 
     useEffect(() => {
         if (forum) {
-            getMessagesByForum(forum.id).then((messages) => {
+            ForumsService.getMessagesByForum(forum.id).then((messages) => {
                 setMessages(messages);
             });
         }
@@ -48,7 +48,7 @@ const Forums = () => {
                 content: message,
             };
 
-            await addMessage(newMessage);
+            await MessagesService.addMessage(newMessage);
 
             setMessages([...messages, newMessage]);
             setMessage("");
