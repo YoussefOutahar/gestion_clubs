@@ -6,9 +6,9 @@ import Stepper from "@mui/material/Stepper";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 
-import { addClubTest } from "../../../DataBase/services/ClubsService";
-import {addSuperviser} from "../../../DataBase/services/SupervisersService";
-import { addMembreTest } from "../../../DataBase/services/MembersService";
+// import { addClubTest } from "../../../DataBase/services/ClubsService";
+// import {addSuperviser} from "../../../DataBase/services/SupervisersService";
+// import { addMembreTest } from "../../../DataBase/services/MembersService";
 
 const formStyle = {
   width: "100%",
@@ -321,17 +321,17 @@ export default function StepperForm() {
   const handleReset = () => setActiveStep(0);
 
   const handleSubmit = () => {
-    // Submit clubData using addClubTest
-    addClubTest(clubData);
+    // // Submit clubData using addClubTest
+    // addClubTest(clubData);
   
-    // Submit supervisorData using addSuperviser
-    addSuperviser(supervisorData);
+    // // Submit supervisorData using addSuperviser
+    // addSuperviser(supervisorData);
   
-    // Submit presidentData, vicepresidentData, financerData, and secretaryData using addMember function
-    addMembreTest(presidentData);
-    addMembreTest(vicepresidentData);
-    addMembreTest(financerData);
-    addMembreTest(secretaryData);
+    // // Submit presidentData, vicepresidentData, financerData, and secretaryData using addMember function
+    // addMembreTest(presidentData);
+    // addMembreTest(vicepresidentData);
+    // addMembreTest(financerData);
+    // addMembreTest(secretaryData);
   };
   
 

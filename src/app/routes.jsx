@@ -5,6 +5,7 @@ import summaryRoutes from "./views/Summary/summaryRoutes";
 import generalRoutes from "./views/General/generalRoutes";
 import FinanceRoutes from "./views/FinanceManagement/FinanceRoutes";
 import forumRoutes from "./views/Forum/forumRoutes";
+import clubsRoutes from "./views/Clubs/clubsRoutes";
 import membersRoutes from "./views/Members/membersRoutes";
 import eventsRoutes from "./views/Events/eventRoutes";
 import meetingRoutes from "./views/Meetings/meetingsRoutes";
@@ -28,6 +29,7 @@ const routes = [
         children: [
             ...dashboardRoutes,
             ...summaryRoutes,
+            ...clubsRoutes,
             ...membersRoutes,
             ...eventsRoutes,
             ...meetingRoutes,

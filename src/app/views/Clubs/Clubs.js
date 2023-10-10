@@ -10,7 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { ArrowBack } from '@mui/icons-material';
 
 import supabase from '../../DataBase/Clients/SupabaseClient';
-import { getClubs,deleteClub } from '../../DataBase/services/ClubsService';
+import ClubsService from '../../DataBase/services/ClubsService';
 import { getEtudiantByMembre, getMembresByClub } from "../../DataBase/services/MembersService";
 
 const Clubs = () => {
@@ -43,7 +43,7 @@ const Clubs = () => {
   const [members, setMembers] = useState([]);
   useEffect(() => {
   const fetchClubs = async () => {
-    const fetchedClubs = await getClubs();
+    const fetchedClubs = await ClubsService.getClubs();
     if (fetchedClubs) {
       setClubs(fetchedClubs);
     }
@@ -108,15 +108,15 @@ useEffect(() => {
 };
 
   const handleConfirmDelete = async () => {
-    await deleteClub(clubToDelete.id);
+    await ClubsService.deleteClub(clubToDelete.id);
     const fetchClubs = async () => {
-      const fetchedClubs = await getClubs();
+      const fetchedClubs = await ClubsService.getClubs();
       if (fetchedClubs) {
         setClubs(fetchedClubs);
       }
     };
     
-    fetchClubs();
+    ClubsService.fetchClubs();
     setOpenDeleteDialog(false);
 };
 
