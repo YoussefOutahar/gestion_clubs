@@ -84,7 +84,7 @@ function getSteps() {
   ];
 }
 
-function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleImageUpload,handleInputChange,inputFields) {
+function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleImageUpload,handleInputChange, clubData,supervisorData,presidentData,vicePresidentData,financerData,secretaryData) {
   switch (stepIndex) {
     case 0:
       return (
@@ -98,7 +98,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               type="text"
               id="clubName"
               style={{ ...inputGroup, ...inputStyle }}
-              value={inputFields.clubName}
+              value={clubData.clubName}
               onChange={(e) => handleInputChange("clubName", e.target.value)}
             />
             <label htmlFor="mission" style={{ ...h5Style }}>
@@ -112,7 +112,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               onChange={(event) => {
                 handleTextareaChange(event);
                 handleInputChange("mission", event.target.value);
-              }}              value={inputFields.mission}
+              }}              
+              value={clubData.mission}
             />
             <label htmlFor="kpo" style={{ ...h5Style }}>
               KPO & KPI (Club Objectives & Performance Indicators) :
@@ -125,7 +126,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               onChange={(event) => {
                 handleTextareaChange(event);
                 handleInputChange("kpo", event.target.value);
-              }}              value={inputFields.kpo}
+              }}              
+              value={clubData.kpo}
             />
              <label htmlFor="image" style={{ ...h5Style }}>
               Upload Club's logo:
@@ -135,7 +137,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               id="image"
               accept="image/*"
               onChange={handleInputChange}
-              value={inputFields.image}
+              value={clubData.image}
               style={{ ...inputGroup, ...inputStyle }}
             />
           </form>
@@ -153,7 +155,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
             type="text"
             id="superviserName"
             style={{ ...inputGroup, ...inputStyle }}
-            value={inputFields.supervisorName}
+            value={supervisorData.supervisorName}
             onChange={(e) => handleInputChange("supervisorName", e.target.value)}
             />
   
@@ -165,7 +167,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
             type="text"
             id="function"
             style={{ ...inputGroup, ...inputStyle }}
-            value={inputFields.function}
+            value={supervisorData.function}
             onChange={(e) => handleInputChange("function", e.target.value)}
             />
   
@@ -177,7 +179,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
             type="text"
             id="phone"
             style={{ ...inputGroup, ...inputStyle }}
-            value={inputFields.phone}
+            value={supervisorData.phone}
             onChange={(e) => handleInputChange("phone", e.target.value)}
             />
   
@@ -189,7 +191,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
             type="email"
             id="email"
             style={{ ...inputGroup, ...inputStyle }}
-            value={inputFields.email}
+            value={supervisorData.email}
             onChange={(e) => handleInputChange("email", e.target.value)}
             />
         </form>
@@ -207,7 +209,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="presidentName"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={inputFields.presidentName}
+                value={presidentData.presidentName}
                 onChange={(e) => handleInputChange("presidentName", e.target.value)}
               />
   
@@ -219,7 +221,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="presidentField"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={inputFields.presidentField}
+                value={presidentData.presidentField}
                 onChange={(e) => handleInputChange("presidentField", e.target.value)}
               />
   
@@ -231,7 +233,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="presidentYear"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={inputFields.presidentYear}
+                value={presidentData.presidentYear}
                 onChange={(e) => handleInputChange("presidentYear", e.target.value)}
               />
   
@@ -243,7 +245,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="presidentPhone"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={inputFields.presidentPhone}
+                value={presidentData.presidentPhone}
                 onChange={(e) => handleInputChange("presidentPhone", e.target.value)}
               />
   
@@ -255,7 +257,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="email"
                 id="presidentEmail"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={inputFields.presidentEmail}
+                value={presidentData.presidentEmail}
                 onChange={(e) => handleInputChange("presidentEmail", e.target.value)}
               />
             </form>
@@ -273,7 +275,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="vicePresidentName"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={inputFields.vicePresidentName}
+                value={vicePresidentData.vicePresidentName}
                 onChange={(e) => handleInputChange("vicePresidentName", e.target.value)}
               />
   
@@ -285,7 +287,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="vicePresidentField"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={inputFields.vicePresidentField}
+                value={vicePresidentData.vicePresidentField}
                 onChange={(e) => handleInputChange("vicePresidentField", e.target.value)}
               />
   
@@ -297,7 +299,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="vicePresidentYear"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={inputFields.vicePresidentYear}
+                value={vicePresidentData.vicePresidentYear}
                 onChange={(e) => handleInputChange("vicePresidentYear", e.target.value)}
               />
   
@@ -309,7 +311,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="vicePresidentPhone"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={inputFields.vicePresidentPhone}
+                value={vicePresidentData.vicePresidentPhone}
                 onChange={(e) => handleInputChange("vicePresidentPhone", e.target.value)}
               />
   
@@ -321,7 +323,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="email"
                 id="vicePresidentEmail"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={inputFields.vicePresidentEmail}
+                value={vicePresidentData.vicePresidentEmail}
                 onChange={(e) => handleInputChange("vicePresidentEmail", e.target.value)}
               />
             </form>
@@ -339,7 +341,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                   type="text"
                   id="financierName"
                   style={{ ...inputGroup, ...inputStyle }}
-                  value={inputFields.financierName}
+                  value={financerData.financierName}
                   onChange={(e) => handleInputChange("financierName", e.target.value)}
                 />
                 <label htmlFor="financierField" style={{ ...h5Style }}>
@@ -350,7 +352,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                   type="text"
                   id="financierField"
                   style={{ ...inputGroup, ...inputStyle }}
-                  value={inputFields.financierField}
+                  value={financerData.financierField}
                   onChange={(e) => handleInputChange("financierField", e.target.value)}
                 />
                 <label htmlFor="financierYear" style={{ ...h5Style }}>
@@ -361,7 +363,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                   type="text"
                   id="financierYear"
                   style={{ ...inputGroup, ...inputStyle }}
-                  value={inputFields.financierYear}
+                  value={financerData.financierYear}
                   onChange={(e) => handleInputChange("financierYear", e.target.value)}
                 />
                 <label htmlFor="financierPhone" style={{ ...h5Style }}>
@@ -372,7 +374,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                   type="text"
                   id="financierPhone"
                   style={{ ...inputGroup, ...inputStyle }}
-                  value={inputFields.financierPhone}
+                  value={financerData.financierPhone}
                   onChange={(e) => handleInputChange("financierPhone", e.target.value)}
                 />
                 <label htmlFor="financierEmail" style={{ ...h5Style }}>
@@ -383,7 +385,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                   type="email"
                   id="financierEmail"
                   style={{ ...inputGroup, ...inputStyle }}
-                  value={inputFields.financierEmail}
+                  value={financerData.financierEmail}
                   onChange={(e) => handleInputChange("financierEmail", e.target.value)}
                 />
               </form>
@@ -401,7 +403,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               type="text"
               id="secretaryName"
               style={{ ...inputGroup, ...inputStyle }}
-              value={inputFields.secretaryName}
+              value={secretaryData.secretaryName}
               onChange={(e) => handleInputChange("secretaryName", e.target.value)}
             />
 
@@ -413,7 +415,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               type="text"
               id="secretaryField"
               style={{ ...inputGroup, ...inputStyle }}
-              value={inputFields.secretaryField}
+              value={secretaryData.secretaryField}
               onChange={(e) => handleInputChange("secretaryField", e.target.value)}
             />
 
@@ -425,7 +427,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               type="text"
               id="secretaryYear"
               style={{ ...inputGroup, ...inputStyle }}
-              value={inputFields.secretaryYear}
+              value={secretaryData.secretaryYear}
               onChange={(e) => handleInputChange("secretaryYear", e.target.value)}
             />
 
@@ -437,7 +439,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               type="text"
               id="secretaryPhone"
               style={{ ...inputGroup, ...inputStyle }}
-              value={inputFields.secretaryPhone}
+              value={secretaryData.secretaryPhone}
               onChange={(e) => handleInputChange("secretaryPhone", e.target.value)}
             />
 
@@ -449,7 +451,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               type="email"
               id="secretaryEmail"
               style={{ ...inputGroup, ...inputStyle }}
-              value={inputFields.secretaryEmail}
+              value={secretaryData.secretaryEmail}
               onChange={(e) => handleInputChange("secretaryEmail", e.target.value)}
             />
           </form>
@@ -464,43 +466,47 @@ export default function StepperForm() {
   const steps = getSteps();
   const [textareaHeight, setTextareaHeight] = useState("auto");
   const [selectedImage, setSelectedImage] = useState(null);
-  const [clubData, setClubData] = useState({});
-  const [supervisorData, setSupervisorData] = useState({});
-  const [presidentData, setPresidentData] = useState({});
-  const [vicepresidentData, setVicePresidentData] = useState({});
-  const [financerData, setFinancerData] = useState({});
-  const [secretaryData, setSecretaryData] = useState({});
-
-  const [inputFields, setInputFields] = useState({
+  
+  const [clubData, setClubData] = useState({
     clubName: "",
     mission: "",
     kpo: "",
+    image: null, // Add an image field
+  });
+  const [supervisorData, setSupervisorData] = useState({
     supervisorName: "",
     function: "",
     phone: "",
     email: "",
+  });
+  const [presidentData, setPresidentData] = useState({
     presidentName: "",
     presidentField: "",
     presidentYear: "",
     presidentPhone: "",
     presidentEmail: "",
+  });
+  const [vicePresidentData, setVicePresidentData] = useState({
     vicePresidentName: "",
     vicePresidentField: "",
     vicePresidentYear: "",
     vicePresidentPhone: "",
     vicePresidentEmail: "",
+  });
+  const [financerData, setFinancerData] = useState({
     financierName: "",
     financierField: "",
     financierYear: "",
     financierPhone: "",
     financierEmail: "",
+  });
+  const [secretaryData, setSecretaryData] = useState({
     secretaryName: "",
     secretaryField: "",
     secretaryYear: "",
     secretaryPhone: "",
     secretaryEmail: "",
   });
-  
 
   const handleNext = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
@@ -509,16 +515,39 @@ export default function StepperForm() {
   const handleReset = () => setActiveStep(0);
 
   const handleSubmit = () => {
-    // Handle form submission with inputFields data
-    console.log("Submitted Data:", inputFields);
+    console.log("Club Data:", clubData);
+    console.log("Supervisor Data:", supervisorData);
+    console.log("President Data:", presidentData);
+    console.log("Vice President Data:", vicePresidentData);
+    console.log("Financer Data:", financerData);
+    console.log("Secretary Data:", secretaryData);
   };
 
   const handleInputChange = (id, value) => {
-    setInputFields({
-      ...inputFields,
-      [id]: value,
-    });
+    switch (activeStep) {
+      case 0:
+        setClubData({ ...clubData, [id]: value });
+        break;
+      case 1:
+        setSupervisorData({ ...supervisorData, [id]: value });
+        break;
+      case 2:
+        setPresidentData({ ...presidentData, [id]: value });
+        break;
+      case 3:
+        setVicePresidentData({ ...vicePresidentData, [id]: value });
+        break;
+      case 4:
+        setFinancerData({ ...financerData, [id]: value });
+        break;
+      case 5:
+        setSecretaryData({ ...secretaryData, [id]: value });
+        break;
+      default:
+        break;
+    }
   };
+  
   
 
   const handleTextareaChange = (event) => {
@@ -560,7 +589,7 @@ export default function StepperForm() {
         ) : (
           <Box>
             <Typography>
-              {getStepContent(activeStep, textareaHeight, handleTextareaChange, handleImageUpload, handleInputChange, inputFields)}
+              {getStepContent(activeStep, textareaHeight, handleTextareaChange, handleImageUpload, handleInputChange, clubData,supervisorData,presidentData,vicePresidentData,financerData,secretaryData)}
             </Typography>
 
             <Box pt={2}>
