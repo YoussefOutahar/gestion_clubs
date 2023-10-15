@@ -44,10 +44,10 @@ const reducer = (state, action) => {
 
 const UsersContext = createContext({
     users: [],
-    getUsers: () => {},
-    createUser: () => {},
-    deleteUser: () => {},
-    updateUser: () => {},
+    getUsers: () => Promise.resolve(),
+    createUser: () => Promise.resolve(),
+    deleteUser: () => Promise.resolve(),
+    updateUser: () => Promise.resolve(),
 })
 
 export const UsersProvider = ({ settings, children }) => {
@@ -67,10 +67,11 @@ export const UsersProvider = ({ settings, children }) => {
 
     const createUser = async (user) => {
         try {
-            const res = await axios.post('/api/user/create', user)
+            await UsersService.createUser(user);
+            const res = await UsersService.getUsers();
             dispatch({
                 type: 'CREATE_USER',
-                payload: res.data,
+                payload: res,
             })
         } catch (e) {
             console.error(e)
@@ -79,24 +80,24 @@ export const UsersProvider = ({ settings, children }) => {
 
     const deleteUser = async (userID) => {
         try {
-            const res = await axios.post('/api/user/delete', {
-                id: userID,
-            })
+            await UsersService.deleteUser(userID);
+            const res = await UsersService.getUsers();
             dispatch({
                 type: 'DELETE_USER',
-                payload: res.data,
+                payload: res,
             })
         } catch (e) {
             console.error(e)
         }
     }
 
-    const updateUser = async (user) => {
+    const updateUser = async (userID,user) => {
         try {
-            const res = await axios.post('/api/user/update', user)
+            await UsersService.updateUser(userID,user);
+            const res = await UsersService.getUsers();
             dispatch({
                 type: 'UPDATE_USER',
-                payload: res.data,
+                payload: res,
             })
         } catch (e) {
             console.error(e)

@@ -19,6 +19,46 @@ export default class UsersService {
             console.log(err);
         }
     };
+
+    static async getUserById(id) {
+        try {
+            const { data, error } = await supabase.from("profiles").select("*").eq("id", id);
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    static async updateUser(id,user) {
+        try {
+            const { data, error } = await supabase.from("profiles").update(id).eq("id", id);
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    static async deleteUser(id) {
+        try {
+            const { data, error } = await supabase.from("profiles").delete().eq("id", id);
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    static async createUser(user) {
+        try {
+            const { data, error } = await supabase.from("profiles").insert([user]);
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
 }
 //Get Current User
 export const getCurrentUser = async () => {
