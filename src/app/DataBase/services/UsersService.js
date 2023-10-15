@@ -1,6 +1,66 @@
 import supabase from "../Clients/SupabaseClient";
 import ClubsService from "./ClubsService";
 
+export default class UsersService {
+    static async getCurrentUser() {
+        const {
+            data: { session },
+        } = await supabase.auth.getSession();
+        const user = session?.user;
+    
+        return user;
+    };
+
+    static async getUsers() {
+        try {
+            const { data, error } = await supabase.from("profiles").select("*");
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    static async getUserById(id) {
+        try {
+            const { data, error } = await supabase.from("profiles").select("*").eq("id", id);
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    static async updateUser(id,user) {
+        try {
+            const { data, error } = await supabase.from("profiles").update(id).eq("id", id);
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    static async deleteUser(id) {
+        try {
+            const { data, error } = await supabase.from("profiles").delete().eq("id", id);
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    static async createUser(user) {
+        try {
+            const { data, error } = await supabase.from("profiles").insert([user]);
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+}
 //Get Current User
 export const getCurrentUser = async () => {
     const {

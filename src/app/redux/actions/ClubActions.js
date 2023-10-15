@@ -1,0 +1,9 @@
+
+export const FETCH_CLUBS = 'FETCH_CLUBS';
+export const FETCH_CLUB = 'FETCH_CLUB';
+export const ADD_CLUB = 'ADD_CLUB';
+export const UPDATE_CLUB = 'UPDATE_CLUB';
+export const DELETE_CLUB = 'DELETE_CLUB';
+export const FETCH_CLUB_MEMBERS = 'FETCH_CLUB_MEMBERS';
+export const FETCH_CLUB_EVENTS = 'FETCH_CLUB_EVENTS';
+export const FETCH_CLUB_ACTIVITIES = 'FETCH_CLUB_ACTIVITIES';  
