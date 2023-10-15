@@ -1,18 +1,46 @@
 import React, { createContext, useEffect, useReducer } from 'react'
-import RootReducer from '../redux/reducers/RootReducer';
-
 import UsersService from '../DataBase/services/UsersService';
 
-import {
-    FETCH_USERS,
-    FETCH_USER,
-    ADD_USER,
-    UPDATE_USER,
-    DELETE_USER,
-    FETCH_USER_CLUBS,
-    FETCH_USER_EVENTS,
-    FETCH_USER_ACTIVITIES,
-} from '../redux/actions/UserActions';
+import axios from 'axios';
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case 'FETCH_USERS': {
+            return {
+                ...state,
+                users: action.payload,
+            }
+        }
+        case 'FETCH_USER': {
+            return {
+                ...state,
+                users: action.payload,
+            }
+        }
+        case 'ADD_USER': {
+            return {
+                ...state,
+                users: action.payload,
+            }
+        }
+        case 'UPDATE_USER': {
+            return {
+                ...state,
+                users: action.payload,
+            }
+        }
+        case 'DELETE_USER': {
+            return {
+                ...state,
+                users: action.payload,
+            }
+        }
+        default: {
+            return { ...state }
+        }
+    }
+}
+
 
 const UsersContext = createContext({
     users: [],
@@ -23,14 +51,14 @@ const UsersContext = createContext({
 })
 
 export const UsersProvider = ({ settings, children }) => {
-    const [state, dispatch] = useReducer(RootReducer, [])
+    const [state, dispatch] = useReducer(reducer, [])
 
     const getUsers = async () => {
         try {
             const res = await UsersService.getUsers();
             dispatch({
-                type: FETCH_USERS,
-                payload: res.data,
+                type: `FETCH_USERS`,
+                payload: res,
             })
         } catch (e) {
             console.error(e)
@@ -75,6 +103,10 @@ export const UsersProvider = ({ settings, children }) => {
         }
     }
 
+    useEffect(() => {
+        getUsers()
+    }, [])
+
     return (
         <UsersContext.Provider
             value={{
@@ -89,3 +121,5 @@ export const UsersProvider = ({ settings, children }) => {
         </UsersContext.Provider>
     )
 }
+
+export default UsersContext

@@ -4,10 +4,10 @@ import { getMembreByProfile } from "./DataBase/services/MembersService";
 export const getNavigations = async () => {
     const user = await getCurrentUser();
 
-    let member;
-    if (user) {
-        member = await getMembreByProfile(user.id);
-    }
+    // let member;
+    // if (user) {
+    //     member = await getMembreByProfile(user.id);
+    // }
 
     // DVE
 

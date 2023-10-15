@@ -6,8 +6,7 @@ import {
     DELETE_USER,
 } from '../actions/UsersActions';
 
-const initialState = [
-];
+const initialState = [];
 
 const UsersReducer = function (state = initialState, action) {
     switch (action.type) {

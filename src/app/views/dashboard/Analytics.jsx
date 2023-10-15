@@ -1,5 +1,5 @@
 import { Card, Grid, styled, useTheme } from '@mui/material';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import Campaigns from './shared/Campaigns';
 import DoughnutChart from './shared/Doughnut';
 import RowCards from './shared/RowCards';
@@ -7,6 +7,8 @@ import StatCards from './shared/StatCards';
 import StatCards2 from './shared/StatCards2';
 import TopSellingTable from './shared/TopSellingTable';
 import UpgradeCard from './shared/UpgradeCard';
+import useUsers from '../../hooks/useUsers';
+import { UsersProvider } from '../../contexts/UsersContext';
 
 const ContentBox = styled('div')(({ theme }) => ({
   margin: '30px',
@@ -35,6 +37,15 @@ const H4 = styled('h4')(({ theme }) => ({
 
 const Analytics = () => {
   const { palette } = useTheme();
+
+  const { 
+    users,
+    getUsers,
+  } = useUsers();
+
+  useEffect(() => {
+    console.log(users);
+  }, []);
 
   return (
     <Fragment>

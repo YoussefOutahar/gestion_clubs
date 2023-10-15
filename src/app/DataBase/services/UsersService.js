@@ -1,5 +1,25 @@
 import supabase from "../Clients/SupabaseClient";
 
+export default class UsersService {
+    static async getCurrentUser() {
+        const {
+            data: { session },
+        } = await supabase.auth.getSession();
+        const user = session?.user;
+    
+        return user;
+    };
+
+    static async getUsers() {
+        try {
+            const { data, error } = await supabase.from("profiles").select("*");
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+}
 //Get Current User
 export const getCurrentUser = async () => {
     const {
