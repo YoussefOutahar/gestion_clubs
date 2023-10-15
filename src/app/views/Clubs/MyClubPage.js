@@ -1,44 +1,52 @@
 import { Typography, Grid, Card, CardContent, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material'
 import { useEffect, useState } from 'react'
 
-import  supabase  from '../../DataBase/Clients/SupabaseClient'
-import { getCurrentUser,getProfileById } from '../../DataBase/services/UsersService'
-import { getMembreByProfile,getMembreClub } from '../../DataBase/services/MembersService'
+import { getCurrentUser, getProfileById } from '../../DataBase/services/UsersService'
+import ClubsService from '../../DataBase/services/ClubsService'
+
 
 const MyClubPage = () => {
-    const [activeClub, setActiveClub] = useState({})
-    const [category, setCategory] = useState('')
+  const [activeClub, setActiveClub] = useState({});
+  const [category, setCategory] = useState('');
 
-    useEffect(() => {
-        getCurrentUser().then((user) => {
-            getProfileById(user.id).then((profile) => {
-                getMembreByProfile(profile[0].id).then((member) => {
-                    getMembreClub(member[0].id).then((club) => {
-                        setActiveClub(club[0])
-                        supabase.from('Categorie').select('*').eq('id', club[0].id_cat).then((categorie) => {
-                            console.log(categorie)
-                            setCategory(categorie.data[0].categorie)
-                        })
-                    })
-                })
-            })
-        })
-    }, [])
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+        if (currentUser) {
+          const userProfile = await getProfileById(currentUser.id);
+          if (userProfile.length > 0) {
 
+            const userClubId = userProfile[0].id_club;
+            const clubInfo = await ClubsService.getClub(userClubId);
+            setActiveClub(clubInfo[0]);
 
-    return (
-        <>
-            <Typography variant="h4" component="div" align="center" sx={{ my: 2 }}>
-        {activeClub.nom}
+            // Fetch and set the club category
+            const ClubCategory = await ClubsService.getClubCategorie(clubInfo[0].id_cat);
+            console.log(" ClubCategory : ", ClubCategory);
+            setCategory(ClubCategory[0].category_name);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  return (
+    <>
+      <Typography variant="h4" component="div" align="center" sx={{ my: 2 }}>
+        {activeClub.name}
       </Typography>
       <Grid container justifyContent="center">
         <Grid item xs={12} md={6}>
-
-      <img src={activeClub.logo} alt={activeClub.nom}  style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover' }} />
+          <img src={activeClub.logo} alt={activeClub.name} style={{ width: '70%', aspectRatio: '1/1', objectFit: 'cover' }} />
         </Grid>
       </Grid>
       <Typography variant="body1" sx={{ my: 2, textAlign: 'center' }}>
-        {activeClub.description}
+        {activeClub.mission}
       </Typography>
       <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
         <Grid item xs={12} sm={6} md={4}>
@@ -78,9 +86,9 @@ const MyClubPage = () => {
           </Card>
         </Grid>
       </Grid>
-      
-        </>
-    )
+
+    </>
+  )
 }
 
 export default MyClubPage

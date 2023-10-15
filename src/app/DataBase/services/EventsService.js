@@ -2,7 +2,7 @@ import supabase from "../Clients/SupabaseClient";
 import ClubsService from "./ClubsService";
 
 export const addEvent = async (event) => {
-    const { data, error } = await supabase.from("Activites").insert([event]);
+    const { data, error } = await supabase.from("Events").insert([event]);
     if (error) {
         console.error("Error adding event:", error);
     } else {
@@ -11,7 +11,7 @@ export const addEvent = async (event) => {
 };
 
 export const getEvents = async () => {
-    const { data, error } = await supabase.from("Activites").select("*");
+    const { data, error } = await supabase.from("Events").select("*");
     if (error) {
         console.error("Error fetching events:", error);
     } else {
@@ -20,7 +20,7 @@ export const getEvents = async () => {
 };
 
 export const getEvent = async (id) => {
-    const { data, error } = await supabase.from("Activites").select("*").eq("id", id);
+    const { data, error } = await supabase.from("Events").select("*").eq("id", id);
     if (error) {
         console.error("Error fetching event:", error);
     } else {
@@ -29,7 +29,7 @@ export const getEvent = async (id) => {
     }
 };
 export const getEventByName = async (nom) => {
-    const { data, error } = await supabase.from("Activites").select("*").eq("Name", nom);
+    const { data, error } = await supabase.from("Events").select("*").eq("Name", nom);
     if (error) {
         console.error("Error fetching event:", error);
     } else {
@@ -39,7 +39,7 @@ export const getEventByName = async (nom) => {
 };
 
 export const updateEvent = async (id, event) => {
-    const { data, error } = await supabase.from("Activites").update(event).eq("id", id);
+    const { data, error } = await supabase.from("Events").update(event).eq("id", id);
     if (error) {
         console.error("Error updating event:", error);
     } else {
@@ -48,7 +48,7 @@ export const updateEvent = async (id, event) => {
 };
 
 export const deleteEvent = async (id) => {
-    const { data, error } = await supabase.from("Activites").delete().eq("id", id);
+    const { data, error } = await supabase.from("Events").delete().eq("id", id);
     if (error) {
         console.error("Error deleting event:", error);
     } else {
@@ -76,7 +76,7 @@ export const addClubToEvent = async (club_id, event_id) => {
 
 
 export const getEventsByClub = async (id) => {
-    const { data, error } = await supabase.from("Activites").select("*").eq("id__club", id);
+    const { data, error } = await supabase.from("Events").select("*").eq("id__club", id);
     if (error) {
         console.error("Error deleting event:", error);
     } else {

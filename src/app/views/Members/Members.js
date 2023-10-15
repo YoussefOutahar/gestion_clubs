@@ -20,43 +20,32 @@ import {
     DialogActions,
     DialogContentText,
 } from "@mui/material";
-import { getAllProfiles, getUserMember} from "../../DataBase/services/UsersService";
-import { getMembreClub , getEtudiant } from "../../DataBase/services/MembersService";
-import { getCurrentUser } from "../../DataBase/services/UsersService";
+import { getCurrentUser, getUsersByClub, getProfileById, updateUserRole,deleteProfile } from "../../DataBase/services/UsersService";
 
 const GestionMembers = () => {
     const [users, setUsers] = useState([]);
     const [searchText, setSearchText] = useState("");
     const [filter, setFilter] = useState("all");
+    const [currentUserData, setCurrentUserData] = useState("");
+    const [newRole, setNewRole] = useState("");
 
     useEffect(() => {
-        getCurrentUser().then((currentUser) => {
-            getUserMember(currentUser.id).then((currentUserMembre) => {
-                getAllProfiles().then((data) => {
-                    data.forEach(async (user) => {
-                        getUserMember(user.id).then((member) => {
-                            getMembreClub(member[0].id).then((club) => {
-                                if (user.role.toLowerCase() != "admin" && currentUserMembre[0].id_club == club[0].id) {
-                                    setUsers((users) => [
-                                        ...users,
-                                        {
-                                            id: user.id,
-                                            name: user.name,
-                                            email: user.email,
-                                            role: member[0].role,
-                                            club: club[0].nom,
-                                            phone: user.phone,
-                                            filliere: user.filliere,
-                                            annee: user.annee,
-                                        },
-                                    ]);
-                                }
-                            });
-                        });
-                    });
-                });
-            });
-        }); 
+        async function fetchUsers() {
+            const currentUser = await getCurrentUser();
+            if (currentUser) {
+                console.log(currentUser)
+                const userProfile = await getProfileById(currentUser.id);
+                if (userProfile.length > 0) {
+                    setCurrentUserData(userProfile);
+                    console.log(userProfile)
+                    const userClubId = userProfile[0].id_club;
+                    const clubMembers = await getUsersByClub(userClubId);
+                    setUsers(clubMembers);
+                }
+            }
+        }
+
+        fetchUsers();
     }, []);
 
     const handleSearchChange = (event) => {
@@ -89,14 +78,27 @@ const GestionMembers = () => {
         setOpenDeleteDialog(false);
     };
 
-    //logic of the dialogs
-    const handleSave = async () => {
-        console.log(editUser);
+    const handleSaveRole = async () => {
+        if (editUser && newRole) {
+            await updateUserRole(editUser.id, newRole);
+            const updatedUserData = await getProfileById(editUser.id);
+
+            // Update the local users state with the updated user data
+            if (updatedUserData.length > 0) {
+                const updatedUsers = users.map((user) => {
+                    if (user.id === updatedUserData[0].id) {
+                        return updatedUserData[0];
+                    }
+                    return user;
+                });
+                setUsers(updatedUsers);
+            }
+        }
         setOpenEditDialog(false);
     };
 
     const handleConfirmDelete = async () => {
-        // deleteProfile(deleteUserId);
+        deleteProfile(deleteUser.id);
         console.log(deleteUser);
         setOpenDeleteDialog(false);
     };
@@ -118,40 +120,61 @@ const GestionMembers = () => {
                         <InputLabel>Filter</InputLabel>
                         <Select value={filter} onChange={handleFilterChange} label="Filter">
                             <MenuItem value="all">All</MenuItem>
-                            <MenuItem value="admin">Admin</MenuItem>
-                            <MenuItem value="user">User</MenuItem>
+                            <MenuItem value="info">Informatique</MenuItem>
+                            <MenuItem value="auto">Automobile</MenuItem>
+                            <MenuItem value="Denatire">Denatire</MenuItem>
                             {/* Add more filter options here */}
                         </Select>
                     </FormControl>
                 </Grid>
             </Grid>
-            <TableContainer component={Paper} style={{ marginTop: "20px" }}>
+            <TableContainer component={Paper} style={{ marginTop: "20px", paddingLeft: "10px" }}>
                 <Table>
                     <TableHead>
                         <TableRow>
                             <TableCell>Name</TableCell>
                             <TableCell>Email</TableCell>
                             <TableCell>Role</TableCell>
-                            <TableCell>Club</TableCell>
                             <TableCell>Phone</TableCell>
                             <TableCell>Study Field</TableCell>
                             <TableCell>Annee</TableCell>
+                            {currentUserData && (currentUserData[0].role_club === "President" || currentUserData[0].role_club === "VicePresident") && (
+                                <TableCell>Actions</TableCell>
+                            )}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {users.map(
                             (user) =>
-                                (filter === "all" || user.role.toLowerCase() === filter) &&
+                                (filter === "all" || user.field.toLowerCase() === filter) &&
                                 (searchText === "" ||
                                     user.name.toLowerCase().includes(searchText.toLowerCase())) && (
                                     <TableRow key={user.id}>
                                         <TableCell>{user.name}</TableCell>
                                         <TableCell>{user.email}</TableCell>
-                                        <TableCell>{user.role}</TableCell>
-                                        <TableCell>{user.club}</TableCell>
+                                        <TableCell>{user.role_club}</TableCell>
                                         <TableCell>{user.phone}</TableCell>
-                                        <TableCell>{user.studyField}</TableCell>
-                                        <TableCell>{user.annee}</TableCell>
+                                        <TableCell>{user.field}</TableCell>
+                                        <TableCell>{user.year}</TableCell>
+                                        {currentUserData && (currentUserData[0].role_club === "President" || currentUserData[0].role_club === "VicePresident") && (
+                                            <TableCell>
+                                                <Button
+                                                    variant="outlined"
+                                                    color="primary"
+                                                    style={{ marginRight: '3px', marginBottom: '1px'}}
+                                                    onClick={() => handleEdit(user)}
+                                                >
+                                                    Edit Role
+                                                </Button>
+                                                <Button
+                                                    variant="outlined"
+                                                    color="secondary"
+                                                    onClick={() => handleDelete(user)}
+                                                >
+                                                    Delete
+                                                </Button>
+                                            </TableCell>
+                                        )}
                                     </TableRow>
                                 )
                         )}
@@ -159,32 +182,27 @@ const GestionMembers = () => {
                 </Table>
             </TableContainer>
             <Dialog open={openEditDialog} onClose={handleClose}>
-                <DialogTitle>Edit User</DialogTitle>
+                <DialogTitle>Edit user's role</DialogTitle>
                 <DialogContent>
-                    <p>test</p>
-                    {/* <TextField
-                        label="Name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                    />
-                    <TextField
-                        label="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                    /> */}
-                    {/* Add more form fields here */}
+                    <FormControl fullWidth variant="outlined">
+                        <InputLabel>New Role</InputLabel>
+                        <Select
+                            value={newRole}
+                            onChange={(e) => setNewRole(e.target.value)}
+                            label="New Role"
+                        >
+                            <MenuItem value="President">President</MenuItem>
+                            <MenuItem value="VicePresident">VicePresident</MenuItem>
+                            <MenuItem value="Secretary">Secretary</MenuItem>
+                            <MenuItem value="Financer">Financer</MenuItem>
+                        </Select>
+                    </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="secondary">
                         Cancel
                     </Button>
-                    <Button onClick={handleSave} color="primary">
+                    <Button onClick={handleSaveRole} color="primary">
                         Save
                     </Button>
                 </DialogActions>

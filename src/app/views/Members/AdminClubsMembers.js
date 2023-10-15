@@ -20,57 +20,32 @@ import {
     DialogActions,
     DialogContentText,
 } from "@mui/material";
-import { getAllProfiles, getUserMember} from "../../DataBase/services/UsersService";
-import { getMembreClub , getEtudiant } from "../../DataBase/services/MembersService";
+import { getAllProfilesByRole,deleteProfile } from "../../DataBase/services/UsersService";
+import ClubsService from "../../DataBase/services/ClubsService";
 
 const AdminClubsMembers = () => {
     const [users, setUsers] = useState([]);
     const [searchText, setSearchText] = useState("");
     const [filter, setFilter] = useState("all");
 
-    useEffect(() => { 
-        getAllProfiles().then((data) => {
-            console.log(data);
-            data.forEach((user) => {
-                getUserMember(user.id).then((member) => {
-                    console.log(member);
-                    getMembreClub(member[0].id).then((club) => {
-                        console.log(club);
-                        if (user.role.toLowerCase() != "admin") {
-                            setUsers((users) => [
-                                ...users,
-                                {
-                                    id: user.id,
-                                    name: user.name,
-                                    email: user.email,
-                                    role: member[0].role,
-                                    club: club[0].nom,
-                                    phone: user.phone,
-                                    filliere: user.filliere,
-                                    annee: user.annee,
-                                    bureau: "----",
-                                },
-                            ]);
-                        } else {
-                            setUsers((users) => [
-                                ...users,
-                                {
-                                    id: user.id,
-                                    name: user.name,
-                                    email: user.email,
-                                    role: member[0].role,
-                                    club: "----",
-                                    phone: user.phone,
-                                    filliere: "----",
-                                    annee: "----",
-                                    bureau: user.bureau,
-                                },
-                            ]);
-                        }
-                    });
-                });
-            });
-        });
+    useEffect(() => {
+        // Define an async function to fetch users and set them to the state
+        const fetchUsers = async () => {
+            try {
+                const userProfiles = await getAllProfilesByRole();
+                // Get club information for each user
+                for (const user of userProfiles) {
+                    const clubInfo = await ClubsService.getClub(user.id_club);
+                    user.club = clubInfo[0].name;
+                }
+                setUsers(userProfiles);
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        };
+
+        // Call the async function within the useEffect hook
+        fetchUsers();
     }, []);
 
     const handleSearchChange = (event) => {
@@ -110,7 +85,7 @@ const AdminClubsMembers = () => {
     };
 
     const handleConfirmDelete = async () => {
-        // deleteProfile(deleteUserId);
+        // deleteProfile(deleteUser.id);
         console.log(deleteUser);
         setOpenDeleteDialog(false);
     };
@@ -132,18 +107,16 @@ const AdminClubsMembers = () => {
                         <InputLabel>Filter</InputLabel>
                         <Select value={filter} onChange={handleFilterChange} label="Filter">
                             <MenuItem value="all">All</MenuItem>
-                            <MenuItem value="admin">Admin</MenuItem>
-                            <MenuItem value="president">President</MenuItem>
-                            <MenuItem value="vice-president">Vice President</MenuItem>
-                            <MenuItem value="tresorier">Tresorier</MenuItem>
-                            <MenuItem value="secretaire">Secretaire</MenuItem>
-                            <MenuItem value="membre">Membre</MenuItem>
-                            {/* Add more filter options here */}
+                            <MenuItem value="President">President</MenuItem>
+                            <MenuItem value="VicePresident">Vice President</MenuItem>
+                            <MenuItem value="Financer">Financer</MenuItem>
+                            <MenuItem value="Secretary">Secretary</MenuItem>
+                            <MenuItem value="Member">Membre</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>
             </Grid>
-            <TableContainer component={Paper} style={{ marginTop: "20px" }}>
+            <TableContainer component={Paper} style={{ marginTop: "20px", paddingLeft: "10px" }}>
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -154,27 +127,25 @@ const AdminClubsMembers = () => {
                             <TableCell>Phone</TableCell>
                             <TableCell>Study Field</TableCell>
                             <TableCell>Annee</TableCell>
-                            <TableCell>Bureau</TableCell>
                             <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {users.map(
                             (user) =>
-                                (filter === "all" || user.role.toLowerCase() === filter) &&
+                                (filter === "all" || user.role_club === filter) &&
                                 (searchText === "" ||
                                     user.name.toLowerCase().includes(searchText.toLowerCase())) && (
                                     <TableRow key={user.id}>
                                         <TableCell>{user.name}</TableCell>
                                         <TableCell>{user.email}</TableCell>
-                                        <TableCell>{user.role}</TableCell>
+                                        <TableCell>{user.role_club}</TableCell>
                                         <TableCell>{user.club}</TableCell>
                                         <TableCell>{user.phone}</TableCell>
-                                        <TableCell>{user.filliere}</TableCell>
-                                        <TableCell>{user.annee}</TableCell>
-                                        <TableCell>{user.bureau}</TableCell>
+                                        <TableCell>{user.field}</TableCell>
+                                        <TableCell>{user.year}</TableCell>
                                         <TableCell>
-                                            <Button
+                                            {/*<Button
                                                 variant="contained"
                                                 color="primary"
                                                 size="small"
@@ -182,7 +153,7 @@ const AdminClubsMembers = () => {
                                                 onClick={() => handleEdit(user)}
                                             >
                                                 Edit
-                                            </Button>
+                                            </Button>*/}
                                             <Button
                                                 variant="contained"
                                                 color="secondary"
