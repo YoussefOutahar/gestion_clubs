@@ -4,7 +4,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { MatxLoading } from "../../components";
 import ForumsService from "../../DataBase/services/ForumsService";
 import { getMembreClub } from "../../DataBase/services/MembersService";
-import { getCurrentUser, getUserMember } from "../../DataBase/services/UsersService";
+import { getCurrentUser, getUserMember, getProfileById } from "../../DataBase/services/UsersService";
 import MessagesService from "../../DataBase/services/MessagesService";
 import SimpleCard from '../../components/SimpleCard';
 
@@ -12,7 +12,7 @@ const Forums = () => {
     const [user, setUser] = useState();
     const [forum, setforums] = useState();
 
-    useEffect(() => {
+    /*useEffect(() => {
         getCurrentUser().then((CurrentUser) => {
             getUserMember(CurrentUser.id).then((member) => {
                 getMembreClub(member[0].id).then((club) => {
@@ -23,7 +23,27 @@ const Forums = () => {
                 });
             });
         });
-    }, []);
+    }, []);*/
+    useEffect(() => {
+        const fetchUsers = async () => {
+          try {
+            const currentUser = await getCurrentUser();
+            if (currentUser) {
+              const userProfile = await getProfileById(currentUser.id);
+              if (userProfile.length > 0) {
+                ForumsService.getForumFromClub(userProfile[0].id_club).then((forum) => {
+                    setUser(currentUser);
+                    setforums(forum[0]);
+                });
+              }
+            }
+          } catch (error) {
+            console.error("Error fetching users:", error);
+          }
+        };
+    
+        fetchUsers();
+      }, []);
 
     const [message, setMessage] = React.useState("");
     const [messages, setMessages] = React.useState([]);

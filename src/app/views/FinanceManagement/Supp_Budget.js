@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 import supabase from "../../DataBase/Clients/SupabaseClient";
 import NotificationsService from "../../DataBase/services/NotificationsService";
-import { getCurrentUser,getUserMember } from "../../DataBase/services/UsersService";
+import { getCurrentUser,getProfileById } from "../../DataBase/services/UsersService";
 import { getMembreClub } from "../../DataBase/services/MembersService";
 
 
@@ -38,13 +38,21 @@ const Supp_Budget = () => {
   const [clubId, setClubId] = useState(null);
 
   useEffect(() => {
-    getCurrentUser().then((user) => {
-      getUserMember(user.id).then((member) => {
-        getMembreClub(member[0].id).then((club) => {
-          setClubId(club[0].id);
-        });
-      });
-    })
+    const fetchUsers = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+        if (currentUser) {
+          const userProfile = await getProfileById(currentUser.id);
+          if (userProfile.length > 0) {
+            setClubId(userProfile[0].id_club);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
   useEffect(() => {
