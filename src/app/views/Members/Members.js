@@ -33,7 +33,6 @@ const GestionMembers = () => {
         async function fetchUsers() {
             const currentUser = await getCurrentUser();
             if (currentUser) {
-                console.log(currentUser)
                 const userProfile = await getProfileById(currentUser.id);
                 if (userProfile.length > 0) {
                     setCurrentUserData(userProfile);

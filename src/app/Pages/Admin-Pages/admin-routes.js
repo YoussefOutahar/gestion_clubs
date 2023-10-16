@@ -7,10 +7,12 @@ import { ClubsProvider } from "../../contexts/ClubsContext";
 const Dashboard = Loadable(lazy(() => import("./Dashboard/Analytics")));
 const Clubs = Loadable(lazy(() => import("./Clubs-Management/Clubs")));
 const Members = Loadable(lazy(() => import("./Member-Management/AdminClubsMembers")));
+const Meetings = Loadable(lazy(() => import("./Meetings-Management/Meetings")));
+const Events = Loadable(lazy(() => import("./Events-Management/Events")));
 
 const AdminRoutes = [
     {
-        path: "/Dashboard",
+        path: "/Dashboard-Admin",
         element: <Dashboard />,
     },
     {
@@ -27,6 +29,14 @@ const AdminRoutes = [
             <Members />
         </UsersProvider>,
     },
+    {
+        path: "/Meetings-Management-Admin",
+        element: <Meetings />,
+    },
+    {
+        path: "/Events-Management-Admin",
+        element: <Events />,
+    }
 ];
 
 export default AdminRoutes;

@@ -21,6 +21,8 @@ const Clubs = () => {
 
   const { clubs , getClubCategory } = useClubs();
 
+  const { users , createUser} = useUsers();
+
   const [category, setCategory] = useState('');
 
   const handleLearnMore = (index) => {

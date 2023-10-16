@@ -14,7 +14,7 @@ export const getNavigations = async () => {
     const adminNavigations = [
         {
             name: "Dashboard",
-            path: "/Dashboard",
+            path: "/Dashboard-Admin",
             icon: "dashboard",
         },
         {
@@ -29,12 +29,12 @@ export const getNavigations = async () => {
         },
         {
             name: "Events",
-            path: "/events",
+            path: "/Events-Management-Admin",
             icon: "event",
         },
         {
             name: "Meetings",
-            path: "/meetings",
+            path: "/Meetings-Management-Admin",
             icon: "event",
         },
         {
