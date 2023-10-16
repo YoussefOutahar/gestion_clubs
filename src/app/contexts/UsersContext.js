@@ -1,8 +1,6 @@
 import React, { createContext, useEffect, useReducer } from 'react'
 import UsersService from '../DataBase/services/UsersService';
 
-import axios from 'axios';
-
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_USERS': {
@@ -105,13 +103,13 @@ export const UsersProvider = ({ settings, children }) => {
     }
 
     useEffect(() => {
-        getUsers()
+        getUsers();
     }, [])
 
     return (
         <UsersContext.Provider
             value={{
-                users: state,
+                users: state.users,
                 getUsers,
                 createUser,
                 deleteUser,

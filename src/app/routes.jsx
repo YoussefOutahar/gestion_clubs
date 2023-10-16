@@ -12,6 +12,8 @@ import meetingRoutes from "./views/Meetings/meetingsRoutes";
 
 import landingPageRoute from "./views/LandingPage/LandingPageRoute";
 
+import AdminRoutes from "./Pages/Admin-Pages/admin-routes";
+
 import AuthGuard from "./auth/AuthGuard";
 import sessionRoutes from "./views/sessions/SessionRoutes";
 import NotFound from "./views/sessions/NotFound";
@@ -27,6 +29,7 @@ const routes = [
             </AuthGuard>
         ),
         children: [
+            ...AdminRoutes,
             ...dashboardRoutes,
             ...summaryRoutes,
             ...clubsRoutes,

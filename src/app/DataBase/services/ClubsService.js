@@ -71,5 +71,11 @@ export default class ClubsService {
             console.log("Event added to club successfully");
         }
     };
+
+    static async getClubCategory(categoryID){
+        const { data, error } = await supabase.from("Category").select("*").eq("id", categoryID);
+        if (error) return error;
+        else return data;
+    }
 }
 

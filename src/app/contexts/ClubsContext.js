@@ -55,7 +55,7 @@ export const ClubsProvider = ({ settings, children }) => {
         try {
             const res = await ClubsService.getClubs();
             dispatch({
-                type: FETCH_CLUBS,
+                type: `FETCH_CLUBS`,
                 payload: res,
             })
         } catch (e) {
