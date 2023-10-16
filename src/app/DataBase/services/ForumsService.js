@@ -77,6 +77,13 @@ export default class DocumentsService {
         if (error) throw error;
         return data;
     };
+
+    static async getMessagesByForum(forumId) {
+        const { data, error } = await supabase.from("Messages").select("*").eq("forum_id", forumId);
+        if (error) throw error;
+        return data;
+    };
+    
 }
 
 

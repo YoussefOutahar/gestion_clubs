@@ -72,7 +72,7 @@ const AdminFinance = () => {
           const { total_supp_budget, total_earnings } = await getTotalSuppEarningsByClub(club.id);
           return {
             id: club.id,
-            name: club.nom,
+            name: club.name,
             Budget: budget.budget,
             Rest: budget.rest,
             Supp_budget: total_supp_budget,

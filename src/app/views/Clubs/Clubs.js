@@ -53,8 +53,8 @@ const Clubs = () => {
 
   useEffect(() => {
     if (activeClub !== null) {
-      supabase.from('Categorie').select('*').eq('id', activeClub.id_cat).then((categorie) => {
-        setCategory(categorie.data[0].categorie)
+      supabase.from('Category').select('*').eq('id', activeClub.id_cat).then((categorie) => {
+        setCategory(categorie.data[0].category_name)
       })
     }
   }, [activeClub]);
@@ -107,7 +107,7 @@ const Clubs = () => {
           <ArrowBack /> Back to Club List
         </StyledButton>
         <Typography variant="h6" component="div" sx={{ textAlign: 'center', mb: 1, fontSize: 25, fontWeight: 'bold' }}>
-          {activeClub.nom} {/* Display the title */}
+          {activeClub.name} {/* Display the title */}
         </Typography>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <img src={activeClub.logo} alt={activeClub.nom} style={{ width: '350px', marginLeft: '50px', marginRight: '50px' }} /> {/* Display the image with 100px width */}
@@ -123,7 +123,7 @@ const Clubs = () => {
                 Category : {category}
               </Typography>
               <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
-                Mission : {activeClub.description}
+                Mission : {activeClub.mission}
               </Typography>
               <Button
                 variant="contained"
@@ -161,7 +161,7 @@ const Clubs = () => {
                 <CardMedia
                   component="img"
                   image={club.logo}
-                  alt={club.nom}
+                  alt={club.name}
                   sx={{
                     paddingTop: '10%',
                     paddingBottom: '10%',
@@ -173,7 +173,7 @@ const Clubs = () => {
                 />
                 <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                   <Typography variant="h6" component="div" sx={{ textAlign: 'center', mb: 1 }}>
-                    {club.nom}
+                    {club.name}
                   </Typography>
                 </CardContent>
               </Card>
