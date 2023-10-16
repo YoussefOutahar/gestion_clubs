@@ -1,0 +1,5 @@
+export const GET_EVENTS = 'GET_MEETINGS'
+export const GET_EVENT = 'GET_MEETING'
+export const ADD_EVENT = 'ADD_MEETING'
+export const UPDATE_EVENT = 'UPDATE_MEETING'
+export const DELETE_EVENT = 'DELETE_MEETING'
