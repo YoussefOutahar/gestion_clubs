@@ -6,9 +6,9 @@ import Stepper from "@mui/material/Stepper";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 
-// import { addClubTest } from "../../../DataBase/services/ClubsService";
-// import {addSuperviser} from "../../../DataBase/services/SupervisersService";
-// import { addMembreTest } from "../../../DataBase/services/MembersService";
+import ClubsService from "../../../DataBase/services/ClubsService";
+import {addSupervisor} from "../../../DataBase/services/SupervisorsService";
+import UsersService from "../../../DataBase/services/UsersService";
 
 const formStyle = {
   width: "100%",
@@ -90,16 +90,16 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
       return (
         <div className="container">
           <form style={formStyle}>
-            <label htmlFor="clubName" style={{ ...h5Style }}>
+            <label htmlFor="name" style={{ ...h5Style }}>
               Club name :
             </label>
             <input
               placeholder="Enter club's name "
               type="text"
-              id="clubName"
+              id="name"
               style={{ ...inputGroup, ...inputStyle }}
-              value={clubData.clubName}
-              onChange={(e) => handleInputChange("clubName", e.target.value)}
+              value={clubData.name}
+              onChange={(e) => handleInputChange("name", e.target.value)}
             />
             <label htmlFor="mission" style={{ ...h5Style }}>
               Club mission :
@@ -155,8 +155,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
             type="text"
             id="superviserName"
             style={{ ...inputGroup, ...inputStyle }}
-            value={supervisorData.supervisorName}
-            onChange={(e) => handleInputChange("supervisorName", e.target.value)}
+            value={supervisorData.fullName}
+            onChange={(e) => handleInputChange("fullName", e.target.value)}
             />
   
           <label htmlFor="function" style={{ ...h5Style }}>
@@ -468,13 +468,15 @@ export default function StepperForm() {
   const [selectedImage, setSelectedImage] = useState(null);
   
   const [clubData, setClubData] = useState({
-    clubName: "",
+    name: "",
     mission: "",
     kpo: "",
-    image: null, // Add an image field
+    logo: null,
+    nb_member: 4 ,
+    state: "pending",
   });
   const [supervisorData, setSupervisorData] = useState({
-    supervisorName: "",
+    fullName: "",
     function: "",
     phone: "",
     email: "",
@@ -514,14 +516,25 @@ export default function StepperForm() {
 
   const handleReset = () => setActiveStep(0);
 
-  const handleSubmit = () => {
-    console.log("Club Data:", clubData);
-    console.log("Supervisor Data:", supervisorData);
-    console.log("President Data:", presidentData);
-    console.log("Vice President Data:", vicePresidentData);
-    console.log("Financer Data:", financerData);
-    console.log("Secretary Data:", secretaryData);
+  const handleSubmit = async () => {
+    try {
+      // Add club data using addClub
+      await ClubsService.addClub(clubData);
+
+      // Add supervisor data using addSupervisor
+      await addSupervisor(supervisorData);
+
+      // Add user data using createUser
+      await UsersService.createUser(presidentData);
+      await UsersService.createUser(vicePresidentData);
+      await UsersService.createUser(financerData);
+      await UsersService.createUser(secretaryData);
+  
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
   };
+  
 
   const handleInputChange = (id, value) => {
     switch (activeStep) {
