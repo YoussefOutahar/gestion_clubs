@@ -10,7 +10,7 @@ const Dashboard = Loadable(lazy(() => import("./Dashboard/Analytics")));
 const Clubs = Loadable(lazy(() => import("./Clubs-Management/Clubs")));
 const Members = Loadable(lazy(() => import("./Member-Management/AdminClubsMembers")));
 const Meetings = Loadable(lazy(() => import("./Meetings-Management/Meetings")));
-const Events = Loadable(lazy(() => import("./Events-Management/Events")));
+const Events = Loadable(lazy(() => import("./Evants-Management/Events")));
 const Finance = Loadable(lazy(() => import("./Finance-Management/AdminFinance")));
 
 const AdminRoutes = [
@@ -18,6 +18,7 @@ const AdminRoutes = [
         path: "/Dashboard-Admin",
         element: <Dashboard />,
     },
+    
     {
         path: "/Clubs-Management-Admin",
         element: (

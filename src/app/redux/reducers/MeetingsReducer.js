@@ -1,6 +1,6 @@
 import {
-    GET_MEETINGS,
-    GET_MEETING,
+    FETCH_MEETINGS,
+    FETCH_MEETING,
     ADD_MEETING,
     UPDATE_MEETING,
     DELETE_MEETING,
@@ -10,10 +10,10 @@ const initialState = [];
 
 const MeetingsReducer = function (state = initialState, action) {
     switch (action.type) {
-        case GET_MEETINGS: {
+        case FETCH_MEETINGS: {
             return [...action.payload];
         }
-        case GET_MEETING: {
+        case FETCH_MEETING: {
             return [...action.payload];
         }
         case ADD_MEETING: {

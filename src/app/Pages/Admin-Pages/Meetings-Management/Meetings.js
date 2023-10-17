@@ -7,9 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import {styled,Box,Button} from "@mui/material";
 
+import MeetingsService from "../../../DataBase/services/MeetingsService";
+
 const StyledButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(1),
 }));
+
 
 const localizer = momentLocalizer(moment);
 

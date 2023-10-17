@@ -4,7 +4,7 @@ import NotificationReducer from './NotificationReducer';
 
 import UsersReducer from './UsersReducer';
 import ClubReducer from './ClubReducer';
-import MeetingReducer from './MeetingReducer';
+import MeetingReducer from './MeetingsReducer';
 import EventsReducer from './EventsReducer';
 
 const RootReducer = combineReducers({

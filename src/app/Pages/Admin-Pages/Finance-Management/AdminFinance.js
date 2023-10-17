@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import supabase from "../../DataBase/Clients/SupabaseClient";
-import SimpleCard from "../../components/SimpleCard";
+import SimpleCard from "../../../components/SimpleCard";
 import FinanceCards from "./Components/FinanceCards";
 import { styled,Box, Button,Grid,Table,TableBody,TableCell,TableHead,TableRow} from "@mui/material";
+
+import supabase from "../../../DataBase/Clients/SupabaseClient";
+
 
   const StyledButton = styled(Button)(({ theme }) => ({
     margin: theme.spacing(1),
