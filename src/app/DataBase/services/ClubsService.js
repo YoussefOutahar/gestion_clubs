@@ -10,6 +10,7 @@ export default class ClubsService {
             console.log("Club added successfully");
         }
     };
+
     
     static async getClubs  () {
         const { data, error } = await supabase.from("Clubs").select("*");

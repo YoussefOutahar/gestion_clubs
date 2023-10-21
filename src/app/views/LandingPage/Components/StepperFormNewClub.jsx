@@ -5,9 +5,11 @@ import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import ClubsService from "../../../DataBase/services/ClubsService";
 import UsersService from "../../../DataBase/services/UsersService";
+import PendingMembersService from "../../../DataBase/services/PendingMembersService";
 
 const formStyle = {
   width: "100%",
@@ -154,8 +156,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
             type="text"
             id="superviserName"
             style={{ ...inputGroup, ...inputStyle }}
-            value={supervisorData.fullName}
-            onChange={(e) => handleInputChange("fullName", e.target.value)}
+            value={supervisorData.name}
+            onChange={(e) => handleInputChange("name", e.target.value)}
             />
   
           <label htmlFor="function" style={{ ...h5Style }}>
@@ -208,8 +210,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="presidentName"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={presidentData.presidentName}
-                onChange={(e) => handleInputChange("presidentName", e.target.value)}
+                value={presidentData.name}
+                onChange={(e) => handleInputChange("name", e.target.value)}
               />
   
               <label htmlFor="presidentField" style={{ ...h5Style }}>
@@ -220,8 +222,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="presidentField"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={presidentData.presidentField}
-                onChange={(e) => handleInputChange("presidentField", e.target.value)}
+                value={presidentData.field}
+                onChange={(e) => handleInputChange("field", e.target.value)}
               />
   
               <label htmlFor="presidentYear" style={{ ...h5Style }}>
@@ -232,8 +234,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="presidentYear"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={presidentData.presidentYear}
-                onChange={(e) => handleInputChange("presidentYear", e.target.value)}
+                value={presidentData.year}
+                onChange={(e) => handleInputChange("year", e.target.value)}
               />
   
               <label htmlFor="presidentPhone" style={{ ...h5Style }}>
@@ -244,8 +246,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="presidentPhone"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={presidentData.presidentPhone}
-                onChange={(e) => handleInputChange("presidentPhone", e.target.value)}
+                value={presidentData.phone}
+                onChange={(e) => handleInputChange("phone", e.target.value)}
               />
   
               <label htmlFor="presidentEmail" style={{ ...h5Style }}>
@@ -256,8 +258,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="email"
                 id="presidentEmail"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={presidentData.presidentEmail}
-                onChange={(e) => handleInputChange("presidentEmail", e.target.value)}
+                value={presidentData.email}
+                onChange={(e) => handleInputChange("email", e.target.value)}
               />
             </form>
           </div>
@@ -274,8 +276,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="vicePresidentName"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={vicePresidentData.vicePresidentName}
-                onChange={(e) => handleInputChange("vicePresidentName", e.target.value)}
+                value={vicePresidentData.name}
+                onChange={(e) => handleInputChange("name", e.target.value)}
               />
   
               <label htmlFor="vicePresidentField" style={{ ...h5Style }}>
@@ -286,8 +288,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="vicePresidentField"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={vicePresidentData.vicePresidentField}
-                onChange={(e) => handleInputChange("vicePresidentField", e.target.value)}
+                value={vicePresidentData.field}
+                onChange={(e) => handleInputChange("field", e.target.value)}
               />
   
               <label htmlFor="vicePresidentYear" style={{ ...h5Style }}>
@@ -298,8 +300,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="vicePresidentYear"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={vicePresidentData.vicePresidentYear}
-                onChange={(e) => handleInputChange("vicePresidentYear", e.target.value)}
+                value={vicePresidentData.year}
+                onChange={(e) => handleInputChange("year", e.target.value)}
               />
   
               <label htmlFor="vicePresidentPhone" style={{ ...h5Style }}>
@@ -310,8 +312,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="text"
                 id="vicePresidentPhone"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={vicePresidentData.vicePresidentPhone}
-                onChange={(e) => handleInputChange("vicePresidentPhone", e.target.value)}
+                value={vicePresidentData.phone}
+                onChange={(e) => handleInputChange("phone", e.target.value)}
               />
   
               <label htmlFor="vicePresidentEmail" style={{ ...h5Style }}>
@@ -322,8 +324,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                 type="email"
                 id="vicePresidentEmail"
                 style={{ ...inputGroup, ...inputStyle }}
-                value={vicePresidentData.vicePresidentEmail}
-                onChange={(e) => handleInputChange("vicePresidentEmail", e.target.value)}
+                value={vicePresidentData.email}
+                onChange={(e) => handleInputChange("email", e.target.value)}
               />
             </form>
           </div>
@@ -340,8 +342,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                   type="text"
                   id="financierName"
                   style={{ ...inputGroup, ...inputStyle }}
-                  value={financerData.financierName}
-                  onChange={(e) => handleInputChange("financierName", e.target.value)}
+                  value={financerData.name}
+                  onChange={(e) => handleInputChange("name", e.target.value)}
                 />
                 <label htmlFor="financierField" style={{ ...h5Style }}>
                   Field:
@@ -351,8 +353,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                   type="text"
                   id="financierField"
                   style={{ ...inputGroup, ...inputStyle }}
-                  value={financerData.financierField}
-                  onChange={(e) => handleInputChange("financierField", e.target.value)}
+                  value={financerData.field}
+                  onChange={(e) => handleInputChange("field", e.target.value)}
                 />
                 <label htmlFor="financierYear" style={{ ...h5Style }}>
                   Year:
@@ -362,8 +364,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                   type="text"
                   id="financierYear"
                   style={{ ...inputGroup, ...inputStyle }}
-                  value={financerData.financierYear}
-                  onChange={(e) => handleInputChange("financierYear", e.target.value)}
+                  value={financerData.year}
+                  onChange={(e) => handleInputChange("year", e.target.value)}
                 />
                 <label htmlFor="financierPhone" style={{ ...h5Style }}>
                   Phone:
@@ -373,8 +375,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                   type="text"
                   id="financierPhone"
                   style={{ ...inputGroup, ...inputStyle }}
-                  value={financerData.financierPhone}
-                  onChange={(e) => handleInputChange("financierPhone", e.target.value)}
+                  value={financerData.phone}
+                  onChange={(e) => handleInputChange("phone", e.target.value)}
                 />
                 <label htmlFor="financierEmail" style={{ ...h5Style }}>
                   Email:
@@ -384,8 +386,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
                   type="email"
                   id="financierEmail"
                   style={{ ...inputGroup, ...inputStyle }}
-                  value={financerData.financierEmail}
-                  onChange={(e) => handleInputChange("financierEmail", e.target.value)}
+                  value={financerData.email}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
                 />
               </form>
             </div>
@@ -402,8 +404,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               type="text"
               id="secretaryName"
               style={{ ...inputGroup, ...inputStyle }}
-              value={secretaryData.secretaryName}
-              onChange={(e) => handleInputChange("secretaryName", e.target.value)}
+              value={secretaryData.name}
+              onChange={(e) => handleInputChange("name", e.target.value)}
             />
 
             <label htmlFor="secretaryField" style={{ ...h5Style }}>
@@ -414,8 +416,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               type="text"
               id="secretaryField"
               style={{ ...inputGroup, ...inputStyle }}
-              value={secretaryData.secretaryField}
-              onChange={(e) => handleInputChange("secretaryField", e.target.value)}
+              value={secretaryData.field}
+              onChange={(e) => handleInputChange("field", e.target.value)}
             />
 
             <label htmlFor="secretaryYear" style={{ ...h5Style }}>
@@ -426,8 +428,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               type="text"
               id="secretaryYear"
               style={{ ...inputGroup, ...inputStyle }}
-              value={secretaryData.secretaryYear}
-              onChange={(e) => handleInputChange("secretaryYear", e.target.value)}
+              value={secretaryData.year}
+              onChange={(e) => handleInputChange("year", e.target.value)}
             />
 
             <label htmlFor="secretaryPhone" style={{ ...h5Style }}>
@@ -438,8 +440,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               type="text"
               id="secretaryPhone"
               style={{ ...inputGroup, ...inputStyle }}
-              value={secretaryData.secretaryPhone}
-              onChange={(e) => handleInputChange("secretaryPhone", e.target.value)}
+              value={secretaryData.phone}
+              onChange={(e) => handleInputChange("phone", e.target.value)}
             />
 
             <label htmlFor="secretaryEmail" style={{ ...h5Style }}>
@@ -450,8 +452,8 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               type="email"
               id="secretaryEmail"
               style={{ ...inputGroup, ...inputStyle }}
-              value={secretaryData.secretaryEmail}
-              onChange={(e) => handleInputChange("secretaryEmail", e.target.value)}
+              value={secretaryData.email}
+              onChange={(e) => handleInputChange("email", e.target.value)}
             />
           </form>
         </div>
@@ -465,6 +467,8 @@ export default function StepperForm() {
   const steps = getSteps();
   const [textareaHeight, setTextareaHeight] = useState("auto");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [clubName, setClubName] = useState("");
+  const navigate = useNavigate();
   
   const [clubData, setClubData] = useState({
     name: "",
@@ -475,38 +479,48 @@ export default function StepperForm() {
     state: "pending",
   });
   const [supervisorData, setSupervisorData] = useState({
-    fullName: "",
+    clubName: "",
+    name: "",
     function: "",
     phone: "",
     email: "",
+    role_club: "Supervisor",
   });
   const [presidentData, setPresidentData] = useState({
-    presidentName: "",
-    presidentField: "",
-    presidentYear: "",
-    presidentPhone: "",
-    presidentEmail: "",
+    clubName: "",
+    name: "",
+    field: "",
+    year: "",
+    phone: "",
+    email: "",
+    role_club: "President",
   });
   const [vicePresidentData, setVicePresidentData] = useState({
-    vicePresidentName: "",
-    vicePresidentField: "",
-    vicePresidentYear: "",
-    vicePresidentPhone: "",
-    vicePresidentEmail: "",
+    clubName: "",
+    name: "",
+    field: "",
+    year: "",
+    phone: "",
+    email: "",
+    role_club: "VicePresident",
   });
   const [financerData, setFinancerData] = useState({
-    financierName: "",
-    financierField: "",
-    financierYear: "",
-    financierPhone: "",
-    financierEmail: "",
+    clubName: "",
+    name: "",
+    field: "",
+    year: "",
+    phone: "",
+    email: "",
+    role_club: "Financer",
   });
   const [secretaryData, setSecretaryData] = useState({
-    secretaryName: "",
-    secretaryField: "",
-    secretaryYear: "",
-    secretaryPhone: "",
-    secretaryEmail: "",
+    clubName: "",
+    name: "",
+    field: "",
+    year: "",
+    phone: "",
+    email: "",
+    role_club: "Secretary",
   });
 
   const handleNext = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -517,18 +531,25 @@ export default function StepperForm() {
 
   const handleSubmit = async () => {
     try {
-      // Add club data using addClub
+      // Add supervisor data using addSupervisor
       await ClubsService.addClub(clubData);
 
+      // Set the club ID for the supervisor and other roles
+      supervisorData.clubName = clubName;
+      presidentData.clubName = clubName;
+      vicePresidentData.clubName = clubName; 
+      financerData.clubName = clubName;
+      secretaryData.clubName = clubName;
       // Add supervisor data using addSupervisor
       // await addSupervisor(supervisorData);
 
       // Add user data using createUser
-      await UsersService.createUser(presidentData);
-      await UsersService.createUser(vicePresidentData);
-      await UsersService.createUser(financerData);
-      await UsersService.createUser(secretaryData);
-  
+      await PendingMembersService.addMember(presidentData);
+      await PendingMembersService.addMember(vicePresidentData);
+      await PendingMembersService.addMember(financerData);
+      await PendingMembersService.addMember(secretaryData);
+      
+      navigate("/LandingPage");
     } catch (error) {
       console.error("An error occurred:", error);
     }
@@ -539,6 +560,9 @@ export default function StepperForm() {
     switch (activeStep) {
       case 0:
         setClubData({ ...clubData, [id]: value });
+        if (id === "name") {
+          setClubName(value);
+        }
         break;
       case 1:
         setSupervisorData({ ...supervisorData, [id]: value });
