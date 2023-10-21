@@ -17,29 +17,49 @@ export const getNavigations = async () => {
             path: "/Dashboard-Admin",
             icon: "dashboard",
         },
+        { label: "Clubs", type: "label" },
         {
-            name: "Clubs",
+            name: "All Clubs",
             path: "/Clubs-Management-Admin",
             icon: "home",
         },
+        {
+            name: "Club Creation Requests",
+            path: "/Clubs-Validation",
+            icon: "home",
+        },
+        { label: "Memebers", type: "label" },
         {
             name: "Memebers",
             path: "/Members-Management-Admin",
             icon: "group",
         },
-        {
-            name: "Events",
-            path: "/Events-Management-Admin",
-            icon: "event",
-        },
+        { label: "Meetings", type: "label" },
         {
             name: "Meetings",
             path: "/Meetings-Management-Admin",
             icon: "event",
         },
         {
+            name: "Meetings Requests",
+            path: "/Meetings-Validation",
+            icon: "event",
+        },
+        { label: "Events", type: "label" },
+        {
+            name: "Events",
+            path: "/Events-Management-Admin",
+            icon: "event",
+        },
+        {
+            name: "Events Requests",
+            path: "/Events-Validation",
+            icon: "event",
+        },
+        { label: "Finance", type: "label" },
+        {
             name: "Admin Finance",
-            path: "/AdminFinance",
+            path: "/Finance-Management-Admin",
             icon: "account_balance_wallet",
         },
         {

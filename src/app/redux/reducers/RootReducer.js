@@ -6,6 +6,7 @@ import UsersReducer from './UsersReducer';
 import ClubReducer from './ClubReducer';
 import MeetingReducer from './MeetingsReducer';
 import EventsReducer from './EventsReducer';
+import BudgetReducer from './BudgetReducer';
 
 const RootReducer = combineReducers({
   notifications: NotificationReducer,
@@ -14,6 +15,7 @@ const RootReducer = combineReducers({
   clubs: ClubReducer,
   meetings: MeetingReducer,
   events: EventsReducer,
+  budgets: BudgetReducer,
 });
 
 export default RootReducer;

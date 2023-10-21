@@ -4,6 +4,7 @@ import {
     ADD_CLUB,
     UPDATE_CLUB,
     DELETE_CLUB,
+    FETCH_CLUB_CATEGORY,
     FETCH_CLUB_MEMBERS,
     FETCH_CLUB_EVENTS,
     FETCH_CLUB_ACTIVITIES,
@@ -27,6 +28,9 @@ const ClubReducer = function (state = initialState, action) {
             return [...action.payload];
         }
         case DELETE_CLUB: {
+            return [...action.payload];
+        }
+        case FETCH_CLUB_CATEGORY: {
             return [...action.payload];
         }
         case FETCH_CLUB_MEMBERS: {

@@ -7,7 +7,8 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } 
 import { ArrowBack } from '@mui/icons-material';
 
 import useClubs from '../../../hooks/useClubs';
-import useUsers from '../../../hooks/useUsers';
+
+import ClubsService from '../../../DataBase/services/ClubsService';
 
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -19,19 +20,15 @@ const Clubs = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [activeClub, setActiveClub] = useState(null);
 
-  const { clubs , getClubCategory } = useClubs();
-
-  const { users , createUser} = useUsers();
+  const { clubs, deleteClub, getClubCategory } = useClubs();
 
   const [category, setCategory] = useState('');
 
-  const handleLearnMore = (index) => {
+  const handleLearnMore = async (index) => {
     setActiveClub(clubs[index])
+    const category = await ClubsService.getClubCategory(clubs[index]);
+    setCategory(category);
     setShowDetails(true);
-  };
-
-  const handleGoBack = () => {
-    setShowDetails(false);
   };
 
   const handleBackToTop = () => {
@@ -39,13 +36,10 @@ const Clubs = () => {
     setActiveClub(null);
   };
 
-
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [clubToDelete, setClubToDelete] = useState(null);
 
-  const handleDelete = (club) => {
+  const handleDelete = () => {
     setOpenDeleteDialog(true);
-    setClubToDelete(club);
   };
 
   const handleClose = () => {
@@ -53,16 +47,10 @@ const Clubs = () => {
   };
 
   const handleConfirmDelete = async () => {
-    // await ClubsService.deleteClub(clubToDelete.id);
-    const fetchClubs = async () => {
-      // const fetchedClubs = await ClubsService.getClubs();
-      // if (fetchedClubs) {
-      //   setClubs(fetchedClubs);
-      // }
-    };
-
-    // ClubsService.fetchClubs();
+    await deleteClub(activeClub.id);
     setOpenDeleteDialog(false);
+    setShowDetails(false);
+    setActiveClub(null);
   };
 
   if (showDetails) {
@@ -88,13 +76,13 @@ const Clubs = () => {
                 Category : {category}
               </Typography>
               <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
-                Mission : {activeClub.description}
+                Mission : {activeClub.mission}
               </Typography>
               <Button
                 variant="contained"
                 color="error"
                 style={{ marginLeft: 'auto', marginTop: '16px', marginRight: '8px', backgroundColor: '#dc3545' }}
-                onClick={() => handleDelete(activeClub)} // Call the handleDelete function
+                onClick={() => handleDelete()} // Call the handleDelete function
               > Delete
               </Button>
             </CardContent>
