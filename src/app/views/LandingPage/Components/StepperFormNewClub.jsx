@@ -7,9 +7,10 @@ import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import supabase from "../../../DataBase/Clients/SupabaseClient";
 import ClubsService from "../../../DataBase/services/ClubsService";
-import UsersService from "../../../DataBase/services/UsersService";
 import PendingMembersService from "../../../DataBase/services/PendingMembersService";
+import DocumentsService from "../../../DataBase/services/DocumentsService";
 
 const formStyle = {
   width: "100%",
@@ -85,7 +86,7 @@ function getSteps() {
   ];
 }
 
-function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleImageUpload,handleInputChange, clubData,supervisorData,presidentData,vicePresidentData,financerData,secretaryData) {
+function getStepContent(stepIndex, textareaHeight, handleTextareaChange, handleImageUpload, handleInputChange, clubData, supervisorData, presidentData, vicePresidentData, financerData, secretaryData) {
   switch (stepIndex) {
     case 0:
       return (
@@ -113,7 +114,7 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               onChange={(event) => {
                 handleTextareaChange(event);
                 handleInputChange("mission", event.target.value);
-              }}              
+              }}
               value={clubData.mission}
             />
             <label htmlFor="kpo" style={{ ...h5Style }}>
@@ -127,272 +128,271 @@ function getStepContent(stepIndex, textareaHeight, handleTextareaChange,handleIm
               onChange={(event) => {
                 handleTextareaChange(event);
                 handleInputChange("kpo", event.target.value);
-              }}              
+              }}
               value={clubData.kpo}
             />
-             <label htmlFor="image" style={{ ...h5Style }}>
+            <label htmlFor="image" style={{ ...h5Style }}>
               Upload Club's logo:
             </label>
             <input
               type="file"
               id="image"
               accept="image/*"
-              onChange={handleInputChange}
-              value={clubData.image}
+              onChange={(e) => handleImageUpload(e)}
               style={{ ...inputGroup, ...inputStyle }}
             />
           </form>
         </div>
       );
     case 1:
-        return (
-          <div className="container">
-        <form style={formStyle}>
-          <label htmlFor="superviserName" style={{ ...h5Style }}>
-            Full Name :
-          </label>
-          <input
-            placeholder="Enter full name"
-            type="text"
-            id="superviserName"
-            style={{ ...inputGroup, ...inputStyle }}
-            value={supervisorData.name}
-            onChange={(e) => handleInputChange("name", e.target.value)}
+      return (
+        <div className="container">
+          <form style={formStyle}>
+            <label htmlFor="superviserName" style={{ ...h5Style }}>
+              Full Name :
+            </label>
+            <input
+              placeholder="Enter full name"
+              type="text"
+              id="superviserName"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={supervisorData.name}
+              onChange={(e) => handleInputChange("name", e.target.value)}
             />
-  
-          <label htmlFor="function" style={{ ...h5Style }}>
-            Function :
-          </label>
-          <input
-            placeholder="Enter function"
-            type="text"
-            id="function"
-            style={{ ...inputGroup, ...inputStyle }}
-            value={supervisorData.function}
-            onChange={(e) => handleInputChange("function", e.target.value)}
+
+            <label htmlFor="function" style={{ ...h5Style }}>
+              Function :
+            </label>
+            <input
+              placeholder="Enter function"
+              type="text"
+              id="function"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={supervisorData.function}
+              onChange={(e) => handleInputChange("function", e.target.value)}
             />
-  
-          <label htmlFor="phone" style={{ ...h5Style }}>
-            Phone :
-          </label>
-          <input
-            placeholder="Enter phone number"
-            type="text"
-            id="phone"
-            style={{ ...inputGroup, ...inputStyle }}
-            value={supervisorData.phone}
-            onChange={(e) => handleInputChange("phone", e.target.value)}
+
+            <label htmlFor="phone" style={{ ...h5Style }}>
+              Phone :
+            </label>
+            <input
+              placeholder="Enter phone number"
+              type="text"
+              id="phone"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={supervisorData.phone}
+              onChange={(e) => handleInputChange("phone", e.target.value)}
             />
-  
-          <label htmlFor="email" style={{ ...h5Style }}>
-            Email :
-          </label>
-          <input
-            placeholder="Enter email address"
-            type="email"
-            id="email"
-            style={{ ...inputGroup, ...inputStyle }}
-            value={supervisorData.email}
-            onChange={(e) => handleInputChange("email", e.target.value)}
+
+            <label htmlFor="email" style={{ ...h5Style }}>
+              Email :
+            </label>
+            <input
+              placeholder="Enter email address"
+              type="email"
+              id="email"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={supervisorData.email}
+              onChange={(e) => handleInputChange("email", e.target.value)}
             />
-        </form>
-      </div>
-        );
-        case 2: 
-        return (
-          <div className="container">
-            <form style={formStyle}>
-              <label htmlFor="presidentName" style={{ ...h5Style }}>
-                President's Full Name:
-              </label>
-              <input
-                placeholder="Enter president's full name"
-                type="text"
-                id="presidentName"
-                style={{ ...inputGroup, ...inputStyle }}
-                value={presidentData.name}
-                onChange={(e) => handleInputChange("name", e.target.value)}
-              />
-  
-              <label htmlFor="presidentField" style={{ ...h5Style }}>
-                President's Field:
-              </label>
-              <input
-                placeholder="Enter president's field"
-                type="text"
-                id="presidentField"
-                style={{ ...inputGroup, ...inputStyle }}
-                value={presidentData.field}
-                onChange={(e) => handleInputChange("field", e.target.value)}
-              />
-  
-              <label htmlFor="presidentYear" style={{ ...h5Style }}>
-                President's Year:
-              </label>
-              <input
-                placeholder="Enter president's year"
-                type="text"
-                id="presidentYear"
-                style={{ ...inputGroup, ...inputStyle }}
-                value={presidentData.year}
-                onChange={(e) => handleInputChange("year", e.target.value)}
-              />
-  
-              <label htmlFor="presidentPhone" style={{ ...h5Style }}>
-                President's Phone:
-              </label>
-              <input
-                placeholder="Enter president's phone number"
-                type="text"
-                id="presidentPhone"
-                style={{ ...inputGroup, ...inputStyle }}
-                value={presidentData.phone}
-                onChange={(e) => handleInputChange("phone", e.target.value)}
-              />
-  
-              <label htmlFor="presidentEmail" style={{ ...h5Style }}>
-                President's Email:
-              </label>
-              <input
-                placeholder="Enter president's email address"
-                type="email"
-                id="presidentEmail"
-                style={{ ...inputGroup, ...inputStyle }}
-                value={presidentData.email}
-                onChange={(e) => handleInputChange("email", e.target.value)}
-              />
-            </form>
-          </div>
-        );
-        case 3: 
-        return (
-          <div className="container">
-            <form style={formStyle}>
-              <label htmlFor="vicePresidentName" style={{ ...h5Style }}>
-                Vice President's Full Name:
-              </label>
-              <input
-                placeholder="Enter vice president's full name"
-                type="text"
-                id="vicePresidentName"
-                style={{ ...inputGroup, ...inputStyle }}
-                value={vicePresidentData.name}
-                onChange={(e) => handleInputChange("name", e.target.value)}
-              />
-  
-              <label htmlFor="vicePresidentField" style={{ ...h5Style }}>
-                Vice President's Field:
-              </label>
-              <input
-                placeholder="Enter vice president's field"
-                type="text"
-                id="vicePresidentField"
-                style={{ ...inputGroup, ...inputStyle }}
-                value={vicePresidentData.field}
-                onChange={(e) => handleInputChange("field", e.target.value)}
-              />
-  
-              <label htmlFor="vicePresidentYear" style={{ ...h5Style }}>
-                Vice President's Year:
-              </label>
-              <input
-                placeholder="Enter vice president's year"
-                type="text"
-                id="vicePresidentYear"
-                style={{ ...inputGroup, ...inputStyle }}
-                value={vicePresidentData.year}
-                onChange={(e) => handleInputChange("year", e.target.value)}
-              />
-  
-              <label htmlFor="vicePresidentPhone" style={{ ...h5Style }}>
-                Vice President's Phone:
-              </label>
-              <input
-                placeholder="Enter vice president's phone number"
-                type="text"
-                id="vicePresidentPhone"
-                style={{ ...inputGroup, ...inputStyle }}
-                value={vicePresidentData.phone}
-                onChange={(e) => handleInputChange("phone", e.target.value)}
-              />
-  
-              <label htmlFor="vicePresidentEmail" style={{ ...h5Style }}>
-                Vice President's Email:
-              </label>
-              <input
-                placeholder="Enter vice president's email address"
-                type="email"
-                id="vicePresidentEmail"
-                style={{ ...inputGroup, ...inputStyle }}
-                value={vicePresidentData.email}
-                onChange={(e) => handleInputChange("email", e.target.value)}
-              />
-            </form>
-          </div>
-        );
-        case 4:
-          return (
-            <div className="container">
-              <form style={formStyle}>
-                <label htmlFor="financierName" style={{ ...h5Style }}>
-                  Financier's Name:
-                </label>
-                <input
-                  placeholder="Enter financier's name"
-                  type="text"
-                  id="financierName"
-                  style={{ ...inputGroup, ...inputStyle }}
-                  value={financerData.name}
-                  onChange={(e) => handleInputChange("name", e.target.value)}
-                />
-                <label htmlFor="financierField" style={{ ...h5Style }}>
-                  Field:
-                </label>
-                <input
-                  placeholder="Enter financier's field"
-                  type="text"
-                  id="financierField"
-                  style={{ ...inputGroup, ...inputStyle }}
-                  value={financerData.field}
-                  onChange={(e) => handleInputChange("field", e.target.value)}
-                />
-                <label htmlFor="financierYear" style={{ ...h5Style }}>
-                  Year:
-                </label>
-                <input
-                  placeholder="Enter financier's year"
-                  type="text"
-                  id="financierYear"
-                  style={{ ...inputGroup, ...inputStyle }}
-                  value={financerData.year}
-                  onChange={(e) => handleInputChange("year", e.target.value)}
-                />
-                <label htmlFor="financierPhone" style={{ ...h5Style }}>
-                  Phone:
-                </label>
-                <input
-                  placeholder="Enter financier's phone number"
-                  type="text"
-                  id="financierPhone"
-                  style={{ ...inputGroup, ...inputStyle }}
-                  value={financerData.phone}
-                  onChange={(e) => handleInputChange("phone", e.target.value)}
-                />
-                <label htmlFor="financierEmail" style={{ ...h5Style }}>
-                  Email:
-                </label>
-                <input
-                  placeholder="Enter financier's email address"
-                  type="email"
-                  id="financierEmail"
-                  style={{ ...inputGroup, ...inputStyle }}
-                  value={financerData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                />
-              </form>
-            </div>
-          );
-      case 5: 
+          </form>
+        </div>
+      );
+    case 2:
+      return (
+        <div className="container">
+          <form style={formStyle}>
+            <label htmlFor="presidentName" style={{ ...h5Style }}>
+              President's Full Name:
+            </label>
+            <input
+              placeholder="Enter president's full name"
+              type="text"
+              id="presidentName"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={presidentData.name}
+              onChange={(e) => handleInputChange("name", e.target.value)}
+            />
+
+            <label htmlFor="presidentField" style={{ ...h5Style }}>
+              President's Field:
+            </label>
+            <input
+              placeholder="Enter president's field"
+              type="text"
+              id="presidentField"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={presidentData.field}
+              onChange={(e) => handleInputChange("field", e.target.value)}
+            />
+
+            <label htmlFor="presidentYear" style={{ ...h5Style }}>
+              President's Year:
+            </label>
+            <input
+              placeholder="Enter president's year"
+              type="text"
+              id="presidentYear"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={presidentData.year}
+              onChange={(e) => handleInputChange("year", e.target.value)}
+            />
+
+            <label htmlFor="presidentPhone" style={{ ...h5Style }}>
+              President's Phone:
+            </label>
+            <input
+              placeholder="Enter president's phone number"
+              type="text"
+              id="presidentPhone"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={presidentData.phone}
+              onChange={(e) => handleInputChange("phone", e.target.value)}
+            />
+
+            <label htmlFor="presidentEmail" style={{ ...h5Style }}>
+              President's Email:
+            </label>
+            <input
+              placeholder="Enter president's email address"
+              type="email"
+              id="presidentEmail"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={presidentData.email}
+              onChange={(e) => handleInputChange("email", e.target.value)}
+            />
+          </form>
+        </div>
+      );
+    case 3:
+      return (
+        <div className="container">
+          <form style={formStyle}>
+            <label htmlFor="vicePresidentName" style={{ ...h5Style }}>
+              Vice President's Full Name:
+            </label>
+            <input
+              placeholder="Enter vice president's full name"
+              type="text"
+              id="vicePresidentName"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={vicePresidentData.name}
+              onChange={(e) => handleInputChange("name", e.target.value)}
+            />
+
+            <label htmlFor="vicePresidentField" style={{ ...h5Style }}>
+              Vice President's Field:
+            </label>
+            <input
+              placeholder="Enter vice president's field"
+              type="text"
+              id="vicePresidentField"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={vicePresidentData.field}
+              onChange={(e) => handleInputChange("field", e.target.value)}
+            />
+
+            <label htmlFor="vicePresidentYear" style={{ ...h5Style }}>
+              Vice President's Year:
+            </label>
+            <input
+              placeholder="Enter vice president's year"
+              type="text"
+              id="vicePresidentYear"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={vicePresidentData.year}
+              onChange={(e) => handleInputChange("year", e.target.value)}
+            />
+
+            <label htmlFor="vicePresidentPhone" style={{ ...h5Style }}>
+              Vice President's Phone:
+            </label>
+            <input
+              placeholder="Enter vice president's phone number"
+              type="text"
+              id="vicePresidentPhone"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={vicePresidentData.phone}
+              onChange={(e) => handleInputChange("phone", e.target.value)}
+            />
+
+            <label htmlFor="vicePresidentEmail" style={{ ...h5Style }}>
+              Vice President's Email:
+            </label>
+            <input
+              placeholder="Enter vice president's email address"
+              type="email"
+              id="vicePresidentEmail"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={vicePresidentData.email}
+              onChange={(e) => handleInputChange("email", e.target.value)}
+            />
+          </form>
+        </div>
+      );
+    case 4:
+      return (
+        <div className="container">
+          <form style={formStyle}>
+            <label htmlFor="financierName" style={{ ...h5Style }}>
+              Financier's Name:
+            </label>
+            <input
+              placeholder="Enter financier's name"
+              type="text"
+              id="financierName"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={financerData.name}
+              onChange={(e) => handleInputChange("name", e.target.value)}
+            />
+            <label htmlFor="financierField" style={{ ...h5Style }}>
+              Field:
+            </label>
+            <input
+              placeholder="Enter financier's field"
+              type="text"
+              id="financierField"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={financerData.field}
+              onChange={(e) => handleInputChange("field", e.target.value)}
+            />
+            <label htmlFor="financierYear" style={{ ...h5Style }}>
+              Year:
+            </label>
+            <input
+              placeholder="Enter financier's year"
+              type="text"
+              id="financierYear"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={financerData.year}
+              onChange={(e) => handleInputChange("year", e.target.value)}
+            />
+            <label htmlFor="financierPhone" style={{ ...h5Style }}>
+              Phone:
+            </label>
+            <input
+              placeholder="Enter financier's phone number"
+              type="text"
+              id="financierPhone"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={financerData.phone}
+              onChange={(e) => handleInputChange("phone", e.target.value)}
+            />
+            <label htmlFor="financierEmail" style={{ ...h5Style }}>
+              Email:
+            </label>
+            <input
+              placeholder="Enter financier's email address"
+              type="email"
+              id="financierEmail"
+              style={{ ...inputGroup, ...inputStyle }}
+              value={financerData.email}
+              onChange={(e) => handleInputChange("email", e.target.value)}
+            />
+          </form>
+        </div>
+      );
+    case 5:
       return (
         <div className="container">
           <form style={formStyle}>
@@ -469,13 +469,13 @@ export default function StepperForm() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [clubName, setClubName] = useState("");
   const navigate = useNavigate();
-  
+
   const [clubData, setClubData] = useState({
     name: "",
     mission: "",
     kpo: "",
-    logo: null,
-    nb_member: 4 ,
+    logo: "",
+    nb_member: 4,
     state: "pending",
   });
   const [supervisorData, setSupervisorData] = useState({
@@ -522,6 +522,11 @@ export default function StepperForm() {
     email: "",
     role_club: "Secretary",
   });
+  const newDocument = {
+    name: "Create New Club",
+    received_date: new Date(),
+    club_name: "",
+  };
 
   const handleNext = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
@@ -531,28 +536,49 @@ export default function StepperForm() {
 
   const handleSubmit = async () => {
     try {
-      // Add supervisor data using addSupervisor
+
+      if (selectedImage) {
+        // Upload the image to storage
+        const { data, error } = await supabase.storage
+          .from("Clubs_Logo")
+          .upload(selectedImage.name, selectedImage);
+
+        if (error) {
+          console.error("Error uploading file:", error.message);
+          return;
+        }
+
+        // Set the image URL in clubData
+        const fileUrl = data.Key; // This is the URL to the uploaded file
+        setClubData({ ...clubData, logo: fileUrl });
+        console.log("Image uploaded to storage and added to clubData");
+      }
+      // Add club data
       await ClubsService.addClub(clubData);
 
       // Set the club ID for the supervisor and other roles
       supervisorData.clubName = clubName;
       presidentData.clubName = clubName;
-      vicePresidentData.clubName = clubName; 
+      vicePresidentData.clubName = clubName;
       financerData.clubName = clubName;
       secretaryData.clubName = clubName;
+      newDocument.club_name = clubName;
 
-      // Add user data using createUser
+
+      // Add users data
       await PendingMembersService.addMember(presidentData);
       await PendingMembersService.addMember(vicePresidentData);
       await PendingMembersService.addMember(financerData);
       await PendingMembersService.addMember(secretaryData);
-      
+
+      await DocumentsService.addDoc(newDocument);
+
       navigate("/LandingPage");
     } catch (error) {
       console.error("An error occurred:", error);
     }
   };
-  
+
 
   const handleInputChange = (id, value) => {
     switch (activeStep) {
@@ -581,8 +607,8 @@ export default function StepperForm() {
         break;
     }
   };
-  
-  
+
+
 
   const handleTextareaChange = (event) => {
     event.target.style.height = "auto";
@@ -590,10 +616,13 @@ export default function StepperForm() {
     setTextareaHeight(event.target.style.height);
   };
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = async (event) => {
     const file = event.target.files[0];
-    setSelectedImage(file);
+    if (file) {
+      setSelectedImage(file); // Set the selected image here
+    }
   };
+
 
   return (
     <Box>
@@ -623,7 +652,7 @@ export default function StepperForm() {
         ) : (
           <Box>
             <Typography>
-              {getStepContent(activeStep, textareaHeight, handleTextareaChange, handleImageUpload, handleInputChange, clubData,supervisorData,presidentData,vicePresidentData,financerData,secretaryData)}
+              {getStepContent(activeStep, textareaHeight, handleTextareaChange, handleImageUpload, handleInputChange, clubData, supervisorData, presidentData, vicePresidentData, financerData, secretaryData)}
             </Typography>
 
             <Box pt={2}>
@@ -640,7 +669,7 @@ export default function StepperForm() {
                 sx={{ ml: 2 }}
                 variant="contained"
                 color="primary"
-                onClick={ activeStep === steps.length - 1 ? handleSubmit : handleNext}
+                onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
               >
                 {activeStep === steps.length - 1 ? "Finish" : "Next"}
               </Button>
