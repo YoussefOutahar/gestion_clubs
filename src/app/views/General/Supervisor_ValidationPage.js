@@ -25,7 +25,7 @@ const ContentBox1 = styled('div')(({ theme }) => ({
     [theme.breakpoints.down('sm')]: { margin: '16px' },
 }));
 
-const Dve_validationPage = () => {
+const Supervisor_validationPage = () => {
     const [documentData, setDocumentData] = useState([]);
     const navigate = useNavigate();
 
@@ -45,8 +45,7 @@ const Dve_validationPage = () => {
     const handleAccept = async (document) => {
         try {
             // Update the document's dve_validation field to true
-            await DocumentsService.dveValidation(document.id, true);
-            await ClubsService.updateClubState(document.club_name, "active")
+            await DocumentsService.supervisorValidation(document.id, true);
             // Fetch the updated data after the change (optional)
             fetchData();
         } catch (error) {
@@ -76,7 +75,7 @@ const Dve_validationPage = () => {
     }
 
     // Filter the documents with dve_validation and ref_validation set to false
-    const documentsToDisplay = documentData.filter((document) => !document.dve_validation && document.ref_validation);
+    const documentsToDisplay = documentData.filter((document) => !document.dve_validation && !document.ref_validation);
 
 
     return (
@@ -151,4 +150,4 @@ const Dve_validationPage = () => {
         </ContentBox1>
     );
 }
-export default Dve_validationPage;
+export default Supervisor_validationPage;

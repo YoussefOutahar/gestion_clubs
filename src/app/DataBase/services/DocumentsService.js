@@ -44,10 +44,19 @@ export default class DocumentsService {
     }
   };
 
-  static async dveValidation(id, dveValidation) {
+  static async dveValidation(id, validation) {
     const { data, error } = await supabase
       .from("Documents")
-      .update({ dve_validation: dveValidation })
+      .update({ dve_validation: validation })
+      .eq("id", id);
+    if (error) return error;
+    else return data;
+  };
+
+  static async supervisorValidation(id, validation) {
+    const { data, error } = await supabase
+      .from("Documents")
+      .update({ ref_validation: validation })
       .eq("id", id);
     if (error) return error;
     else return data;
