@@ -19,7 +19,6 @@ const ClubValidation = Loadable(lazy(() => import("./Validation-Pages/Club-Creat
 const EventsValidation = Loadable(lazy(() => import("./Validation-Pages/Event-Validation")));
 const MeetingsValidation = Loadable(lazy(() => import("./Validation-Pages/Meeting-Validation")));
 
-
 const AdminRoutes = [
     {
         path: "/Dashboard-Admin",
@@ -71,17 +70,22 @@ const AdminRoutes = [
     // Validation Routes
     {
         path: "/Clubs-Validation",
-        element: <ClubValidation />,
+        element: <ClubsProvider>
+            <ClubValidation />
+        </ClubsProvider>,
     },
     {
         path: "/Events-Validation",
-        element: <EventsValidation />,
+        element: (
+            <EventsProvider>
+                <EventsValidation />
+            </EventsProvider>
+        ),
     },
     {
         path: "/Meetings-Validation",
         element: <MeetingsValidation />,
     },
-
 ];
 
 export default AdminRoutes;

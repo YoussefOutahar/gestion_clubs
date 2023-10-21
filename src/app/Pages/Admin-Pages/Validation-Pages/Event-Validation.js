@@ -1,12 +1,20 @@
-import React from "react";
+import React, {useEffect} from "react";
 import RequestList from "./Components/RequestList";
 
 import { Box } from "@mui/material";
 import Breadcrumb from "../../../components/Breadcrumb";
 import { Container } from "@mui/system";
 
+import useEvents from "../../../hooks/useEvents";
+import { use } from "echarts";
+
 const EventsValidationPage = () => {
-    const requests = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    const { events, deleteEvent } = useEvents();
+
+    useEffect(() => {
+        console.log(events);
+    }, [events]);
 
     const handleAcceptAll = (selectedItems) => {
         // Handle accepting all selected items here
@@ -21,11 +29,24 @@ const EventsValidationPage = () => {
             <Box p={4} className="breadcrumb">
                 <Breadcrumb routeSegments={[{ name: "Finance", path: "/finance" }, { name: "Add Charge" }]} />
             </Box>
-            <RequestList
-                requests={requests}
+            {events && (
+                <RequestList
+                requests={events}
                 handleAcceptAll={handleAcceptAll}
                 handleDeleteAll={handleDeleteAll}
-            />
+                onAccept={(id) => {
+                    // Handle accepting a single item here
+                    console.log(id);
+                }}
+                onDecline={(id) => {
+                    // Handle accepting a single item here
+                    console.log(id);
+                }}
+                onInfo={(id) => {
+                    // Handle accepting a single item here
+                    console.log(id);
+                }}
+            />)}
         </Container>
     );
 };

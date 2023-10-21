@@ -25,6 +25,18 @@ const MeetingsValidationPage = () => {
                 requests={requests}
                 handleAcceptAll={handleAcceptAll}
                 handleDeleteAll={handleDeleteAll}
+                onAccept={(id) => {
+                    // Handle accepting a single item here
+                    console.log(id);
+                }}
+                onDecline={(id) => {
+                    // Handle accepting a single item here
+                    console.log(id);
+                }}
+                onInfo={(id) => {
+                    // Handle accepting a single item here
+                    console.log(id);
+                }}
             />
         </Container>
     );

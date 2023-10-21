@@ -83,75 +83,77 @@ const RequestsList = ({ requests, handleAcceptAll, handleDeleteAll, onAccept, on
             <Container>
                 <Box display="flex" justifyContent="flex-end">
                     <Button variant="contained" color="primary" onClick={handleAcceptAllSelected}>
-                        Accept All Selected
+                        Accept Selected
                     </Button>
                     <Box mx={1}>{/*Spacing*/}</Box>
                     <Button variant="contained" color="error" onClick={handleDeleteAllSelected}>
-                        Delete All Selected
+                        Delete Selected
                     </Button>
                 </Box>
                 <Box my={3}>{/*Spacing*/}</Box>
-                {requests.map((request) => (
-                    <Fragment key={request}>
-                        <Card sx={{ py: 2, px: 2 }} className="project-card">
-                            <Grid container alignItems="center">
-                                <Grid item md={5} xs={7}>
-                                    <Box display="flex" alignItems="center">
-                                        <Checkbox />
-                                        <Hidden smDown>
-                                            {request % 2 === 1 ? (
-                                                <StarOutline size="small">
-                                                    <Icon>star_outline</Icon>
-                                                </StarOutline>
-                                            ) : (
-                                                <DateRange size="small">
-                                                    <Icon>date_range</Icon>
-                                                </DateRange>
-                                            )}
-                                        </Hidden>
-                                        <ProjectName>Request</ProjectName>
-                                    </Box>
-                                </Grid>
+                {requests
+                    .filter((request) => request.State === "pending")
+                    .map((request) => (
+                        <Fragment key={request}>
+                            <Card sx={{ py: 2, px: 2 }} className="project-card">
+                                <Grid container alignItems="center">
+                                    <Grid item md={5} xs={7}>
+                                        <Box display="flex" alignItems="center">
+                                            <Checkbox />
+                                            <Hidden smDown>
+                                                {request % 2 === 1 ? (
+                                                    <StarOutline size="small">
+                                                        <Icon>star_outline</Icon>
+                                                    </StarOutline>
+                                                ) : (
+                                                    <DateRange size="small">
+                                                        <Icon>date_range</Icon>
+                                                    </DateRange>
+                                                )}
+                                            </Hidden>
+                                            <ProjectName>{request.Name}</ProjectName>
+                                        </Box>
+                                    </Grid>
 
-                                <Grid item md={3} xs={4}>
-                                    <Box color={textMuted}>
-                                        {format(new Date().getTime(), "MM/dd/yyyy hh:mma")}
-                                    </Box>
-                                </Grid>
+                                    <Grid item md={3} xs={4}>
+                                        <Box color={textMuted}>
+                                            {format(new Date().getTime(), "MM/dd/yyyy hh:mma")}
+                                        </Box>
+                                    </Grid>
 
-                                <Grid item xs={4}>
-                                    <Box display="flex" justifyContent="flex-end" alignItems="center">
-                                        <IconButton
-                                            color="success"
-                                            onClick={() => {
-                                                handleOnAccept(request);
-                                            }}
-                                        >
-                                            <Icon>check_circle</Icon> {/* Add your accept icon */}
-                                        </IconButton>
-                                        <IconButton
-                                            color="info"
-                                            onClick={() => {
-                                                handleOnInfo(request);
-                                            }}
-                                        >
-                                            <Icon>info</Icon> {/* Add your more details icon */}
-                                        </IconButton>
-                                        <IconButton
-                                            color="error"
-                                            onClick={() => {
-                                                handleOnDecline(request);
-                                            }}
-                                        >
-                                            <Icon>cancel</Icon> {/* Add your reject icon */}
-                                        </IconButton>
-                                    </Box>
+                                    <Grid item xs={4}>
+                                        <Box display="flex" justifyContent="flex-end" alignItems="center">
+                                            <IconButton
+                                                color="success"
+                                                onClick={() => {
+                                                    handleOnAccept(request);
+                                                }}
+                                            >
+                                                <Icon>check_circle</Icon> {/* Add your accept icon */}
+                                            </IconButton>
+                                            <IconButton
+                                                color="info"
+                                                onClick={() => {
+                                                    handleOnInfo(request);
+                                                }}
+                                            >
+                                                <Icon>info</Icon> {/* Add your more details icon */}
+                                            </IconButton>
+                                            <IconButton
+                                                color="error"
+                                                onClick={() => {
+                                                    handleOnDecline(request);
+                                                }}
+                                            >
+                                                <Icon>cancel</Icon> {/* Add your reject icon */}
+                                            </IconButton>
+                                        </Box>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </Card>
-                        <Box py={1} />
-                    </Fragment>
-                ))}
+                            </Card>
+                            <Box py={1} />
+                        </Fragment>
+                    ))}
             </Container>
         </>
     );

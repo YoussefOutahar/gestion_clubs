@@ -116,3 +116,5 @@ export const EventsProvider = ({ settings, children }) => {
         </EventsContext.Provider>
     )
 }
+
+export default EventsContext

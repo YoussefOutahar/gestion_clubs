@@ -5,8 +5,10 @@ import { Box } from "@mui/material";
 import Breadcrumb from "../../../components/Breadcrumb";
 import { Container } from "@mui/system";
 
+import useClubs from "../../../hooks/useClubs";
+
 const ClubsValidationPage = () => {
-    const requests = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const { clubs, deleteClub } = useClubs();
 
     const handleAcceptAll = (selectedItems) => {
         // Handle accepting all selected items here
@@ -21,15 +23,25 @@ const ClubsValidationPage = () => {
             <Box p={4} className="breadcrumb">
                 <Breadcrumb routeSegments={[{ name: "Finance", path: "/finance" }, { name: "Add Charge" }]} />
             </Box>
-            <RequestList
-                requests={requests}
-                handleAcceptAll={handleAcceptAll}
-                handleDeleteAll={handleDeleteAll}
-                onAccept={(id) => {
-                    // Handle accepting a single item here
-                    console.log(id);
-                }}
-            />
+            {clubs && (
+                <RequestList
+                    requests={clubs}
+                    handleAcceptAll={handleAcceptAll}
+                    handleDeleteAll={handleDeleteAll}
+                    onAccept={(id) => {
+                        // Handle accepting a single item here
+                        console.log(id);
+                    }}
+                    onDecline={(id) => {
+                        // Handle accepting a single item here
+                        console.log(id);
+                    }}
+                    onInfo={(id) => {
+                        // Handle accepting a single item here
+                        console.log(id);
+                    }}
+                />
+            )}
         </Container>
     );
 };
