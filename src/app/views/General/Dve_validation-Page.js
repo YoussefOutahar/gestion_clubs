@@ -49,6 +49,8 @@ const Dve_validationPage = () => {
             await ClubsService.updateClubState(document.club_name, "active")
             // Fetch the updated data after the change (optional)
             fetchData();
+
+            //TODO: create profiles to club members and delete them from Pending_members table 
         } catch (error) {
             console.error("Error accepting document: ", error);
         }
@@ -66,6 +68,7 @@ const Dve_validationPage = () => {
     };
 
     const handleDownload = async (path) => {
+        //TODO: open the file in new window or download it 
         // Open the URL in a new window
         window.open(path, '_blank');
     }

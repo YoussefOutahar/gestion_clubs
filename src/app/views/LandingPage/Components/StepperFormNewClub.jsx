@@ -538,8 +538,9 @@ export default function StepperForm() {
     try {
 
       if (selectedImage) {
+        //TODO: Upload the image to storage and database
         // Upload the image to storage
-        const { data, error } = await supabase.storage
+        /*const { data, error } = await supabase.storage
           .from("Clubs_Logo")
           .upload(selectedImage.name, selectedImage);
 
@@ -552,6 +553,7 @@ export default function StepperForm() {
         const fileUrl = data.Key; // This is the URL to the uploaded file
         setClubData({ ...clubData, logo: fileUrl });
         console.log("Image uploaded to storage and added to clubData");
+        */
       }
       // Add club data
       await ClubsService.addClub(clubData);
@@ -607,8 +609,6 @@ export default function StepperForm() {
         break;
     }
   };
-
-
 
   const handleTextareaChange = (event) => {
     event.target.style.height = "auto";
