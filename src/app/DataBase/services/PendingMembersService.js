@@ -22,5 +22,12 @@ export default class PendingMembersService {
         }
     };
 
-    
+    static async getMembersByClubName(name) {
+        const { data, error } = await supabase.from("Pending_members").select("*").eq("clubName", name);
+        if (error) return error;
+        else {
+            console.log("club data :", data);
+            return data;
+        }
+    };
 }

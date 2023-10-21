@@ -22,7 +22,7 @@ const ChargeForm = () => {
     useEffect(() => {
         const fetchActivities = async () => {
             try {
-                const { data, error } = await supabase.from("Activites").select("Name");
+                const { data, error } = await supabase.from("Events").select("Name");
                 if (error) {
                     console.error("Error fetching activities:", error);
                 } else {
@@ -68,15 +68,15 @@ const ChargeForm = () => {
                 } else {
                     const fileUrl = "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Budget_event/" + selectedFile.name;
                     const { data, error } = await supabase
-                        .from("Activites")
+                        .from("Events")
                         .update([
                             {
                                 Name: state.eventName,
                                 Cost: state.totalCost,
                                 Earnings: state.Earning,
                                 //Supp_budget: state.suppBudget,
-                                file_name: selectedFile.name,
-                                url: fileUrl,
+                                File_name: selectedFile.name,
+                                Url: fileUrl,
                             },
                         ])
                         .eq("Name", state.eventName);
