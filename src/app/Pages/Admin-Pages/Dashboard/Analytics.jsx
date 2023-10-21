@@ -7,6 +7,9 @@ import StatCards from "./shared/StatCards";
 import StatCards2 from "./shared/StatCards2";
 import TopSellingTable from "./shared/TopSellingTable";
 import UpgradeCard from "./shared/UpgradeCard";
+import ClubsService from "../../../DataBase/services/ClubsService";
+
+import { useEffect, useState } from "react";
 
 const ContentBox = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -35,6 +38,15 @@ const H4 = styled("h4")(({ theme }) => ({
 
 const Analytics = () => {
     const { palette } = useTheme();
+
+    const [image, setImage] = useState(null);
+
+    useEffect(() => {
+        ClubsService.getClubLogoLink(37).then((res) => {
+            console.log(res);
+        });
+
+    }, []);
 
     return (
         <Fragment>

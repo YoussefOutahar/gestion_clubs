@@ -538,22 +538,26 @@ export default function StepperForm() {
     try {
 
       if (selectedImage) {
-        //TODO: Upload the image to storage and database
-        // Upload the image to storage
-        /*const { data, error } = await supabase.storage
-          .from("Clubs_Logo")
-          .upload(selectedImage.name, selectedImage);
+        // console.log("Image selected:", selectedImage);
+        // //TODO: Upload the image to storage and database
+        // // Upload the image to storage
+        // const { data, error } = await supabase.storage
+        //   .from("Clubs_Logo")
+        //   .upload(selectedImage.name, selectedImage);
 
-        if (error) {
-          console.error("Error uploading file:", error.message);
-          return;
-        }
+        // if (error) {
+        //   console.error("Error uploading file:", error.message);
+        //   return;
+        // }
 
-        // Set the image URL in clubData
-        const fileUrl = data.Key; // This is the URL to the uploaded file
-        setClubData({ ...clubData, logo: fileUrl });
+        // // Set the image URL in clubData
+        // const fileUrl = data.Key; // This is the URL to the uploaded file
+        // setClubData({ ...clubData, logo: fileUrl });
+        // console.log("Image uploaded to storage and added to clubData");
+        await ClubsService.addClubLogo(37,selectedImage);
         console.log("Image uploaded to storage and added to clubData");
-        */
+        const {data} = await ClubsService.getClubLogo(37);
+        console.log(data);
       }
       // Add club data
       await ClubsService.addClub(clubData);
