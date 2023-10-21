@@ -25,7 +25,7 @@ export const getNavigations = async () => {
         },
         {
             name: "Club Creation Requests",
-            path: "/Club-Creation-Validation",
+            path: "/Clubs-Validation",
             icon: "home",
         },
         { label: "Memebers", type: "label" },
@@ -40,10 +40,20 @@ export const getNavigations = async () => {
             path: "/Meetings-Management-Admin",
             icon: "event",
         },
+        {
+            name: "Meetings Requests",
+            path: "/Meetings-Validation",
+            icon: "event",
+        },
         { label: "Events", type: "label" },
         {
             name: "Events",
             path: "/Events-Management-Admin",
+            icon: "event",
+        },
+        {
+            name: "Events Requests",
+            path: "/Events-Validation",
             icon: "event",
         },
         { label: "Finance", type: "label" },
