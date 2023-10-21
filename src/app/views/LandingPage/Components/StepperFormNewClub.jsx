@@ -7,7 +7,6 @@ import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 
 import ClubsService from "../../../DataBase/services/ClubsService";
-import {addSupervisor} from "../../../DataBase/services/SupervisorsService";
 import UsersService from "../../../DataBase/services/UsersService";
 
 const formStyle = {
@@ -522,7 +521,7 @@ export default function StepperForm() {
       await ClubsService.addClub(clubData);
 
       // Add supervisor data using addSupervisor
-      await addSupervisor(supervisorData);
+      // await addSupervisor(supervisorData);
 
       // Add user data using createUser
       await UsersService.createUser(presidentData);
