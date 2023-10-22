@@ -3,7 +3,11 @@ import { ChatAvatar } from '../components';
 import { convertHexToRGB } from '../utils/utils';
 import { useCallback, useEffect, useState } from 'react';
 import ScrollBar from 'react-perfect-scrollbar';
+import { formatDistanceToNow } from 'date-fns';
 import { H5, H6, Span } from './Typography';
+import MessagesService from '../DataBase/services/MessagesService';
+import UsersService from '../DataBase/services/UsersService'
+import { getProfileById } from '../DataBase/services/UsersService';
 
 const ChatContainer = styled('div')(() => ({
   height: '100%',
@@ -82,21 +86,36 @@ const Chatbox = ({ togglePopup }) => {
   const [isAlive, setIsAlive] = useState(true);
   const [message, setMessage] = useState('');
   const [messageList, setMessageList] = useState([]);
-  const currentUserId = '7863a6802ez0e277a0f98534';
+  const [currentUserId, setCurrentUserId] = useState();
   const chatBottomRef = document.querySelector('#chat-scroll');
 
   const sendMessageOnEnter = (event) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       let tempMessage = message.trim();
       if (tempMessage !== '') {
-        let tempList = [...messageList];
+        // Create the message object
         let messageObject = {
-          text: tempMessage,
-          contactId: currentUserId,
+          content: tempMessage,
+          user_id: currentUserId,
+          created_at: new Date(),
+
         };
+        // Add the message to the messageList for immediate display
+        let tempList = [...messageList];
         tempList.push(messageObject);
         globalMessageList.push(messageObject);
         if (isAlive) setMessageList(tempList);
+
+        // Call MessagesService.addMessage to store the message
+        MessagesService.addMessage(messageObject)
+          .then((response) => {
+            // Handle success if needed
+          })
+          .catch((error) => {
+            console.error("Error storing the message:", error);
+          });
+
+        // Optional: Simulate a reply (dummyReply) for immediate response
         dummyReply();
       }
       setMessage('');
@@ -108,7 +127,7 @@ const Chatbox = ({ togglePopup }) => {
       let tempList = [...messageList];
       let messageObject = {
         text: 'Good to hear from you. enjoy!!!',
-        contactId: 'opponents contact id',
+        user_id: 'opponents contact id',
         avatar: '/assets/images/faces/13.jpg',
         name: 'Frank Powell',
       };
@@ -128,11 +147,45 @@ const Chatbox = ({ togglePopup }) => {
     }
   }, [chatBottomRef]);
 
+  const formatTimePassed = (messageDate) => {
+    if (typeof messageDate === 'string') {
+      // Parse the date string to create a valid Date object
+      messageDate = new Date(messageDate);
+    }
+  
+    const now = new Date();
+    const timePassed = formatDistanceToNow(messageDate, { addSuffix: true });
+    return timePassed;
+  };
+
+  const [userName, setUserName] = useState(null);
+
   useEffect(() => {
+    async function fetchUserData() {
+      try {
+        const currentUser = await UsersService.getCurrentUser();
+
+        if (currentUser) {
+          const userProfile = await getProfileById(currentUser.id);
+          setCurrentUserId(currentUser.id);
+          console.log("Current user : ", userProfile);
+          const Name = userProfile.name;
+          console.log("Current user name : ", currentUser.name);
+          setUserName(Name);
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    }
+
+    fetchUserData();
+  }, []);
+
+  /*useEffect(() => {
     if (isAlive) {
       setMessageList([
         {
-          contactId: '323sa680b3249760ea21rt47',
+          user_id: '323sa680b3249760ea21rt47',
           text: 'Do you ever find yourself falling into the “discount trap?”',
           time: '2018-02-10T08:45:28.291Z',
           id: '323sa680b3249760ea21rt47',
@@ -140,92 +193,44 @@ const Chatbox = ({ togglePopup }) => {
           avatar: '/assets/images/faces/13.jpg',
           status: 'online',
           mood: '',
-        },
-        {
-          contactId: '7863a6802ez0e277a0f98534',
-          text: 'Giving away your knowledge or product just to gain clients?',
-          time: '2018-02-10T08:45:28.291Z',
-          id: '7863a6802ez0e277a0f98534',
-          name: 'John Doe',
-          avatar: '/assets/images/face-1.jpg',
-          status: 'online',
-          mood: '',
-        },
-        {
-          contactId: '323sa680b3249760ea21rt47',
-          text: 'Yes',
-          time: '2018-02-10T08:45:28.291Z',
-          id: '323sa680b3249760ea21rt47',
-          name: 'Frank Powell',
-          avatar: '/assets/images/faces/13.jpg',
-          status: 'online',
-          mood: '',
-        },
-        {
-          contactId: '7863a6802ez0e277a0f98534',
-          text: 'Don’t feel bad. It happens to a lot of us',
-          time: '2018-02-10T08:45:28.291Z',
-          id: '7863a6802ez0e277a0f98534',
-          name: 'John Doe',
-          avatar: '/assets/images/face-1.jpg',
-          status: 'online',
-          mood: '',
-        },
-        {
-          contactId: '323sa680b3249760ea21rt47',
-          text: 'Do you ever find yourself falling into the “discount trap?”',
-          time: '2018-02-10T08:45:28.291Z',
-          id: '323sa680b3249760ea21rt47',
-          name: 'Frank Powell',
-          avatar: '/assets/images/faces/13.jpg',
-          status: 'online',
-          mood: '',
-        },
-        {
-          contactId: '7863a6802ez0e277a0f98534',
-          text: 'Giving away your knowledge or product just to gain clients?',
-          time: '2018-02-10T08:45:28.291Z',
-          id: '7863a6802ez0e277a0f98534',
-          name: 'John Doe',
-          avatar: '/assets/images/face-1.jpg',
-          status: 'online',
-          mood: '',
-        },
-        {
-          contactId: '323sa680b3249760ea21rt47',
-          text: 'Yes',
-          time: '2018-02-10T08:45:28.291Z',
-          id: '323sa680b3249760ea21rt47',
-          name: 'Frank Powell',
-          avatar: '/assets/images/faces/13.jpg',
-          status: 'online',
-          mood: '',
-        },
-        {
-          contactId: '7863a6802ez0e277a0f98534',
-          text: 'Don’t feel bad. It happens to a lot of us',
-          time: '2018-02-10T08:45:28.291Z',
-          id: '7863a6802ez0e277a0f98534',
-          name: 'John Doe',
-          avatar: '/assets/images/face-1.jpg',
-          status: 'online',
-          mood: '',
-        },
+        }
       ]);
     }
-    // getChatRoomByContactId(currentUserId, "323sa680b3249760ea21rt47").then(
+    // getChatRoomByuser_id(currentUserId, "323sa680b3249760ea21rt47").then(
     //   ({ data }) => {
     //     if (isAlive) {
     //       setMessageList(data?.messageList);
     //     }
     //   }
     // );
-  }, [isAlive]);
+  }, [isAlive]); */
 
   useEffect(() => {
+    async function fetchMessages() {
+      try {
+        const data = await MessagesService.getMessages();
+        console.log("Received messages data:", data);
+
+        // Assuming that the data structure is an array of messages
+        if (Array.isArray(data)) {
+          setMessageList(data);
+        }
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    }
+
+    fetchMessages();
+  }, []);
+
+  /*useEffect(() => {
     scrollToBottom();
     return () => setIsAlive(false);
-  }, [messageList, scrollToBottom]);
+  }, [messageList, scrollToBottom]);*/
+
+  useEffect(() => {
+    return () => setIsAlive(false);
+  }, []);
 
   const { palette } = useTheme();
   const primary = palette.primary.main;
@@ -237,7 +242,7 @@ const Chatbox = ({ togglePopup }) => {
         <Box display="flex" alignItems="center">
           <ChatAvatar src="/assets/images/face-2.jpg" status="online" />
           <ChatStatus>
-            <H5>Ryan Todd</H5>
+            <H5>{userName}</H5>
             <Span>Active</Span>
           </ChatStatus>
         </Box>
@@ -252,12 +257,12 @@ const Chatbox = ({ togglePopup }) => {
             p="20px"
             display="flex"
             sx={{
-              justifyContent: currentUserId === item.contactId && 'flex-end',
+              justifyContent: currentUserId === item.user_id && 'flex-end',
             }}
           >
-            {currentUserId !== item.contactId && <Avatar src={item.avatar} />}
+            {currentUserId !== item.user_id}
             <Box ml="12px">
-              {currentUserId !== item.contactId && (
+              {currentUserId !== item.user_id && (
                 <H5
                   sx={{
                     mb: '4px',
@@ -265,16 +270,16 @@ const Chatbox = ({ togglePopup }) => {
                     color: primary,
                   }}
                 >
-                  {item.name}
+                  {/*item.name*/}
                 </H5>
               )}
-              <ChatMessage>{item.text}</ChatMessage>
-              <MessageTime>1 minute ago</MessageTime>
+              <ChatMessage>{item.content}</ChatMessage>
+              <MessageTime>{formatTimePassed(item.created_at)}</MessageTime>
             </Box>
           </Box>
         ))}
 
-        {/* example of image sent by current user*/}
+        {/* example of image sent by current user
         <ChatImgContainer>
           <Box ml="12px">
             <ChatImgBox>
@@ -286,7 +291,7 @@ const Chatbox = ({ togglePopup }) => {
             </ChatImgBox>
             <MessageTime>1 minute ago</MessageTime>
           </Box>
-        </ChatImgContainer>
+        </ChatImgContainer>*/}
       </StyledScrollBar>
       <div>
         <Divider
