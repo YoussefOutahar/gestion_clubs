@@ -1,7 +1,28 @@
-import { formStyle, h2Style, h5Style, inputGroup, inputStyle, textareaStyle } from "./Styles";
+import { formStyle, h5Style, inputGroup, inputStyle, textareaStyle } from "./Styles";
+import { useState } from "react";
 
-export default ClubsInfo = () => {
-    handleInputChange = (key, value) => {
+function ClubsInfo({ textareaHeight, handleTextareaChange }) {
+    const [clubData, setClubData] = useState({
+        name: "",
+        mission: "",
+        kpo: "",
+        logo: "",
+        nb_member: 4,
+        state: "pending",
+    });
+    const [clubName, setClubName] = useState("");
+    const [selectedImage, setSelectedImage] = useState(null);
+    const handleInputChange = (key, value) => {
+        setClubData({ ...clubData, [key]: value });
+        if (key === "name") {
+            setClubName(value);
+        }
+    };
+    const handleImageUpload = async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setSelectedImage(file); // Set the selected image here
+        }
     };
     return (
         <div className="container">
@@ -59,3 +80,5 @@ export default ClubsInfo = () => {
         </div>
     );
 }
+
+export default ClubsInfo;

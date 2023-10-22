@@ -1,7 +1,18 @@
-import { formStyle, h2Style, h5Style, inputGroup, inputStyle, textareaStyle } from "./Styles";
+import { formStyle, h5Style, inputGroup, inputStyle} from "./Styles";
+import { useState } from "react";
 
-export default FinancierInfo = () => {
-    handleInputChange = (key, value) => {
+function FinancierInfo() {
+    const [financerData, setFinancerData] = useState({
+        clubName: "",
+        name: "",
+        field: "",
+        year: "",
+        phone: "",
+        email: "",
+        role_club: "Financer",
+      });
+      const handleInputChange = (key, value) => {
+        setFinancerData({ ...financerData, [key]: value });
     };
     return (
         <div className="container">
@@ -65,3 +76,5 @@ export default FinancierInfo = () => {
         </div>
       );
 };
+
+export default FinancierInfo;

@@ -1,7 +1,17 @@
-import { formStyle, h2Style, h5Style, inputGroup, inputStyle, textareaStyle } from "./Styles";
+import { formStyle, h5Style, inputGroup, inputStyle} from "./Styles";
+import { useState } from "react";
 
-export default SuperVisirInfo = () => {
-    handleInputChange = (key, value) => {
+function SuperVisorInfo() {
+    const [supervisorData, setSupervisorData] = useState({
+        clubName: "",
+        name: "",
+        function: "",
+        phone: "",
+        email: "",
+        role_club: "Supervisor",
+      });
+      const handleInputChange = (key, value) => {
+        setSupervisorData({ ...supervisorData, [key]: value });
     };
     return (
         <div className="container">
@@ -57,3 +67,5 @@ export default SuperVisirInfo = () => {
         </div>
       );
 }
+
+export default SuperVisorInfo;

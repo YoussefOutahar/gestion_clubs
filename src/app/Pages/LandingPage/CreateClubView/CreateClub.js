@@ -1,9 +1,7 @@
 import React from "react";
 import { useEffect, useState } from 'react';
-import supabase from "../../../DataBase/Clients/SupabaseClient";
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import StepperForm from "./StepperFormNewClub";
-//import '../../Resources/authStyle.css';
 
 
 function Createclub() {
@@ -71,76 +69,6 @@ function Createclub() {
     margin: "2rem auto",
     boxShadow: "0rem 0rem 2rem 0.1rem #e4f1fe",
     borderRadius: "0.5rem"
-  };
-
-  const formStyle = {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center"
-  };
-
-  const inputGroup = {
-    // width: "100%",
-    // marginBottom: "1.9rem"
-  };
-
-  const h5Style = {
-    fontFamily: '"DM Sans", sans-serif, "Helvetica Neue", Arial, "Noto Sans", sans-serif', display: "block",
-    textAlign: "left",
-    margin: "auto",
-    width: "80%",
-    color: "black",
-    marginBottom: "0.1rem",
-    //fontSize: "15px",
-    fontSize: "95%",
-  };
-
-  const inputStyle = {
-    padding: "0.2rem 1rem",
-    border: "2px solid #e3e3e3",
-    borderRadius: "4px",
-    borderWidth: "2px",
-    display: "block",
-    height: "2.7rem",
-    width: "79.5%",
-    margin: "auto",
-    marginBottom: "10px",
-    color: "#696969",
-    fontFamily: "inherit",
-    fontSize: "inherit"
-  };
-
-  const btn = {
-    fontFamily: '"DM Sans", sans-serif, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
-    display: "block",
-    width: "77.5%",
-    background: "#003667",
-    color: "white",
-    border: "none",
-    cursor: "pointer",
-    padding: "1.2rem 1rem",
-    marginTop: "25px",
-    marginBottom: "20px",
-    transition: "all 0.5s ease",
-    height: "10px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontSize: "16px"
-  };
-
-  const h2Style = {
-    textDecorationThickness: "7px",
-    fontSize: "115%",
-    textIndent: "50px",
-    letterSpacing: "2px",
-    textAlign: "center",
-    marginTop: "0px",
-    marginBottom: "2px",
-    color: "black",
   };
 
   const pStyle = {

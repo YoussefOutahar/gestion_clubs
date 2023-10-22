@@ -1,7 +1,18 @@
-import { formStyle, h2Style, h5Style, inputGroup, inputStyle, textareaStyle } from "./Styles";
+import { formStyle, h5Style, inputGroup, inputStyle, textareaStyle } from "./Styles";
+import { useState } from "react";
 
-export default VicePresidentInfo = () => {
-    handleInputChange = (key, value) => {
+function VicePresidentInfo() {
+    const [vicePresidentData, setVicePresidentData] = useState({
+        clubName: "",
+        name: "",
+        field: "",
+        year: "",
+        phone: "",
+        email: "",
+        role_club: "VicePresident",
+      });
+      const handleInputChange = (key, value) => {
+        setVicePresidentData({ ...vicePresidentData, [key]: value });
     };
     return (
         <div className="container">
@@ -69,3 +80,5 @@ export default VicePresidentInfo = () => {
         </div>
       );
 };
+
+export default VicePresidentInfo;

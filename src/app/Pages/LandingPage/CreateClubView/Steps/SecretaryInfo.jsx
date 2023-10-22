@@ -1,8 +1,18 @@
-import { formStyle, h2Style, h5Style, inputGroup, inputStyle, textareaStyle } from "./Styles";
+import { formStyle, h5Style, inputGroup, inputStyle} from "./Styles";
+import { useState } from "react";
 
-export default SecretaryInfo = () => {
-
-    handleInputChange = (key, value) => {
+function SecretaryInfo() {
+    const [secretaryData, setSecretaryData] = useState({
+        clubName: "",
+        name: "",
+        field: "",
+        year: "",
+        phone: "",
+        email: "",
+        role_club: "Secretary",
+      });
+      const handleInputChange = (key, value) => {
+        setSecretaryData({ ...secretaryData, [key]: value });
     };
 
     return (
@@ -71,3 +81,5 @@ export default SecretaryInfo = () => {
         </div>
       );
 };
+
+export default SecretaryInfo;
