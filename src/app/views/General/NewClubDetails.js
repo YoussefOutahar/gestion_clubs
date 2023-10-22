@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import SimpleCard from "../../components/SimpleCard";
 import { styled, Box, Button, Table, Typography, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import ClubsService from "../../DataBase/services/ClubsService";
-import PendingMembersService from "../../DataBase/services/PendingMembersService";
+import PendingMembersService from "../../DataBase/services/PendingProfilesService";
 import { useParams } from 'react-router-dom';
 
 
