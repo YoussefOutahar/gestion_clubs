@@ -7,7 +7,6 @@ import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import supabase from "../../../DataBase/Clients/SupabaseClient";
 import ClubsService from "../../../DataBase/services/ClubsService";
 import PendingMembersService from "../../../DataBase/services/PendingMembersService";
 import DocumentsService from "../../../DataBase/services/DocumentsService";
@@ -637,6 +636,7 @@ export default function StepperForm() {
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
+        
       </Stepper>
 
       <Box style={{ marginBottom: '3rem' }}>

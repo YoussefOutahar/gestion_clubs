@@ -2,7 +2,7 @@ import Loadable from '../../components/Loadable';
 import { lazy } from 'react';
 
 import LandingPage from "./LandingPage";
-import Createclub from "./CreateClub";
+import Createclub from "./CreateClubView/CreateClub";
 const JwtRegister = Loadable(lazy(() => import('../sessions/JwtRegister')));
 
 const landingPageRoute = [

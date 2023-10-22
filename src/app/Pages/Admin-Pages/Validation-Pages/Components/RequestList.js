@@ -92,7 +92,7 @@ const RequestsList = ({ requests, handleAcceptAll, handleDeleteAll, onAccept, on
                 </Box>
                 <Box my={3}>{/*Spacing*/}</Box>
                 {requests
-                    .filter((request) => request.State === "pending")
+                    .filter((request) => request.state === "pending")
                     .map((request) => (
                         <Fragment key={request}>
                             <Card sx={{ py: 2, px: 2 }} className="project-card">
@@ -111,7 +111,7 @@ const RequestsList = ({ requests, handleAcceptAll, handleDeleteAll, onAccept, on
                                                     </DateRange>
                                                 )}
                                             </Hidden>
-                                            <ProjectName>{request.Name}</ProjectName>
+                                            <ProjectName>{request.name}</ProjectName>
                                         </Box>
                                     </Grid>
 

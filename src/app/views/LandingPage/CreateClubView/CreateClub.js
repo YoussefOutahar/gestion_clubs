@@ -1,17 +1,12 @@
 import React from "react";
 import { useEffect, useState } from 'react';
-import supabase from "../../DataBase/Clients/SupabaseClient";
+import supabase from "../../../DataBase/Clients/SupabaseClient";
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import StepperForm from "./Components/StepperFormNewClub";
+import StepperForm from "./StepperFormNewClub";
 //import '../../Resources/authStyle.css';
 
 
 function Createclub() {
-
-  function test() {
-    console.log("test");
-  }
-
   const navigate = useNavigate();
 
   const mainRegister = {
