@@ -7,6 +7,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { H5, H6, Span } from './Typography';
 import MessagesService from '../DataBase/services/MessagesService';
 import UsersService from '../DataBase/services/UsersService'
+import ClubsService from '../DataBase/services/ClubsService';
 import { getProfileById } from '../DataBase/services/UsersService';
 
 const ChatContainer = styled('div')(() => ({
@@ -87,6 +88,9 @@ const Chatbox = ({ togglePopup }) => {
   const [message, setMessage] = useState('');
   const [messageList, setMessageList] = useState([]);
   const [currentUserId, setCurrentUserId] = useState();
+  const [userName, setUserName] = useState();
+  const [clubName, setClubName] = useState();
+  const [clubLogo, setClubLogo] = useState();
   const chatBottomRef = document.querySelector('#chat-scroll');
 
   const sendMessageOnEnter = (event) => {
@@ -97,14 +101,14 @@ const Chatbox = ({ togglePopup }) => {
         let messageObject = {
           content: tempMessage,
           user_id: currentUserId,
+          userName: userName,
           created_at: new Date(),
 
         };
-        // Add the message to the messageList for immediate display
-        let tempList = [...messageList];
-        tempList.push(messageObject);
-        globalMessageList.push(messageObject);
-        if (isAlive) setMessageList(tempList);
+
+        // Append the new message to the existing messageList
+        setMessageList((prevMessageList) => [...prevMessageList, messageObject]);
+
 
         // Call MessagesService.addMessage to store the message
         MessagesService.addMessage(messageObject)
@@ -152,13 +156,12 @@ const Chatbox = ({ togglePopup }) => {
       // Parse the date string to create a valid Date object
       messageDate = new Date(messageDate);
     }
-  
+
     const now = new Date();
     const timePassed = formatDistanceToNow(messageDate, { addSuffix: true });
     return timePassed;
   };
 
-  const [userName, setUserName] = useState(null);
 
   useEffect(() => {
     async function fetchUserData() {
@@ -169,9 +172,11 @@ const Chatbox = ({ togglePopup }) => {
           const userProfile = await getProfileById(currentUser.id);
           setCurrentUserId(currentUser.id);
           console.log("Current user : ", userProfile);
-          const Name = userProfile.name;
-          console.log("Current user name : ", currentUser.name);
-          setUserName(Name);
+          setUserName(userProfile[0].name);
+          const clubId = userProfile[0].id_club;
+          const clubData = await ClubsService.getClub(clubId);
+          setClubName(clubData[0].name);
+          setClubLogo(clubData[0].log);
         }
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -213,6 +218,7 @@ const Chatbox = ({ togglePopup }) => {
 
         // Assuming that the data structure is an array of messages
         if (Array.isArray(data)) {
+          data.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
           setMessageList(data);
         }
       } catch (error) {
@@ -240,9 +246,9 @@ const Chatbox = ({ togglePopup }) => {
     <ChatContainer>
       <ProfileBox>
         <Box display="flex" alignItems="center">
-          <ChatAvatar src="/assets/images/face-2.jpg" status="online" />
+          <ChatAvatar src={clubLogo} status="online" />
           <ChatStatus>
-            <H5>{userName}</H5>
+            <H5>{clubName} Forum</H5>
             <Span>Active</Span>
           </ChatStatus>
         </Box>
@@ -270,7 +276,7 @@ const Chatbox = ({ togglePopup }) => {
                     color: primary,
                   }}
                 >
-                  {/*item.name*/}
+                  {item.userName}
                 </H5>
               )}
               <ChatMessage>{item.content}</ChatMessage>
