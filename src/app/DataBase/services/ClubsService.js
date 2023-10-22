@@ -3,12 +3,11 @@ import { getEvent } from "./EventsService";
 
 export default class ClubsService {
     static async addClub(club) {
-        const { error } = await supabase.from("Clubs").insert([club]);
+        const { data, error } = await supabase.from("Clubs").insert([club]).select();
         if (error) {
             console.error("Error adding club:", error);
-        } else {
-            console.log("Club added successfully");
         }
+        return data[0];
     }
 
     static async getClubs() {
@@ -104,14 +103,11 @@ export default class ClubsService {
         const { data, error } = await supabase.storage
             .from("Clubs_Logo")
             .upload(club_id + "/" + logo.name, logo.name);
-
         if (error) {
             console.error("Error uploading club logo:", error);
         }
-
         // add clob logo to club table
         const { error2 } = await supabase.from("Clubs").update({ logo: logo.name }).eq("id", club_id);
-
         return data;
     }
 
@@ -122,6 +118,11 @@ export default class ClubsService {
             console.error("Error downloading club logo:", error);
         }
 
-        return "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Clubs_Logo/" + club_id + "/" + data[0].name;
+        return (
+            "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Clubs_Logo/" +
+            club_id +
+            "/" +
+            data[0].name
+        );
     }
 }
