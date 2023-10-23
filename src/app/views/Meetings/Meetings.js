@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import {styled,Box,Button} from "@mui/material";
 
-import { getMeetings,deleteMeeting } from '../../DataBase/services/MeetingsService';
+import MeetingsService from '../../DataBase/services/MeetingsService';
 import { getMembreByProfile } from "../../DataBase/services/MembersService";
 import { getCurrentUser ,getProfileById } from "../../DataBase/services/UsersService";
 
@@ -21,14 +21,13 @@ const Meetings = () => {
   
   const [events, setEvents] = useState([]);
 
-  
-  const [searchDate, setSearchDate] = useState(null);
-  const [searchClub, setSearchClub] = useState('');
+  //const [searchDate, setSearchDate] = useState(null);
+  //const [searchClub, setSearchClub] = useState('');
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [role, setRole] = useState("");
 
   useEffect(() => {
-    getMeetings().then((res) => {
+    MeetingsService.getMeetings().then((res) => {
       getCurrentUser().then((user) => {
         getProfileById(user.id).then((profile) => {
           setRole(profile[0].role);
@@ -48,13 +47,13 @@ const Meetings = () => {
     });
 }, []);
 
-  const handleSearchDateChange = (date) => {
+  /*const handleSearchDateChange = (date) => {
     setSearchDate(date);
-  };
+  };*/
 
-  const handleSearchClubChange = (event) => {
+  /*const handleSearchClubChange = (event) => {
     setSearchClub(event.target.value);
-  };
+  };*/
 
   const handleEventSelect = async (event) => {
     setSelectedEvent(event);
@@ -66,13 +65,13 @@ const Meetings = () => {
       if (confirmation) {
         const { id } = selectedEvent;
       console.log("Deleting meeting:", selectedEvent);
-      await deleteMeeting(id);
+      await MeetingsService.deleteMeeting(id);
         setSelectedEvent(null);
       }
     }
   };
 
-  const filteredEvents = events.filter((event) => {
+  /*const filteredEvents = events.filter((event) => {
     const eventDate = moment(event.start).startOf('day');
     const searchDateFormatted = searchDate ? moment(searchDate).startOf('day') : null;
 
@@ -83,6 +82,13 @@ const Meetings = () => {
   });
 
   const eventComponents = filteredEvents.map((event) => {
+    return {
+      ...event,
+      start: moment(event.start).toDate(),
+      end: moment(event.end).toDate(),
+    };
+  });*/
+  const eventComponents = events.map((event) => {
     return {
       ...event,
       start: moment(event.start).toDate(),
@@ -124,10 +130,6 @@ const Meetings = () => {
         <>
           <h1>Meetings</h1>
           <div className="search-section">
-            <div className="search-item">
-              <label htmlFor="search-date">Search by Date:</label>
-              <input id="search-date" type="date" value={searchDate} onChange={(e) => handleSearchDateChange(e.target.value)} />
-            </div>
             <Box display="flex" justifyContent="space-between" alignItems="center">
             {role == "admin" ? (
               <StyledButton variant="contained" color="secondary" href="/new_meeting">

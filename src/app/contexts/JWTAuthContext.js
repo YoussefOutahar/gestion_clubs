@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode'
 import axios from '../../axios'
 import { MatxLoading } from '../components'
 
-import { signOut } from '../DataBase/services/AuthService'
+import AuthService from '../DataBase/services/AuthService'
 
 const initialState = {
     isAuthenticated: false,
@@ -127,7 +127,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setSession(null)
-        signOut()
+        AuthService.signOut()
         dispatch({ type: 'LOGOUT' })
     }
 

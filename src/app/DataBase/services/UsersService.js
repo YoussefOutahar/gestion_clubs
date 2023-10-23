@@ -1,5 +1,66 @@
 import supabase from "../Clients/SupabaseClient";
+import ClubsService from "./ClubsService";
 
+export default class UsersService {
+    static async getCurrentUser() {
+        const {
+            data: { session },
+        } = await supabase.auth.getSession();
+        const user = session?.user;
+    
+        return user;
+    };
+
+    static async getUsers() {
+        try {
+            const { data, error } = await supabase.from("profiles").select("*");
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    static async getUserById(id) {
+        try {
+            const { data, error } = await supabase.from("profiles").select("*").eq("id", id);
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    static async updateUser(id,user) {
+        try {
+            const { data, error } = await supabase.from("profiles").update(id).eq("id", id);
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    static async deleteUser(id) {
+        try {
+            const { data, error } = await supabase.from("profiles").delete().eq("id", id);
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    static async createUser(user) {
+        try {
+            const { data, error } = await supabase.from("profiles").insert([user]);
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+}
 //Get Current User
 export const getCurrentUser = async () => {
     const {
@@ -14,6 +75,17 @@ export const getCurrentUser = async () => {
 export const getAllProfiles = async () => {
     try {
         const { data, error } = await supabase.from("profiles").select("*").order("id", { ascending: true });
+        if (error) throw error;
+        return data;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+//Get all profiles that has role = user :
+export const getAllProfilesByRole = async () => {
+    try {
+        const { data, error } = await supabase.from("profiles").select("*").eq("role", "user").order("id", { ascending: true });
         if (error) throw error;
         return data;
     } catch (err) {
@@ -64,6 +136,16 @@ export const getUserMember = async (id) => {
     }
 }
 
+export const getUsersByClub = async (id) => {
+    try {
+        const { data, error } = await supabase.from("profiles").select("*").eq("id_club", id);
+        if (error) throw error;
+        return data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 //Add profile:
 export const addProfile = async (profile) => {
     try {
@@ -97,3 +179,27 @@ export const deleteProfile = async (id) => {
     }
 }
 
+export const getMembreClub = async (id_member) => {
+    let {data,error} = await supabase.from("profiles").select("*").eq("id", id_member);
+    if (error) console.log("error", error);
+    else return await ClubsService.getClub(data[0].id_club);
+}
+
+export const updateUserRole = async (userId, newRole) => {
+    try {
+        const existingProfile = await getProfileById(userId);
+
+        if (existingProfile.length > 0) {
+            const updatedProfile = {
+                ...existingProfile[0], // Copy the existing profile data
+                role_club: newRole,    // Update the role_club
+            };
+
+            const updatedData = await updateProfile(userId, updatedProfile);
+
+            console.log("User role updated:", updatedData);
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}

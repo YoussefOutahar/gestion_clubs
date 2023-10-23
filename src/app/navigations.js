@@ -4,60 +4,37 @@ import { getMembreByProfile } from "./DataBase/services/MembersService";
 export const getNavigations = async () => {
     const user = await getCurrentUser();
 
-    let member;
-    if (user) {
-        member = await getMembreByProfile(user.id);
-    }
+    // let member;
+    // if (user) {
+    //     member = await getMembreByProfile(user.id);
+    // }
 
     // DVE
 
     const adminNavigations = [
         {
             name: "Dashboard",
-            path: "/dashboard/default",
+            path: "/Dashboard-Admin",
             icon: "dashboard",
-            children: [
-                {
-                    name: "Summary",
-                    path: "/summary/global",
-                    iconText: "S",
-                },
-                {
-                    name: "Clubs",
-                    path: "/summary/clubs",
-                    iconText: "C",
-                },
-                {
-                    name: "Memebers",
-                    path: "/summary/members",
-                    iconText: "M",
-                },
-                {
-                    name: "Events",
-                    path: "/summary/events",
-                    iconText: "E",
-                },
-            ],
         },
-        { label: "General", type: "label" },
         {
             name: "Clubs",
-            path: "/clubs",
+            path: "/Clubs-Management-Admin",
             icon: "home",
         },
         {
             name: "Memebers",
-            path: "/adminClubsMembers",
+            path: "/Members-Management-Admin",
             icon: "group",
         },
         {
             name: "Events",
-            path: "/events",
+            path: "/Events-Management-Admin",
             icon: "event",
         },
         {
             name: "Meetings",
-            path: "/meetings",
+            path: "/Meetings-Management-Admin",
             icon: "event",
         },
         {

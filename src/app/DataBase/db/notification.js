@@ -1,11 +1,11 @@
 import Mock from '../mock'
-import { getNotifications , deleteNotification , clearNotifications , addNotification} from '../services/NotificationsService'
+import NotificationsService from '../services/NotificationsService'
 import { getCurrentUser , getProfileById } from '../services/UsersService';
 
 Mock.onGet('/api/notification').reply(async(config) => {
     let user = await getCurrentUser()
     let profile = await getProfileById(user.id)
-    const response = await getNotifications()
+    const response = await NotificationsService.getNotifications()
     
     // let notifications = [];
     // if (profile.role == "admin") {
@@ -29,20 +29,20 @@ Mock.onGet('/api/notification').reply(async(config) => {
 
 Mock.onPost('/api/notification/add').reply((config) => {
     const { notification } = JSON.parse(config.data)
-    const response = addNotification(notification)
+    const response = NotificationsService.addNotification(notification)
     return [200, response.data]
 })
 
 Mock.onPost('/api/notification/delete').reply(async (config) => {
     let { id } = JSON.parse(config.data)
-    await deleteNotification(id)
-    const response = await getNotifications()
+    await NotificationsService.deleteNotification(id)
+    const response = await NotificationsService.getNotifications()
     return [200, response.data]
 })
 
 Mock.onPost('/api/notification/delete-all').reply(async (config) => {
-    await clearNotifications()
-    const response = await getNotifications()
+    await NotificationsService.clearNotifications()
+    const response = await NotificationsService.getNotifications()
     console.log(response)
     return [200, response.data]
 })

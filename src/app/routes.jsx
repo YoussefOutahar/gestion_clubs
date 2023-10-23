@@ -5,11 +5,14 @@ import summaryRoutes from "./views/Summary/summaryRoutes";
 import generalRoutes from "./views/General/generalRoutes";
 import FinanceRoutes from "./views/FinanceManagement/FinanceRoutes";
 import forumRoutes from "./views/Forum/forumRoutes";
+import clubsRoutes from "./views/Clubs/clubsRoutes";
 import membersRoutes from "./views/Members/membersRoutes";
 import eventsRoutes from "./views/Events/eventRoutes";
 import meetingRoutes from "./views/Meetings/meetingsRoutes";
 
 import landingPageRoute from "./views/LandingPage/LandingPageRoute";
+
+import AdminRoutes from "./Pages/Admin-Pages/admin-routes";
 
 import AuthGuard from "./auth/AuthGuard";
 import sessionRoutes from "./views/sessions/SessionRoutes";
@@ -26,8 +29,10 @@ const routes = [
             </AuthGuard>
         ),
         children: [
+            ...AdminRoutes,
             ...dashboardRoutes,
             ...summaryRoutes,
+            ...clubsRoutes,
             ...membersRoutes,
             ...eventsRoutes,
             ...meetingRoutes,

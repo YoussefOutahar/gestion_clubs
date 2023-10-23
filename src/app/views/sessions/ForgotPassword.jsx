@@ -2,7 +2,7 @@ import { Box, Button, Card, Grid, styled, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { forgotPassword } from '../../DataBase/services/AuthService';
+import AuthService from '../../DataBase/services/AuthService';
 
 const FlexBox = styled(Box)(() => ({
   display: 'flex',
@@ -34,7 +34,7 @@ const ForgotPassword = () => {
 
   const handleFormSubmit = async () => {
     try{
-      const {error} = await forgotPassword(email);
+      const {error} = await AuthService.forgotPassword(email);
       if(error) throw error;
     }catch(error){
       console.log(error);

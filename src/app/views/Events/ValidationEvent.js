@@ -6,11 +6,10 @@ import { Span } from "../../components/Typography";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import {addNotification, getNotificationById } from "../../DataBase/services/NotificationsService";
-import { getCurrentUser,getUserMember } from "../../DataBase/services/UsersService";
-import { getMembreClub } from "../../DataBase/services/MembersService";
+import { getCurrentUser, getProfileById } from '../../DataBase/services/UsersService'
 import { addEvent } from "../../DataBase/services/EventsService";
-import { getDocByName } from "../../DataBase/services/DocumentsService";
+import NotificationsService from "../../DataBase/services/NotificationsService";
+import DocumentsService from "../../DataBase/services/DocumentsService";
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -34,7 +33,7 @@ const ValidationEvent = () => {
 
   useEffect(() => {
     const fetchNotification = async () => {
-      const { data, error } = await getNotificationById(notifId);
+      const { data, error } = await NotificationsService.getNotificationById(notifId);
       if (error) {
         console.error(error);
       } else {
@@ -44,21 +43,33 @@ const ValidationEvent = () => {
 
     fetchNotification();
   }, []);
+
+
   useEffect(() => {
-    getCurrentUser().then((user) => {
-      getUserMember(user.id).then((member) => {
-        getMembreClub(member[0].id).then((club) => {
-          setClubId(club[0].id);
-        });
-      });
-    })
+    const fetchUsers = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+        if (currentUser) {
+          const userProfile = await getProfileById(currentUser.id);
+          if (userProfile.length > 0) {
+            setClubId(userProfile[0].id_club);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
   }, []);
+
+  
   const docName = `Fiche explicative ${Name}`;
   console.log(docName);
 
   useEffect(() => {
     const fetchDocument = async () => {
-      const { url, error } = await getDocByName(docName);
+      const { url, error } = await DocumentsService.getDocByName(docName);
       if (error) {
         console.error(error);
       } else {
@@ -75,7 +86,7 @@ const ValidationEvent = () => {
 
   const handleRefuse = async () => {
     try {
-    const {notification , error} = await addNotification(
+    const {notification , error} = await NotificationsService.addNotification(
       {
         heading: "Answer",
         title: `Event ${Name} refused`,
@@ -98,7 +109,7 @@ const ValidationEvent = () => {
   
   const handleConfirm = async () => {
     try {
-      const {notification , error} = await addNotification(
+      const {notification , error} = await NotificationsService.addNotification(
         {
           heading: "Answer",
           title: "Event accepted",

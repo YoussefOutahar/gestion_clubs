@@ -1,5 +1,5 @@
-import { getClub } from "./ClubsService";
 import supabase from "../Clients/SupabaseClient";
+import ClubsService from "./ClubsService";
 
 export const getMembres = async () => {
     let { data: Membres, error } = await supabase.from("Membre").select("*");
@@ -15,6 +15,16 @@ export const getMembre = async (id) => {
 
 export const addMembre = async (Membre) => {
     let { data: newMembre, error } = await supabase.from("Membre").insert([Membre]);
+    if (error) console.log("error", error);
+    else return newMembre;
+};
+//µµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµ
+export const addMembreTest = async (Membre) => {
+    let { data: newMembre, error } = await supabase.from("Membre").insert([
+        {
+          role: newMembre.role,
+        },
+      ]);
     if (error) console.log("error", error);
     else return newMembre;
 };
@@ -52,7 +62,7 @@ export const getMembresByEtudiant = async (id_etudiant) => {
 export const getMembreClub = async (id_member) => {
     let {data,error} = await supabase.from("Membre").select("*").eq("id", id_member);
     if (error) console.log("error", error);
-    else return await getClub(data[0].id_club);
+    else return await ClubsService.getClub(data[0].id_club);
 }
 
 export const getMembreByProfile = async (id_profile) => {
