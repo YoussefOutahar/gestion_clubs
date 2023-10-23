@@ -10,13 +10,13 @@ import membersRoutes from "./views/Members/membersRoutes";
 import eventsRoutes from "./views/Events/eventRoutes";
 import meetingRoutes from "./views/Meetings/meetingsRoutes";
 
-import landingPageRoute from "./views/LandingPage/LandingPageRoute";
+import landingPageRoute from "./Pages/LandingPage/LandingPageRoute";
 
 import AdminRoutes from "./Pages/Admin-Pages/admin-routes";
 
 import AuthGuard from "./auth/AuthGuard";
-import sessionRoutes from "./views/sessions/SessionRoutes";
-import NotFound from "./views/sessions/NotFound";
+import sessionRoutes from "./Pages/sessions/SessionRoutes";
+import NotFound from "./Pages/sessions/NotFound";
 
 import { Navigate } from "react-router-dom";
 import MatxLayout from "./components/MatxLayout/MatxLayout";

@@ -34,6 +34,13 @@ const reducer = (state, action) => {
                 clubs: action.payload,
             }
         }
+        case 'FETCH_CLUB_CATEGORY': {
+            const { category } = action.payload
+            return {
+                ...state,
+                category,
+            }
+        }
         default: {
             return { ...state }
         }
@@ -46,6 +53,7 @@ const ClubsContext = createContext({
     createClub: () => Promise.resolve(),
     deleteClub: () => Promise.resolve(),
     updateClub: () => Promise.resolve(),
+    getClubCategory: () => Promise.resolve(),
 })
 
 export const ClubsProvider = ({ settings, children }) => {
@@ -68,7 +76,7 @@ export const ClubsProvider = ({ settings, children }) => {
             await ClubsService.createClub(club);
             const res = await ClubsService.getClubs();
             dispatch({
-                type: 'CREATE_CLUB',
+                type: 'ADD_CLUB',
                 payload: res,
             })
         } catch (e) {
@@ -102,6 +110,18 @@ export const ClubsProvider = ({ settings, children }) => {
         }
     }
 
+    const getClubCategory = async (ClubID) => {
+        try {
+            const res = await ClubsService.getClubCategory(ClubID);
+            dispatch({
+                type: 'FETCH_CLUB_CATEGORY',
+                payload: res,
+            })
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
     useEffect(() => {
         getClubs()
     }, [])
@@ -114,6 +134,7 @@ export const ClubsProvider = ({ settings, children }) => {
                 createClub,
                 deleteClub,
                 updateClub,
+                getClubCategory,
             }}
         >
             {children}
