@@ -5,9 +5,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import { styled, Grid, Card, Button, CardMedia, CardContent, Typography } from '@mui/material';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
-
-import useClubs from '../../../hooks/useClubs';
-
 import ClubsService from '../../../DataBase/services/ClubsService';
 
 
@@ -19,10 +16,21 @@ const StyledButton = styled(Button)(({ theme }) => ({
 const Clubs = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [activeClub, setActiveClub] = useState(null);
+  const [clubToDelete, setClubToDelete] = useState(null);
 
-  const { clubs, deleteClub, getClubCategory } = useClubs();
-
+  const [clubs, setClubs] = useState([]);
   const [category, setCategory] = useState('');
+
+  useEffect(() => {
+    const fetchClubs = async () => {
+      const fetchedClubs = await ClubsService.getActiveClubs();
+      if (fetchedClubs) {
+        setClubs(fetchedClubs);
+      }
+    };
+
+    fetchClubs();
+  }, []);
 
   const handleLearnMore = async (index) => {
     setActiveClub(clubs[index])
@@ -38,8 +46,9 @@ const Clubs = () => {
 
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-  const handleDelete = () => {
+  const handleDelete = (club) => {
     setOpenDeleteDialog(true);
+    setClubToDelete(club);
   };
 
   const handleClose = () => {
@@ -47,7 +56,15 @@ const Clubs = () => {
   };
 
   const handleConfirmDelete = async () => {
-    await deleteClub(activeClub.id);
+    await ClubsService.deleteClub(clubToDelete.id);
+    const fetchClubs = async () => {
+      const fetchedClubs = await ClubsService.getClubs();
+      if (fetchedClubs) {
+        setClubs(fetchedClubs);
+      }
+    };
+
+    ClubsService.fetchClubs();
     setOpenDeleteDialog(false);
     setShowDetails(false);
     setActiveClub(null);
@@ -60,10 +77,10 @@ const Clubs = () => {
           <ArrowBack /> Back to Club List
         </StyledButton>
         <Typography variant="h6" component="div" sx={{ textAlign: 'center', mb: 1, fontSize: 25, fontWeight: 'bold' }}>
-          {activeClub.nom} {/* Display the title */}
+          {activeClub.name} {/* Display the title */}
         </Typography>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <img src={activeClub.logo} alt={activeClub.nom} style={{ width: '350px', marginLeft: '50px', marginRight: '50px' }} /> {/* Display the image with 100px width */}
+          <img src={activeClub.logo} alt={activeClub.name} style={{ width: '350px', marginLeft: '50px', marginRight: '50px' }} /> {/* Display the image with 100px width */}
           <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%', width: '650px' }}>
             <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
@@ -82,7 +99,7 @@ const Clubs = () => {
                 variant="contained"
                 color="error"
                 style={{ marginLeft: 'auto', marginTop: '16px', marginRight: '8px', backgroundColor: '#dc3545' }}
-                onClick={() => handleDelete()} // Call the handleDelete function
+                onClick={() => handleDelete(activeClub)} // Call the handleDelete function
               > Delete
               </Button>
             </CardContent>
@@ -114,7 +131,7 @@ const Clubs = () => {
                 <CardMedia
                   component="img"
                   image={club.logo}
-                  alt={club.nom}
+                  alt={club.name}
                   sx={{
                     paddingTop: '10%',
                     paddingBottom: '10%',
@@ -126,7 +143,7 @@ const Clubs = () => {
                 />
                 <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                   <Typography variant="h6" component="div" sx={{ textAlign: 'center', mb: 1 }}>
-                    {club.nom}
+                    {club.name}
                   </Typography>
                 </CardContent>
               </Card>

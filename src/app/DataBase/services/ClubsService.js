@@ -16,6 +16,12 @@ export default class ClubsService {
         else return data;
     }
 
+    static async getActiveClubs() {
+        const { data, error } = await supabase.from("Clubs").select("*").eq("state", "active");
+        if (error) return error;
+        else return data;
+    }
+
     static async getClub(id) {
         const { data, error } = await supabase.from("Clubs").select("*").eq("id", id);
         if (error) return error;
