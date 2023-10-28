@@ -1,5 +1,5 @@
 import supabase from "../Clients/SupabaseClient";
-import { getEvent } from "./EventsService";
+import EventsService from "./EventsService";
 
 export default class ClubsService {
     static async addClub(club) {
@@ -12,6 +12,12 @@ export default class ClubsService {
 
     static async getClubs() {
         const { data, error } = await supabase.from("Clubs").select("*");
+        if (error) return error;
+        else return data;
+    }
+
+    static async getActiveClubs() {
+        const { data, error } = await supabase.from("Clubs").select("*").eq("state", "active");
         if (error) return error;
         else return data;
     }
@@ -74,7 +80,7 @@ export default class ClubsService {
             console.error("Error fetching club events:", error);
         } else {
             for (let i = 0; i < data.length; i++) {
-                Events.push(await getEvent(data[i].activity_id));
+                Events.push(await EventsService.getEvent(data[i].activity_id));
             }
             return Events;
         }

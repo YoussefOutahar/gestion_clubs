@@ -6,6 +6,7 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import EventsService from '../../../DataBase/services/EventsService';
 
 const localizer = momentLocalizer(moment);
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -20,6 +21,17 @@ const Events = () => {
 
   const [searchDate, setSearchDate] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
+
+  useEffect(() => {
+    const fetchClubs = async () => {
+      const fetchedEvents = await EventsService.getEvents();
+      if (fetchedEvents) {
+        setEvents(fetchedEvents);
+      }
+    };
+
+    fetchClubs();
+  }, []);
 
   /*useEffect(() => {
     const fetchSelectedClub = async () => {
@@ -91,10 +103,10 @@ const Events = () => {
           <button className="back-button" onClick={() => setSelectedEvent(null)}>
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
-          <h2>{selectedEvent.Name}</h2>
+          <h2>{selectedEvent.name}</h2>
           <img src={selectedEvent.img} alt="Event" className="event-image" />
           <div className="event-description">
-            <p>Location: {selectedEvent.Location}</p>
+            <p>Location: {selectedEvent.location}</p>
             <p>Description: {selectedEvent.description}</p>
           </div>
       </div>*/}
@@ -102,20 +114,20 @@ const Events = () => {
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
           <Typography variant="h6" component="div" sx={{ textAlign: 'center', mb: 1, fontSize: 25, fontWeight: 'bold' }}>
-            {selectedEvent.Name} {/* Display the title */}
+            {selectedEvent.name} {/* Display the title */}
           </Typography>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <img src={selectedEvent.img} alt={selectedEvent.Name} style={{ width: '350px', marginLeft: '50px', marginRight: '50px' }} /> {/* Display the image with 100px width */}
+            <img src={selectedEvent.img} alt={selectedEvent.name} style={{ width: '350px', marginLeft: '50px', marginRight: '50px' }} /> {/* Display the image with 100px width */}
             <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%', width: '650px' }}>
               <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
-                  Location : {selectedEvent.Location}
+                  Location : {selectedEvent.location}
                 </Typography>
                 <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
-                  Description : {selectedEvent.Description}
+                  Description : {selectedEvent.description}
                 </Typography>
                 <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
-                  Mission : {selectedEvent.Name}
+                  Mission : {selectedEvent.name}
                 </Typography>
                 <Button
                   variant="contained"
@@ -160,9 +172,9 @@ const Events = () => {
             <Calendar
               localizer={localizer}
               events={eventComponents}
-              startAccessor="Date"
-              endAccessor="Date"
-              titleAccessor="Name"
+              startAccessor="date"
+              endAccessor="date"
+              titleAccessor="name"
               views={['month']}
               defaultView="month"
               onSelectEvent={handleEventSelect}

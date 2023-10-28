@@ -91,18 +91,17 @@ const AdminClubsMembers = () => {
                         <InputLabel>Filter</InputLabel>
                         <Select value={filter} onChange={handleFilterChange} label="Filter">
                             <MenuItem value="all">All</MenuItem>
-                            <MenuItem value="admin">Admin</MenuItem>
-                            <MenuItem value="president">President</MenuItem>
-                            <MenuItem value="vice-president">Vice President</MenuItem>
-                            <MenuItem value="tresorier">Tresorier</MenuItem>
-                            <MenuItem value="secretaire">Secretaire</MenuItem>
-                            <MenuItem value="membre">Membre</MenuItem>
+                            <MenuItem value="President">President</MenuItem>
+                            <MenuItem value="Vice-president">Vice President</MenuItem>
+                            <MenuItem value="Accountant">Accountant</MenuItem>
+                            <MenuItem value="Secretary">Secretary</MenuItem>
+                            <MenuItem value="Membre">Member</MenuItem>
                             {/* Add more filter options here */}
                         </Select>
                     </FormControl>
                 </Grid>
             </Grid>
-            <TableContainer component={Paper} style={{ marginTop: "20px" }}>
+            <TableContainer component={Paper} style={{ marginTop: "20px", paddingLeft: "20px" }}>
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -118,7 +117,7 @@ const AdminClubsMembers = () => {
                     <TableBody>
                         {users?.map(
                             (user,index) =>
-                                (filter === "all" || user.role.toLowerCase() === filter) &&
+                                (filter === "all" || user.role_club === filter) &&
                                 (searchText === "" ||
                                     user.name.toLowerCase().includes(searchText.toLowerCase())) && (
                                     <TableRow key={user.id}>

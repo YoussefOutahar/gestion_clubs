@@ -11,7 +11,7 @@ const Dashboard = Loadable(lazy(() => import("./Dashboard/Analytics")));
 const Clubs = Loadable(lazy(() => import("./Clubs-Management/Clubs")));
 const Members = Loadable(lazy(() => import("./Member-Management/AdminClubsMembers")));
 const Meetings = Loadable(lazy(() => import("./Meetings-Page/Meetings")));
-const Events = Loadable(lazy(() => import("./Evants-Management/Events")));
+const Events = Loadable(lazy(() => import("./Events-Management/Events")));
 const Finance = Loadable(lazy(() => import("./Finance-Management/AdminFinance")));
 
 // Validation Imports

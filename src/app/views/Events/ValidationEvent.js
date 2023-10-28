@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser, getProfileById } from '../../DataBase/services/UsersService'
-import { addEvent } from "../../DataBase/services/EventsService";
+import EventsService from "../../DataBase/services/EventsService";
 import NotificationsService from "../../DataBase/services/NotificationsService";
 import DocumentsService from "../../DataBase/services/DocumentsService";
 
@@ -125,7 +125,7 @@ const ValidationEvent = () => {
         },
       )
 
-    await addEvent({Name: Name, Date: Date, description: Description, Location: Location,});
+    await EventsService.addEvent({Name: Name, Date: Date, description: Description, Location: Location,});
     console.log("Event added successfully");
        navigate("/finance");
     } catch (error) {
