@@ -40,8 +40,8 @@ export default class ClubsService {
         }
     }
 
-    static async updateClubState(name, newState) {
-        const { error } = await supabase.from("Clubs").update({ state: newState }).eq("name", name);
+    static async updateClubState(id, newState) {
+        const { error } = await supabase.from("Clubs").update({ state: newState }).eq("id", id);
         if (error) {
             console.error("Error updating club state:", error);
         } else {
@@ -118,11 +118,12 @@ export default class ClubsService {
             console.error("Error downloading club logo:", error);
         }
 
-        return (
+        const link =
             "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Clubs_Logo/" +
             club_id +
             "/" +
-            data[0].name
-        );
+            data[0].name;
+
+        return link;
     }
 }

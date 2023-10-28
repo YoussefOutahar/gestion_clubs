@@ -91,7 +91,9 @@ const RequestsList = ({ requests, handleAcceptAll, handleDeleteAll, onAccept, on
                     </Button>
                 </Box>
                 <Box my={3}>{/*Spacing*/}</Box>
-                {requests
+                {requests.length == 0 ? (<p>There are no requests at the moment</p>) : (
+                    <>
+                    {requests
                     .filter((request) => request.state === "pending")
                     .map((request) => (
                         <Fragment key={request}>
@@ -154,6 +156,8 @@ const RequestsList = ({ requests, handleAcceptAll, handleDeleteAll, onAccept, on
                             <Box py={1} />
                         </Fragment>
                     ))}
+                    </>
+                )}
             </Container>
         </>
     );
