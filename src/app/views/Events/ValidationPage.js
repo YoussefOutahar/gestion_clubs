@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import NotificationsService from "../../DataBase/services/NotificationsService";
 import { getCurrentUser,getUserMember } from "../../DataBase/services/UsersService";
 import { getMembreClub } from "../../DataBase/services/MembersService";
-import { getEventByName,updateEvent } from "../../DataBase/services/EventsService";
+import EventsService from "../../DataBase/services/EventsService";
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -89,14 +89,14 @@ const ValidationPage = () => {
           id_club: clubId,
         },
       )
-      const event = await getEventByName(Event);
+      const event = await EventsService.getEventByName(Event);
     if (!event || event.length === 0) {
       console.error("Event not found");
       return;
     }
 
     const eventId = event[0].id;
-    await updateEvent(eventId,{Supp_budget: Cost});
+    await EventsService.updateEvent(eventId,{Supp_budget: Cost});
     console.log("Event updated successfully");
        navigate("/finance");
     } catch (error) {
