@@ -124,12 +124,16 @@ export default class ClubsService {
             console.error("Error downloading club logo:", error);
         }
 
-        const link =
-            "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Clubs_Logo/" +
-            club_id +
-            "/" +
-            data[0].name;
+        console.log(data);
 
-        return link;
+        // const link =
+        //     "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Clubs_Logo/" +
+        //     club_id +
+        //     "/" +
+        //     data[0].name;
+
+        // return link;
+
+        return ""
     }
 }

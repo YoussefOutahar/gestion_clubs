@@ -21,7 +21,7 @@ import ClubsService from "../../../DataBase/services/ClubsService";
 import PendingProfilesService from "../../../DataBase/services/PendingProfilesService";
 
 const ClubsValidationPage = () => {
-    const { clubs, deleteClub } = useClubs();
+    const { clubs } = useClubs();
 
     const handleAcceptAll = (selectedItems) => {
         // Handle accepting all selected items here
@@ -38,9 +38,8 @@ const ClubsValidationPage = () => {
     const [pending_profiles, setPendingProfiles] = React.useState(null);
 
     const handleClickOpen = async (club) => {
-        const {logoLink } = await ClubsService.getClubLogoLink(club.id);
-        setClubData({...club , logo: logoLink} );
-        console.log(clubData);
+        const logoLink  = await ClubsService.getClubLogoLink(club.id);
+        setClubData({...club , logo: logoLink});
         const pending_profiles = await PendingProfilesService.getPendingProfileByClubId(club.id);
         setPendingProfiles(pending_profiles);
         setOpen(true);
@@ -72,11 +71,21 @@ const ClubsValidationPage = () => {
                     handleDeleteAll={handleDeleteAll}
                     onAccept={async (club) => {
                         await ClubsService.updateClubState(club.id, "active");
-                        console.log(club);
+
+                        const pending_profiles = await PendingProfilesService.getPendingProfileByClubId(club.id);
+                        
+                        pending_profiles.forEach(async (pending_profile) => {
+                            await PendingProfilesService.updatePendingProfile(pending_profile.id, { state: "accepted" });
+                        });
                     }}
-                    onDecline={(club) => {
-                        // Handle accepting a single item here
-                        console.log(club);
+                    onDecline={async (club) => {
+                        const pending_profiles = await PendingProfilesService.getPendingProfileByClubId(club.id);
+
+                        pending_profiles.forEach(async (pending_profile) => {
+                            await PendingProfilesService.deletePendingProfile(pending_profile.id);
+                        });
+
+                        ClubsService.deleteClub(club.id);
                     }}
                     onInfo={async (club) => {
                         await handleClickOpen(club);
