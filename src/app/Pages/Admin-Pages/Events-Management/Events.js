@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import { styled, Box, Button , Card, CardContent, Typography } from '@mui/material';
+import { styled, Box, Button, Card, CardContent, Typography, TextField } from '@mui/material';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,35 +16,37 @@ const StyledButton = styled(Button)(({ theme }) => ({
 const Events = () => {
 
   const [events, setEvents] = useState([]);
-  const [club, setClub] = useState([]);
-
-
   const [searchDate, setSearchDate] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  const [eventToUpdate, setEventToUpdate] = useState(null);
+  const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+  const [updatedEvent, setUpdatedEvent] = useState({
+    name: '',
+    date: '',
+    location: '',
+    description: '',
+  });
+
   useEffect(() => {
-    const fetchClubs = async () => {
-      const fetchedEvents = await EventsService.getEvents();
+    const fetchEvents = async () => {
+      const fetchedEvents = await EventsService.getActiveEvents();
       if (fetchedEvents) {
         setEvents(fetchedEvents);
       }
     };
-
-    fetchClubs();
+    fetchEvents();
   }, []);
 
-  /*useEffect(() => {
-    const fetchSelectedClub = async () => {
-      if(selectedEvent != null) {
-        let eventClub = await getEventClub(selectedEvent.id);
-      console.log(eventClub)
-      setClub(eventClub)
-      console.log(club)
-      }
-    }
-  
-    fetchSelectedClub();
-  }, [selectedEvent]);*/
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUpdatedEvent((prevEvent) => ({
+      ...prevEvent,
+      [name]: value,
+    }));
+  };
 
   const handleSearchDateChange = (date) => {
     setSearchDate(date);
@@ -53,29 +55,58 @@ const Events = () => {
   const handleEventSelect = async (event) => {
     setSelectedEvent(event);
   };
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [clubToDelete, setClubToDelete] = useState(null);
 
-  const handleDelete = (club) => {
-    //setOpenDeleteDialog(true);
-    //setClubToDelete(club);
+  const handleUpdate = (event) => {
+    setOpenUpdateDialog(true);
+    setEventToUpdate(event);
+  
+    // Set the initial values of updatedEvent to the event data
+    setUpdatedEvent({
+      name: event.name,
+      date: event.date,
+      location: event.location,
+      description: event.description,
+    });
+  };
+  
+
+  const handleDelete = (event) => {
+    setOpenDeleteDialog(true);
+    setEventToUpdate(event);
   };
 
   const handleClose = () => {
-    //setOpenDeleteDialog(false);
+    setOpenDeleteDialog(false);
+    setOpenUpdateDialog(false);
   };
 
   const handleConfirmDelete = async () => {
-    /*await ClubsService.deleteClub(clubToDelete.id);
-    const fetchClubs = async () => {
-      const fetchedClubs = await ClubsService.getClubs();
-      if (fetchedClubs) {
-        setClubs(fetchedClubs);
+    await EventsService.deleteEvent(eventToUpdate.id);
+    const fetchEvents = async () => {
+      const fetchedEvents = await EventsService.getActiveEvents();
+      if (fetchedEvents) {
+        setEvents(fetchedEvents);
       }
+      // Reset the selectedEvent to null
+      setSelectedEvent(null);
     };
+    setOpenDeleteDialog(false);
+  };
 
-    ClubsService.fetchClubs();
-    setOpenDeleteDialog(false);*/
+  const handleConfirmUpdate = async () => {
+    await EventsService.updateEvent(eventToUpdate.id, updatedEvent);
+    setUpdatedEvent({
+      name: '',
+      date: '',
+      location: '',
+      description: '',
+    });
+    // Fetch the updated list of events
+    const fetchedEvents = await EventsService.getActiveEvents();
+    if (fetchedEvents) {
+      setEvents(fetchedEvents);
+    }
+    setOpenUpdateDialog(false);
   };
 
   const filteredEvents = events.filter((event) => {
@@ -99,17 +130,6 @@ const Events = () => {
     <div className="events-container">
       {selectedEvent ? (
         <>
-          {/*<div className="event-details">
-          <button className="back-button" onClick={() => setSelectedEvent(null)}>
-            <FontAwesomeIcon icon={faArrowLeft} />
-          </button>
-          <h2>{selectedEvent.name}</h2>
-          <img src={selectedEvent.img} alt="Event" className="event-image" />
-          <div className="event-description">
-            <p>Location: {selectedEvent.location}</p>
-            <p>Description: {selectedEvent.description}</p>
-          </div>
-      </div>*/}
           <button className="back-button" onClick={() => setSelectedEvent(null)}>
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
@@ -121,27 +141,39 @@ const Events = () => {
             <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%', width: '650px' }}>
               <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
+                  Date : {selectedEvent.date} at {selectedEvent.time}
+                </Typography>
+                <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
                   Location : {selectedEvent.location}
                 </Typography>
                 <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
                   Description : {selectedEvent.description}
                 </Typography>
                 <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
-                  Mission : {selectedEvent.name}
+                  Target : {selectedEvent.aimed_target}
                 </Typography>
-                <Button
-                  variant="contained"
-                  color="error"
-                  style={{ marginLeft: 'auto', marginTop: '16px', marginRight: '8px', backgroundColor: '#dc3545' }}
-                  onClick={() => handleDelete(selectedEvent)} // Call the handleDelete function
-                > Delete
-                </Button>
+                <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ marginTop: '16px', marginRight: '8px' }}
+                    onClick={() => handleUpdate(selectedEvent)} // Call the handleEdit function
+                  > Update
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    style={{ marginTop: '16px', marginRight: '8px' }}
+                    onClick={() => handleDelete(selectedEvent)} // Call the handleDelete function
+                  > Delete
+                  </Button>
+                </div>
               </CardContent>
             </Card>
             <Dialog open={openDeleteDialog} onClose={handleClose}>
-              <DialogTitle>Delete Club</DialogTitle>
+              <DialogTitle>Delete Event</DialogTitle>
               <DialogContent>
-                <DialogContentText>Are you sure you want to delete this user?</DialogContentText>
+                <DialogContentText>Are you sure you want to delete this event?</DialogContentText>
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose} color="secondary">
@@ -152,6 +184,45 @@ const Events = () => {
                 </Button>
               </DialogActions>
             </Dialog>
+            <Dialog open={openUpdateDialog} onClose={handleClose}>
+              <DialogTitle>Update Event</DialogTitle>
+              <DialogContent>
+                <TextField
+                  label="Event Name"
+                  name="name"
+                  value={updatedEvent.name}
+                  onChange={handleInputChange}
+                />
+                <TextField
+                  label="Event Date"
+                  type="date"
+                  name="date"
+                  value={updatedEvent.date}
+                  onChange={handleInputChange}
+                />
+                <TextField
+                  label="Location"
+                  name="location"
+                  value={updatedEvent.location}
+                  onChange={handleInputChange}
+                />
+                <TextField
+                  label="Description"
+                  name="description"
+                  value={updatedEvent.description}
+                  onChange={handleInputChange}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="secondary">
+                  Cancel
+                </Button>
+                <Button onClick={handleUpdate} color="primary">
+                  Update
+                </Button>
+              </DialogActions>
+            </Dialog>
+
           </div>
         </>
       ) : (

@@ -21,6 +21,16 @@ export default class EventsService {
         }
     };
     
+    static async getActiveEvents() {
+        const { data, error } = await supabase.from("Events").select("*").eq("state", "active");
+        console.log(data);
+        if (error) {
+            console.error("Error fetching events:", error);
+        } else {
+            return data;
+        }
+    };
+
     static async getEvent(id) {
         const { data, error } = await supabase.from("Events").select("*").eq("id", id);
         if (error) {
