@@ -109,7 +109,6 @@ export default class ClubsService {
         const { data, error } = await supabase.from("Category").select("*");
         if (error) return error;
         else {
-            console.log(data);
             return data;
         }
     }

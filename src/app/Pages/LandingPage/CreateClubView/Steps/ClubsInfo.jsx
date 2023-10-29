@@ -30,7 +30,12 @@ function ClubsInfo({ extractClubId, handleNext }) {
 
     const [category, setCategory] = useState(null);
 
-    const handleCategoryChange = (event) => {};
+    const handleCategoryChange = (event) => {
+        const category = categories.find((category) => category.category_name === event.target.value);
+        console.log(category);
+        setCategory(category);
+        handleInputChange("id_category", category.id);
+    };
 
     const [selectedImage, setSelectedImage] = useState(null);
 
@@ -133,12 +138,13 @@ function ClubsInfo({ extractClubId, handleNext }) {
                         </select>
                         {categories && (
                             <Autocomplete
-                                value={category}
+                                value={category.category_name ? "" : category.category_name}
                                 onChange={(e) => handleCategoryChange(e)}
                                 options={categories.map((option) => option.category_name)}
                                 renderInput={(params) => (
                                     <TextField {...params} label="Category" variant="outlined" />
                                 )}
+                                style={{ ...inputGroup, ...inputStyle }}
                             />
                         )}
                         <label htmlFor="image" style={{ ...h5Style }}>
