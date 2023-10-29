@@ -39,7 +39,6 @@ function ClubsInfo({ extractClubId, handleNext }) {
     
       useEffect(() => {
         if (category) {
-          console.log('Updated category:', category);
           handleInputChange("id_category", category.id);
         }
       }, [category]);
