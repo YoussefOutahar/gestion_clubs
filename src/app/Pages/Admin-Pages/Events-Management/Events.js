@@ -59,16 +59,18 @@ const Events = () => {
   const handleUpdate = (event) => {
     setOpenUpdateDialog(true);
     setEventToUpdate(event);
-  
+
+    const formattedDate = moment(event.date).format('YYYY-MM-DD');
+
     // Set the initial values of updatedEvent to the event data
     setUpdatedEvent({
       name: event.name,
-      date: event.date,
+      date: formattedDate,
       location: event.location,
       description: event.description,
     });
   };
-  
+
 
   const handleDelete = (event) => {
     setOpenDeleteDialog(true);
@@ -105,6 +107,9 @@ const Events = () => {
     const fetchedEvents = await EventsService.getActiveEvents();
     if (fetchedEvents) {
       setEvents(fetchedEvents);
+      // Update the selected event with the updated data
+      const updatedSelectedEvent = fetchedEvents.find((event) => event.id === eventToUpdate.id);
+      setSelectedEvent(updatedSelectedEvent);
     }
     setOpenUpdateDialog(false);
   };
@@ -141,7 +146,7 @@ const Events = () => {
             <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%', width: '650px' }}>
               <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
-                  Date : {selectedEvent.date} at {selectedEvent.time}
+                  Date : {moment(selectedEvent.date).format('YYYY/MM/DD')} at {selectedEvent.time}
                 </Typography>
                 <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
                   Location : {selectedEvent.location}
@@ -187,37 +192,43 @@ const Events = () => {
             <Dialog open={openUpdateDialog} onClose={handleClose}>
               <DialogTitle>Update Event</DialogTitle>
               <DialogContent>
-                <TextField
-                  label="Event Name"
-                  name="name"
-                  value={updatedEvent.name}
-                  onChange={handleInputChange}
-                />
-                <TextField
-                  label="Event Date"
-                  type="date"
-                  name="date"
-                  value={updatedEvent.date}
-                  onChange={handleInputChange}
-                />
-                <TextField
-                  label="Location"
-                  name="location"
-                  value={updatedEvent.location}
-                  onChange={handleInputChange}
-                />
-                <TextField
-                  label="Description"
-                  name="description"
-                  value={updatedEvent.description}
-                  onChange={handleInputChange}
-                />
+                <Box display="flex" flexDirection="column">
+                  <TextField
+                    label="Event Name"
+                    name="name"
+                    value={updatedEvent.name}
+                    onChange={handleInputChange}
+                    style={{ marginBottom: '12px' }}
+                  />
+                  <TextField
+                    label="Event Date"
+                    type="date"
+                    name="date"
+                    value={updatedEvent.date}
+                    onChange={handleInputChange}
+                    style={{ marginBottom: '12px' }}
+                  />
+                  <TextField
+                    label="Location"
+                    name="location"
+                    value={updatedEvent.location}
+                    onChange={handleInputChange}
+                    style={{ marginBottom: '12px' }}
+                  />
+                  <TextField
+                    label="Description"
+                    name="description"
+                    value={updatedEvent.description}
+                    onChange={handleInputChange}
+                    style={{ marginBottom: '12px' }}
+                  />
+                </Box>
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose} color="secondary">
                   Cancel
                 </Button>
-                <Button onClick={handleUpdate} color="primary">
+                <Button onClick={handleConfirmUpdate} color="primary">
                   Update
                 </Button>
               </DialogActions>
