@@ -141,7 +141,7 @@ const Events = () => {
           <Typography variant="h6" component="div" sx={{ textAlign: 'center', mb: 1, fontSize: 25, fontWeight: 'bold' }}>
             {selectedEvent.name} {/* Display the title */}
           </Typography>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
             <img src={selectedEvent.img} alt={selectedEvent.name} style={{ width: '350px', marginLeft: '50px', marginRight: '50px' }} /> {/* Display the image with 100px width */}
             <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%', width: '650px' }}>
               <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -266,6 +266,7 @@ const Events = () => {
       )}
       <style jsx>{`
         .events-container {
+          margin-top: 30px;
           padding: 20px;
           text-align: center;
         }
@@ -311,7 +312,7 @@ const Events = () => {
         }
 
         .event-details {
-          position: absolute;
+          position: relative;
           top: 0;
           left: 50%;
           transform: translateX(-50%);
@@ -373,6 +374,8 @@ const Events = () => {
           font-size: 14px;
           cursor: pointer;
           transition: background-color 0.3s ease;
+          position: absolute; /* Set this to position it absolutely within .event-details */
+          left: 20px;
         }
 
         .back-button:hover {
