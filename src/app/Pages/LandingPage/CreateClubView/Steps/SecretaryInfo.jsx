@@ -16,6 +16,7 @@ function SecretaryInfo({ clubId, handleNext, handleBack }) {
         email: "",
         id_club: clubId,
         role_club: "Secretary",
+        state: "pending",
     });
     const handleInputChange = (key, value) => {
         setSecretaryData({ ...secretaryData, [key]: value });

@@ -16,6 +16,7 @@ function FinancierInfo({ clubId, handleNext, handleBack }) {
         email: "",
         id_club: clubId,
         role_club: "Financer",
+        state: "pending",
     });
     const handleInputChange = (key, value) => {
         setFinancerData({ ...financerData, [key]: value });

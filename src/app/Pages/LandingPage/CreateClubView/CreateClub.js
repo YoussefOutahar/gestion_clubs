@@ -67,7 +67,8 @@ function Createclub() {
     width: "60%",
     margin: "2rem auto",
     boxShadow: "0rem 0rem 2rem 0.1rem #e4f1fe",
-    borderRadius: "0.5rem"
+    borderRadius: "0.5rem",
+    overflowY: "auto", // Enable vertical scrolling
   };
 
   const pStyle = {

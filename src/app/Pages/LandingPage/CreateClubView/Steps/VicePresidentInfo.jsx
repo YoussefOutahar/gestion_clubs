@@ -15,6 +15,7 @@ function VicePresidentInfo({ clubId, handleNext, handleBack }) {
         email: "",
         id_club: clubId,
         role_club: "VicePresident",
+        state: "pending",
     });
     const handleInputChange = (key, value) => {
         setVicePresidentData({ ...vicePresidentData, [key]: value });

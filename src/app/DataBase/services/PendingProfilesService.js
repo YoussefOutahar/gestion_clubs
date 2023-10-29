@@ -21,6 +21,24 @@ export default class PendingProfilesService {
         }
     };
 
+    static async updatePendingProfile(id, user) {
+        try {
+            const { error } = await supabase.from("pending_profiles").update(user).eq("id", id);
+            if (error) throw error;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    static async deletePendingProfile(id) {
+        try {
+            const { error } = await supabase.from("pending_profiles").delete().eq("id", id);
+            if (error) throw error;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     static async getPendingProfilesByClubName(name) {
         const { data, error } = await supabase.from("pending_profiles").select("*").eq("clubName", name);
         if (error) return error;

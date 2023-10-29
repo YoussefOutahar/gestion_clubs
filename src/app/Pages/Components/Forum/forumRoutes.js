@@ -1,4 +1,4 @@
-import Loadable from "../../components/Loadable";
+import Loadable from "../../../components/Loadable";
 import { lazy } from "react";
 
 const Forum = Loadable(lazy(() => import("./ForumPage")));

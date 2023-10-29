@@ -15,6 +15,7 @@ function SuperVisorInfo({ clubId, handleNext, handleBack }) {
         year: "",
         id_club: clubId,
         role_club: "Supervisor",
+        state: "pending",
     });
     const handleInputChange = (key, value) => {
         setSupervisorData({ ...supervisorData, [key]: value });

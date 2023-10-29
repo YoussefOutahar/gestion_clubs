@@ -46,8 +46,8 @@ export default class ClubsService {
         }
     }
 
-    static async updateClubState(name, newState) {
-        const { error } = await supabase.from("Clubs").update({ state: newState }).eq("name", name);
+    static async updateClubState(id, newState) {
+        const { error } = await supabase.from("Clubs").update({ state: newState }).eq("id", id);
         if (error) {
             console.error("Error updating club state:", error);
         } else {
@@ -105,6 +105,14 @@ export default class ClubsService {
         }
     }
 
+    static async getAllCategories() {
+        const { data, error } = await supabase.from("Category").select("*");
+        if (error) return error;
+        else {
+            return data;
+        }
+    }
+
     static async addClubLogo(club_id, logo) {
         const { data, error } = await supabase.storage
             .from("Clubs_Logo")
@@ -124,11 +132,16 @@ export default class ClubsService {
             console.error("Error downloading club logo:", error);
         }
 
-        return (
-            "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Clubs_Logo/" +
-            club_id +
-            "/" +
-            data[0].name
-        );
+        console.log(data);
+
+        // const link =
+        //     "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Clubs_Logo/" +
+        //     club_id +
+        //     "/" +
+        //     data[0].name;
+
+        // return link;
+
+        return ""
     }
 }
