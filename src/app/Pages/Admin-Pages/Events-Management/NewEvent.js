@@ -7,9 +7,10 @@ import { useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import supabase from "../../DataBase/Clients/SupabaseClient";
 import { useNavigate } from "react-router-dom";
-import { addEvent, getEventByName } from "../../DataBase/services/EventsService";
 import NotificationsService from "../../DataBase/services/NotificationsService";
 import { getCurrentUser, getProfileById } from "../../DataBase/services/UsersService";
+import DocumentsService from "../../DataBase/services/DocumentsService";
+import EventsService from "../../DataBase/services/EventsService";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -49,6 +50,7 @@ const NewEvent = () => {
   const [state, setState] = useState({
     date: new Date(),
     time: "",
+    img: "",
     description: "",
     location: "",
     name: "",
@@ -61,13 +63,6 @@ const NewEvent = () => {
     event.preventDefault();
     if (selectedFile) {
       try {
-        const Name = state.name;
-        const Date = state.date;
-        const Time = state.time;
-        const Description = state.description;
-        const Location = state.location;
-        const Aimed_target = state.aimed_target;
-        const Funding_method = state.funding_method;
         setUploading(true);
         const { file, error } = await supabase.storage
           .from("Documents")
@@ -79,33 +74,46 @@ const NewEvent = () => {
           console.error("Error uploading file:", error);
         } else {
           const fileUrl = "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Documents/" + selectedFile.name;
-          await addEvent(
-                    {
-                      Name: state.name, 
-                      Date: state.date,
-                      Time: state.time,
-                      Description: state.description,
-                      Location: state.location,
-                      Aimed_target: state.aimed_target,
-                      Funding_method: state.funding_method,
-                      State: "pending",
-                      id_club: clubId,
-                    },);
-          const eventid = await getEventByName(state.name);
-          const { data, error } = await supabase.from("Documents").insert([
-            {
-              nom: `Fiche explicative ${state.name}`,
-              path: fileUrl,
-              id_activité: eventid.id,
-            },
-          ])
-          if (error) {
-            console.error(error);
-          } else {
-            console.log("Data inserted successfully:", data);
+
+          if (selectedImageFile) {
+            const { data: imageResponse, error: imageError } = await supabase.storage
+              .from("Events_images")
+              .upload(selectedImageFile.name, selectedImageFile);
+
+            if (!imageError) {
+              const imageUrl = "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Events_images/" + selectedImageFile.name;
+              state.img = imageUrl;
+
+            } else {
+              console.error("Error uploading event image:", imageError);
+            }
           }
+
+          await EventsService.addEvent(
+            {
+              name: state.name,
+              date: state.date,
+              time: state.time,
+              description: state.description,
+              location: state.location,
+              aimed_target: state.aimed_target,
+              funding_method: state.funding_method,
+              state: "pending",
+              img: state.img,
+              id_club: clubId,
+            },);
+
+          const actualEvent = await EventsService.getEventByName(state.name);
+
+          await DocumentsService.addDoc({
+            name: `Fiche explicative ${state.name}`,
+            path: fileUrl,
+            id_activity: actualEvent.id,
+          });
           console.log("File uploaded and reference saved successfully.");
-          await NotificationsService.addNotification(
+
+          //TODO: notification must be done after validations 
+          /*await NotificationsService.addNotification(
             {
               heading: "Request",
               title: "Request new Event",
@@ -116,11 +124,13 @@ const NewEvent = () => {
                 name: "Message",
                 color: "primary"
               },
-              path: `validationEvent/${Name}/${Date}/${Description}/${Location}`,
+              //path: `validationEvent/${Name}/${Date}/${Description}/${Location}`,
+              path:"",
               id_club: clubId,
             },
-          )
-          navigate("/events");
+          )*/
+          navigate("/Events-Management-Admin");
+
         }
       } catch (error) {
         console.error("Error uploading file:", error.message);
@@ -138,14 +148,19 @@ const NewEvent = () => {
     }));
   };
 
-  const { location, date, description, name, time , aimed_target,funding_method } = state;
+  const { location, date, description, name, time, aimed_target, funding_method } = state;
 
   //Fiche explicative
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedImageFile, setSelectedImageFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
+  };
+
+  const handleImageFileChange = (event) => {
+    setSelectedImageFile(event.target.files[0]);
   };
 
   return (
@@ -192,16 +207,6 @@ const NewEvent = () => {
 
                 <TextField
                   type="text"
-                  name="description"
-                  label="Description"
-                  onChange={handleChange}
-                  value={description || ""}
-                  errorMessages={["this field is required"]}
-                  validators={["required"]}
-                />
-
-                <TextField
-                  type="text"
                   name="location"
                   value={location || ""}
                   label="Location"
@@ -230,7 +235,37 @@ const NewEvent = () => {
                   errorMessages={["this field is required"]}
                 />
 
-                <Grid container direction="row" justifyContent="center" alignItems="center" gap={2}>
+                <TextField
+                  type="text"
+                  name="description"
+                  label="Description"
+                  onChange={handleChange}
+                  value={description || ""}
+                  errorMessages={["this field is required"]}
+                  validators={["required"]}
+                />
+
+                <Grid container direction="row" justifyContent="left" alignItems="center" gap={2}>
+                  <input
+                    type="file"
+                    onChange={handleImageFileChange}
+                    accept=".jpg,.jpeg,.png,.gif"
+                    id="image-input"
+                    style={{ display: "none" }}
+                  />
+                  <label htmlFor="image-input">
+                    <Button sx={{ mb: 4 }} color="primary" component="span" variant="outlined">
+                      Upload Event post
+                    </Button>
+                  </label>
+                  <Span style={{ display: "inline-flex", verticalAlign: "middle" }}>
+                    {uploading ? "Uploading ..." : null}
+                    {selectedImageFile ? selectedImageFile.name : null}
+                  </Span>
+                </Grid>
+
+
+                <Grid container direction="row" justifyContent="left" alignItems="center" gap={2}>
                   <input
                     type="file"
                     onChange={handleFileChange}
@@ -251,8 +286,7 @@ const NewEvent = () => {
                 </Grid>
               </Grid>
             </Grid>
-
-            <Button color="primary" variant="contained" type="submit" marginTop="20px">
+            <Button color="primary" justifyContent="center" variant="contained" type="submit" marginTop="20px">
               <Icon>send</Icon>
               <Span sx={{ pl: 1, textTransform: "capitalize" }}>Submit</Span>
             </Button>

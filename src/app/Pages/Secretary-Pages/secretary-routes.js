@@ -17,11 +17,11 @@ const Finance = Loadable(lazy(() => import("./Finance-Management/FinancePage")))
 
 const AdminRoutes = [
     {
-        path: "/Dashboard-Club",
+        path: "/Dashboard-Secritary",
         element: <Dashboard />,
     },
     {
-        path: "/Clubs-Management-Club",
+        path: "/Clubs-Management-Secritary",
         element: (
             <ClubsProvider>
                 <UsersProvider>
@@ -31,7 +31,7 @@ const AdminRoutes = [
         ),
     },
     {
-        path: "/Members-Management-Club",
+        path: "/Members-Management-Secritary",
         element: (
             <UsersProvider>
                 <Members />
@@ -39,7 +39,7 @@ const AdminRoutes = [
         ),
     },
     {
-        path: "/Meetings-Management-Club",
+        path: "/Meetings-Management-Secritary",
         element: (
             <MeetingsProvider>
                 <Meetings />
@@ -47,7 +47,7 @@ const AdminRoutes = [
         ),
     },
     {
-        path: "/Events-Management-Club",
+        path: "/Events-Management-Secritary",
         element: (
             <EventsProvider>
                 <Events />
@@ -55,7 +55,7 @@ const AdminRoutes = [
         ),
     },
     {
-        path: "/Finance-Management-Club",
+        path: "/Finance-Management-Secritary",
         element: (
             <BudgetsProvider>
                 <Finance />

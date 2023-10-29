@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import { styled, Box, Button , Card, CardContent, Typography } from '@mui/material';
+import { styled, Box, Button, Card, CardContent, Typography, TextField } from '@mui/material';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { getEvents, getEventClub } from '../../DataBase/services/EventsService';
+import EventsService from '../../../DataBase/services/EventsService';
 
 const localizer = momentLocalizer(moment);
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -16,15 +16,23 @@ const StyledButton = styled(Button)(({ theme }) => ({
 const Events = () => {
 
   const [events, setEvents] = useState([]);
-  const [club, setClub] = useState([]);
-
-
   const [searchDate, setSearchDate] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  const [eventToUpdate, setEventToUpdate] = useState(null);
+  const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+  const [updatedEvent, setUpdatedEvent] = useState({
+    name: '',
+    date: '',
+    location: '',
+    description: '',
+  });
+
   useEffect(() => {
     const fetchEvents = async () => {
-      const fetchedEvents = await getEvents();
+      const fetchedEvents = await EventsService.getActiveEvents();
       if (fetchedEvents) {
         setEvents(fetchedEvents);
       }
@@ -32,18 +40,13 @@ const Events = () => {
     fetchEvents();
   }, []);
 
-  /*useEffect(() => {
-    const fetchSelectedClub = async () => {
-      if(selectedEvent != null) {
-        let eventClub = await getEventClub(selectedEvent.id);
-      console.log(eventClub)
-      setClub(eventClub)
-      console.log(club)
-      }
-    }
-  
-    fetchSelectedClub();
-  }, [selectedEvent]);*/
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUpdatedEvent((prevEvent) => ({
+      ...prevEvent,
+      [name]: value,
+    }));
+  };
 
   const handleSearchDateChange = (date) => {
     setSearchDate(date);
@@ -52,29 +55,63 @@ const Events = () => {
   const handleEventSelect = async (event) => {
     setSelectedEvent(event);
   };
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [clubToDelete, setClubToDelete] = useState(null);
 
-  const handleDelete = (club) => {
-    //setOpenDeleteDialog(true);
-    //setClubToDelete(club);
+  const handleUpdate = (event) => {
+    setOpenUpdateDialog(true);
+    setEventToUpdate(event);
+
+    const formattedDate = moment(event.date).format('YYYY-MM-DD');
+
+    // Set the initial values of updatedEvent to the event data
+    setUpdatedEvent({
+      name: event.name,
+      date: formattedDate,
+      location: event.location,
+      description: event.description,
+    });
+  };
+
+
+  const handleDelete = (event) => {
+    setOpenDeleteDialog(true);
+    setEventToUpdate(event);
   };
 
   const handleClose = () => {
-    //setOpenDeleteDialog(false);
+    setOpenDeleteDialog(false);
+    setOpenUpdateDialog(false);
   };
 
   const handleConfirmDelete = async () => {
-    /*await ClubsService.deleteClub(clubToDelete.id);
-    const fetchClubs = async () => {
-      const fetchedClubs = await ClubsService.getClubs();
-      if (fetchedClubs) {
-        setClubs(fetchedClubs);
+    await EventsService.deleteEvent(eventToUpdate.id);
+    const fetchEvents = async () => {
+      const fetchedEvents = await EventsService.getActiveEvents();
+      if (fetchedEvents) {
+        setEvents(fetchedEvents);
       }
+      // Reset the selectedEvent to null
+      setSelectedEvent(null);
     };
+    setOpenDeleteDialog(false);
+  };
 
-    ClubsService.fetchClubs();
-    setOpenDeleteDialog(false);*/
+  const handleConfirmUpdate = async () => {
+    await EventsService.updateEvent(eventToUpdate.id, updatedEvent);
+    setUpdatedEvent({
+      name: '',
+      date: '',
+      location: '',
+      description: '',
+    });
+    // Fetch the updated list of events
+    const fetchedEvents = await EventsService.getActiveEvents();
+    if (fetchedEvents) {
+      setEvents(fetchedEvents);
+      // Update the selected event with the updated data
+      const updatedSelectedEvent = fetchedEvents.find((event) => event.id === eventToUpdate.id);
+      setSelectedEvent(updatedSelectedEvent);
+    }
+    setOpenUpdateDialog(false);
   };
 
   const filteredEvents = events.filter((event) => {
@@ -98,49 +135,50 @@ const Events = () => {
     <div className="events-container">
       {selectedEvent ? (
         <>
-          {/*<div className="event-details">
-          <button className="back-button" onClick={() => setSelectedEvent(null)}>
-            <FontAwesomeIcon icon={faArrowLeft} />
-          </button>
-          <h2>{selectedEvent.Name}</h2>
-          <img src={selectedEvent.img} alt="Event" className="event-image" />
-          <div className="event-description">
-            <p>Location: {selectedEvent.Location}</p>
-            <p>Description: {selectedEvent.description}</p>
-          </div>
-      </div>*/}
           <button className="back-button" onClick={() => setSelectedEvent(null)}>
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
           <Typography variant="h6" component="div" sx={{ textAlign: 'center', mb: 1, fontSize: 25, fontWeight: 'bold' }}>
-            {selectedEvent.Name} {/* Display the title */}
+            {selectedEvent.name} {/* Display the title */}
           </Typography>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <img src={selectedEvent.img} alt={selectedEvent.Name} style={{ width: '350px', marginLeft: '50px', marginRight: '50px' }} /> {/* Display the image with 100px width */}
+          <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
+            <img src={selectedEvent.img} alt={selectedEvent.name} style={{ width: '350px', marginLeft: '50px', marginRight: '50px' }} /> {/* Display the image with 100px width */}
             <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%', width: '650px' }}>
               <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
-                  Location : {selectedEvent.Location}
+                  Date : {moment(selectedEvent.date).format('YYYY/MM/DD')} at {selectedEvent.time}
                 </Typography>
                 <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
-                  Description : {selectedEvent.Description}
+                  Location : {selectedEvent.location}
                 </Typography>
                 <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
-                  Mission : {selectedEvent.Name}
+                  Description : {selectedEvent.description}
                 </Typography>
-                <Button
-                  variant="contained"
-                  color="error"
-                  style={{ marginLeft: 'auto', marginTop: '16px', marginRight: '8px', backgroundColor: '#dc3545' }}
-                  onClick={() => handleDelete(selectedEvent)} // Call the handleDelete function
-                > Delete
-                </Button>
+                <Typography variant="body1" sx={{ textAlign: 'left', mb: 1, fontSize: 16, fontWeight: 'bold' }}>
+                  Target : {selectedEvent.aimed_target}
+                </Typography>
+                <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ marginTop: '16px', marginRight: '8px' }}
+                    onClick={() => handleUpdate(selectedEvent)} // Call the handleEdit function
+                  > Update
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    style={{ marginTop: '16px', marginRight: '8px' }}
+                    onClick={() => handleDelete(selectedEvent)} // Call the handleDelete function
+                  > Delete
+                  </Button>
+                </div>
               </CardContent>
             </Card>
             <Dialog open={openDeleteDialog} onClose={handleClose}>
-              <DialogTitle>Delete Club</DialogTitle>
+              <DialogTitle>Delete Event</DialogTitle>
               <DialogContent>
-                <DialogContentText>Are you sure you want to delete this user?</DialogContentText>
+                <DialogContentText>Are you sure you want to delete this event?</DialogContentText>
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose} color="secondary">
@@ -151,6 +189,51 @@ const Events = () => {
                 </Button>
               </DialogActions>
             </Dialog>
+            <Dialog open={openUpdateDialog} onClose={handleClose}>
+              <DialogTitle>Update Event</DialogTitle>
+              <DialogContent>
+                <Box display="flex" flexDirection="column">
+                  <TextField
+                    label="Event Name"
+                    name="name"
+                    value={updatedEvent.name}
+                    onChange={handleInputChange}
+                    style={{ marginBottom: '12px' }}
+                  />
+                  <TextField
+                    label="Event Date"
+                    type="date"
+                    name="date"
+                    value={updatedEvent.date}
+                    onChange={handleInputChange}
+                    style={{ marginBottom: '12px' }}
+                  />
+                  <TextField
+                    label="Location"
+                    name="location"
+                    value={updatedEvent.location}
+                    onChange={handleInputChange}
+                    style={{ marginBottom: '12px' }}
+                  />
+                  <TextField
+                    label="Description"
+                    name="description"
+                    value={updatedEvent.description}
+                    onChange={handleInputChange}
+                    style={{ marginBottom: '12px' }}
+                  />
+                </Box>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="secondary">
+                  Cancel
+                </Button>
+                <Button onClick={handleConfirmUpdate} color="primary">
+                  Update
+                </Button>
+              </DialogActions>
+            </Dialog>
+
           </div>
         </>
       ) : (
@@ -171,9 +254,9 @@ const Events = () => {
             <Calendar
               localizer={localizer}
               events={eventComponents}
-              startAccessor="Date"
-              endAccessor="Date"
-              titleAccessor="Name"
+              startAccessor="date"
+              endAccessor="date"
+              titleAccessor="name"
               views={['month']}
               defaultView="month"
               onSelectEvent={handleEventSelect}
@@ -183,6 +266,7 @@ const Events = () => {
       )}
       <style jsx>{`
         .events-container {
+          margin-top: 30px;
           padding: 20px;
           text-align: center;
         }
@@ -228,7 +312,7 @@ const Events = () => {
         }
 
         .event-details {
-          position: absolute;
+          position: relative;
           top: 0;
           left: 50%;
           transform: translateX(-50%);
@@ -290,6 +374,8 @@ const Events = () => {
           font-size: 14px;
           cursor: pointer;
           transition: background-color 0.3s ease;
+          position: absolute; /* Set this to position it absolutely within .event-details */
+          left: 20px;
         }
 
         .back-button:hover {

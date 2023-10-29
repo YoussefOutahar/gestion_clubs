@@ -50,6 +50,7 @@ const NewEvent = () => {
   const [state, setState] = useState({
     date: new Date(),
     time: "",
+    img: "",
     description: "",
     location: "",
     name: "",
@@ -73,6 +74,21 @@ const NewEvent = () => {
           console.error("Error uploading file:", error);
         } else {
           const fileUrl = "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Documents/" + selectedFile.name;
+
+          if (selectedImageFile) {
+            const { data: imageResponse, error: imageError } = await supabase.storage
+              .from("Events_images")
+              .upload(selectedImageFile.name, selectedImageFile);
+
+            if (!imageError) {
+              const imageUrl = "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Events_images/" + selectedImageFile.name;
+              state.img = imageUrl;
+
+            } else {
+              console.error("Error uploading event image:", imageError);
+            }
+          }
+
           await EventsService.addEvent(
             {
               name: state.name,
@@ -83,6 +99,7 @@ const NewEvent = () => {
               aimed_target: state.aimed_target,
               funding_method: state.funding_method,
               state: "pending",
+              img: state.img,
               id_club: clubId,
             },);
 
@@ -93,8 +110,8 @@ const NewEvent = () => {
             path: fileUrl,
             id_activity: actualEvent.id,
           });
-
           console.log("File uploaded and reference saved successfully.");
+
           //TODO: notification must be done after validations 
           /*await NotificationsService.addNotification(
             {
@@ -135,10 +152,15 @@ const NewEvent = () => {
 
   //Fiche explicative
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedImageFile, setSelectedImageFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
+  };
+
+  const handleImageFileChange = (event) => {
+    setSelectedImageFile(event.target.files[0]);
   };
 
   return (
@@ -223,7 +245,27 @@ const NewEvent = () => {
                   validators={["required"]}
                 />
 
-                <Grid container direction="row" justifyContent="center" alignItems="center" gap={2}>
+                <Grid container direction="row" justifyContent="left" alignItems="center" gap={2}>
+                  <input
+                    type="file"
+                    onChange={handleImageFileChange}
+                    accept=".jpg,.jpeg,.png,.gif"
+                    id="image-input"
+                    style={{ display: "none" }}
+                  />
+                  <label htmlFor="image-input">
+                    <Button sx={{ mb: 4 }} color="primary" component="span" variant="outlined">
+                      Upload Event post
+                    </Button>
+                  </label>
+                  <Span style={{ display: "inline-flex", verticalAlign: "middle" }}>
+                    {uploading ? "Uploading ..." : null}
+                    {selectedImageFile ? selectedImageFile.name : null}
+                  </Span>
+                </Grid>
+
+
+                <Grid container direction="row" justifyContent="left" alignItems="center" gap={2}>
                   <input
                     type="file"
                     onChange={handleFileChange}
@@ -244,8 +286,7 @@ const NewEvent = () => {
                 </Grid>
               </Grid>
             </Grid>
-
-            <Button color="primary" variant="contained" type="submit" marginTop="20px">
+            <Button color="primary" justifyContent="center" variant="contained" type="submit" marginTop="20px">
               <Icon>send</Icon>
               <Span sx={{ pl: 1, textTransform: "capitalize" }}>Submit</Span>
             </Button>
