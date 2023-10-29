@@ -30,12 +30,19 @@ function ClubsInfo({ extractClubId, handleNext }) {
 
     const [category, setCategory] = useState(null);
 
-    const handleCategoryChange = (event) => {
-        const category = categories.find((category) => category.category_name === event.target.value);
-        console.log(category);
-        setCategory(category);
-        handleInputChange("id_category", category.id);
-    };
+    const handleCategoryChange = (event, newValue) => {
+        let selectedCategory = categories.find(category => category.category_name === newValue);
+        if (selectedCategory) {
+          setCategory(selectedCategory);
+        }
+      };
+    
+      useEffect(() => {
+        if (category) {
+          console.log('Updated category:', category);
+          handleInputChange("id_category", category.id);
+        }
+      }, [category]);
 
     const [selectedImage, setSelectedImage] = useState(null);
 
@@ -138,8 +145,8 @@ function ClubsInfo({ extractClubId, handleNext }) {
                         </select>
                         {categories && (
                             <Autocomplete
-                                value={category.category_name ? "" : category.category_name}
-                                onChange={(e) => handleCategoryChange(e)}
+                                value={category == null ? "" : category.category_name}
+                                onChange={handleCategoryChange}
                                 options={categories.map((option) => option.category_name)}
                                 renderInput={(params) => (
                                     <TextField {...params} label="Category" variant="outlined" />
