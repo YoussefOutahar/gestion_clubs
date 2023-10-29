@@ -18,6 +18,7 @@ import { Container } from "@mui/system";
 
 import useEvents from "../../../hooks/useEvents";
 import { use } from "echarts";
+import EventsService from "../../../DataBase/services/EventsService";
 
 const EventsValidationPage = () => {
     const { events } = useEvents();
@@ -63,7 +64,7 @@ const EventsValidationPage = () => {
                     handleAcceptAll={handleAcceptAll}
                     handleDeleteAll={handleDeleteAll}
                     onAccept={async (event) => {
-                        
+                        await EventsService.updateEvent(event.id, {...event, state: "active" });
                     }}
                     onDecline={async (event) => {
                         // Handle accepting a single item here
