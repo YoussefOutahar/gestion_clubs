@@ -1,11 +1,11 @@
-import { Box, Button } from "@material-ui/core";
+import { Box, Button, Autocomplete, TextField } from "@material-ui/core";
 import { formStyle, h5Style, inputGroup, inputStyle, textareaStyle } from "./Styles";
 import MatxLoading from "../../../../components/MatxLoading";
 import { useState } from "react";
 import ClubsService from "../../../../DataBase/services/ClubsService";
+import { useEffect } from "react";
 
 function ClubsInfo({ extractClubId, handleNext }) {
-    const [loading, setLoading] = useState(false);
     const [clubData, setClubData] = useState({
         name: "",
         date_creation: new Date(),
@@ -13,9 +13,25 @@ function ClubsInfo({ extractClubId, handleNext }) {
         kpo: "",
         logo: "",
         nb_member: 4,
-        //TODO category
+        id_category: 1,
+        type: "",
         state: "pending",
     });
+
+    const [categories, setCategories] = useState(null);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const categories = await ClubsService.getAllCategories();
+            setCategories(categories);
+        };
+        fetchCategories();
+    }, []);
+
+    const [category, setCategory] = useState(null);
+
+    const handleCategoryChange = (event) => {};
+
     const [selectedImage, setSelectedImage] = useState(null);
 
     const handleImageUpload = async (event) => {
@@ -44,6 +60,8 @@ function ClubsInfo({ extractClubId, handleNext }) {
 
         if (selectedImage) await ClubsService.addClubLogo(club.id, selectedImage);
     };
+
+    const [loading, setLoading] = useState(false);
 
     return (
         <>
@@ -101,6 +119,28 @@ function ClubsInfo({ extractClubId, handleNext }) {
                             }}
                             value={clubData.kpo}
                         />
+                        <label htmlFor="type" style={{ ...h5Style }}>
+                            Club type :
+                        </label>
+                        <select
+                            id="type"
+                            style={{ ...inputGroup, ...inputStyle }}
+                            value={clubData.type}
+                            onChange={(e) => handleInputChange("type", e.target.value)}
+                        >
+                            <option value="educatif">educatif</option>
+                            <option value="non-educatif">non-educatif</option>
+                        </select>
+                        {categories && (
+                            <Autocomplete
+                                value={category}
+                                onChange={(e) => handleCategoryChange(e)}
+                                options={categories.map((option) => option.category_name)}
+                                renderInput={(params) => (
+                                    <TextField {...params} label="Category" variant="outlined" />
+                                )}
+                            />
+                        )}
                         <label htmlFor="image" style={{ ...h5Style }}>
                             Upload Club's logo:
                         </label>

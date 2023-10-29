@@ -105,6 +105,15 @@ export default class ClubsService {
         }
     }
 
+    static async getAllCategories() {
+        const { data, error } = await supabase.from("Category").select("*");
+        if (error) return error;
+        else {
+            console.log(data);
+            return data;
+        }
+    }
+
     static async addClubLogo(club_id, logo) {
         const { data, error } = await supabase.storage
             .from("Clubs_Logo")
