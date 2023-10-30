@@ -87,11 +87,13 @@ const Events = () => {
   });
 
   const eventComponents = filteredEvents.map((event) => {
-    return {
-      ...event,
-      start: moment(event.Date).toDate(),
-      end: moment(event.Date).toDate(),
-    };
+    if (event.state == 'active') {
+      return {
+        ...event,
+        start: moment(event.Date).toDate(),
+        end: moment(event.Date).toDate(),
+      };
+    }
   });
 
   return (

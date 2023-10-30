@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import supabase from "../../DataBase/Clients/SupabaseClient";
-import SimpleCard from "../../components/SimpleCard";
+import supabase from "../../../DataBase/Clients/SupabaseClient";
+import SimpleCard from "../../../components/SimpleCard";
 import FinanceCards from "./Components/FinanceCards";
 import ChargesTable from "./Components/ChargesTable";
 import { styled,Box, Button, Grid} from "@mui/material";

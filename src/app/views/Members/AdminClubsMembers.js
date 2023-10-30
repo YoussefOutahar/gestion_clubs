@@ -20,7 +20,7 @@ import {
     DialogActions,
     DialogContentText,
 } from "@mui/material";
-import { getAllProfilesByRole,deleteProfile } from "../../DataBase/services/UsersService";
+import { getAllProfilesByRole } from "../../DataBase/services/UsersService";
 import ClubsService from "../../DataBase/services/ClubsService";
 
 const AdminClubsMembers = () => {

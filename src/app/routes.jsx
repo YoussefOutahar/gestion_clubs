@@ -13,6 +13,8 @@ import meetingRoutes from "./views/Meetings/meetingsRoutes";
 import landingPageRoute from "./Pages/LandingPage/LandingPageRoute";
 
 import AdminRoutes from "./Pages/Admin-Pages/admin-routes";
+import SupervisorRoutes from "./Pages/Supervisor-Pages/supervisor-routes";
+import PresidentRoutes from "./Pages/President-Pages/president-routes";
 
 import AuthGuard from "./auth/AuthGuard";
 import sessionRoutes from "./Pages/sessions/SessionRoutes";
@@ -30,6 +32,9 @@ const routes = [
         ),
         children: [
             ...AdminRoutes,
+            ...SupervisorRoutes,
+            ...PresidentRoutes,
+            // 
             ...dashboardRoutes,
             ...summaryRoutes,
             ...clubsRoutes,

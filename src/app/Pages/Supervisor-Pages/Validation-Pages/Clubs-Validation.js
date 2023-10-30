@@ -5,7 +5,6 @@ import {
     Box,
     Dialog,
     DialogActions,
-    DialogTitle,
     DialogContent,
     DialogContentText,
     Button,
@@ -13,7 +12,6 @@ import {
     ListItem,
     ListItemText,
     Container,
-    Paper,
     Typography,
     Grid,
     Divider,
@@ -74,15 +72,7 @@ const ClubsValidationPage = () => {
     }, [open]);
 
     const handleAccept = async (club) => {
-        await ClubsService.updateClubState(club.id, "active");
-
-        const pending_profiles = await PendingProfilesService.getPendingProfileByClubId(club.id);
-
-        pending_profiles.forEach(async (pending_profile) => {
-            await PendingProfilesService.updatePendingProfile(pending_profile.id, {
-                state: "accepted",
-            });
-        });
+        await ClubsService.updateClubState(club.id, "waiting for admin validation");
     };
 
     const handleDecline = async (club) => {

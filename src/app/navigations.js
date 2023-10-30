@@ -68,7 +68,21 @@ export const getNavigations = async () => {
             path: "/LandingPage",
         },
     ];
-    // President/Vice-president du club
+
+    
+    const SupervisorRoutes = [
+        {
+            name: "Clubs Validation",
+            path: "/Supervisor/Clubs-Validation",
+            icon: "home",
+        },
+        {
+            name: "Events Validation",
+            path: "/Supervisor/Events-Validation",
+            icon: "event",
+        },
+    ];
+
 
     const presidentNavigations = [
         {
@@ -247,6 +261,8 @@ export const getNavigations = async () => {
         return [
             { label: "Admin", type: "label" },
             ...adminNavigations,
+            { label: "SuperVisor", type: "label" },
+            ...SupervisorRoutes,
             { label: "President", type: "label" },
             ...presidentNavigations,
             { label: "Secretaire", type: "label" },

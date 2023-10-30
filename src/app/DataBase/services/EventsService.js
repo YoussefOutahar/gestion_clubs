@@ -13,7 +13,6 @@ export default class EventsService {
     
     static async getEvents() {
         const { data, error } = await supabase.from("Events").select("*");
-        console.log(data);
         if (error) {
             console.error("Error fetching events:", error);
         } else {

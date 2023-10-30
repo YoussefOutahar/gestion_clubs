@@ -94,7 +94,7 @@ const RequestsList = ({ requests, handleAcceptAll, handleDeleteAll, onAccept, on
                 {requests.length == 0 ? (<p>There are no requests at the moment</p>) : (
                     <>
                     {requests
-                    .filter((request) => request.state === "waiting for admin validation")
+                    .filter((request) => request.state === "pending")
                     .map((request) => (
                         <Fragment key={request}>
                             <Card sx={{ py: 2, px: 2 }} className="project-card">

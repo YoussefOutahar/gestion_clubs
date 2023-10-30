@@ -31,17 +31,17 @@ function ClubsInfo({ extractClubId, handleNext }) {
     const [category, setCategory] = useState(null);
 
     const handleCategoryChange = (event, newValue) => {
-        let selectedCategory = categories.find(category => category.category_name === newValue);
+        let selectedCategory = categories.find((category) => category.category_name === newValue);
         if (selectedCategory) {
-          setCategory(selectedCategory);
+            setCategory(selectedCategory);
         }
-      };
-    
-      useEffect(() => {
+    };
+
+    useEffect(() => {
         if (category) {
-          handleInputChange("id_category", category.id);
+            handleInputChange("id_category", category.id);
         }
-      }, [category]);
+    }, [category]);
 
     const [selectedImage, setSelectedImage] = useState(null);
 

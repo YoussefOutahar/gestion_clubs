@@ -64,7 +64,7 @@ const EventsValidationPage = () => {
     };
 
     const handleAccept = async (event) => {
-        await EventsService.updateEvent(event.id, {...event, state: "accepted" });
+        await EventsService.updateEvent(event.id, { ...event, state: "waiting for admin validation" });
     };
 
     return (

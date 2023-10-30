@@ -1,5 +1,7 @@
+import { Co2Sharp } from "@mui/icons-material";
 import supabase from "../Clients/SupabaseClient";
 import EventsService from "./EventsService";
+import { get } from "lodash";
 
 export default class ClubsService {
     static async addClub(club) {
@@ -125,23 +127,26 @@ export default class ClubsService {
         return data;
     }
 
-    static async getClubLogoLink(club_id) {
+    static async getClubDownloadLink(club_id) {
         const { data, error } = await supabase.storage.from("Clubs_Logo").list(club_id + "/");
-
         if (error) {
             console.error("Error downloading club logo:", error);
         }
+        return club_id + "/" + data[0].name;
+    }
 
-        console.log(data);
+    static async getClubLogoLink(club_id) {
+        const link = await this.getClubDownloadLink(club_id);
 
-        // const link =
-        //     "https://vussefkqdtgdosoytjch.supabase.co/storage/v1/object/public/Clubs_Logo/" +
-        //     club_id +
-        //     "/" +
-        //     data[0].name;
+        console.log("link :", link);
 
-        // return link;
+        const result = await supabase.storage.from("Clubs_Logo").download(link);
 
-        return ""
+        if (result.error) {
+            console.error("Error downloading club logo:", result.error);
+        } else {
+            const data = result.data;
+            return data;
+        }
     }
 }
