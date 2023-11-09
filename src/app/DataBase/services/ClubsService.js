@@ -1,7 +1,5 @@
-import { Co2Sharp } from "@mui/icons-material";
 import supabase from "../Clients/SupabaseClient";
 import EventsService from "./EventsService";
-import { get } from "lodash";
 
 export default class ClubsService {
     static async addClub(club) {
