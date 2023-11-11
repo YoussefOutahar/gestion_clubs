@@ -1,7 +1,3 @@
-import chartsRoute from "./views/charts/ChartsRoute";
-import dashboardRoutes from "./views/dashboard/DashboardRoutes";
-import materialRoutes from "./views/material-kit/MaterialRoutes";
-import summaryRoutes from "./views/Summary/summaryRoutes";
 import generalRoutes from "./views/General/generalRoutes";
 import FinanceRoutes from "./views/FinanceManagement/FinanceRoutes";
 import forumRoutes from "./Pages/Components/Forum/forumRoutes";
@@ -15,6 +11,8 @@ import landingPageRoute from "./Pages/LandingPage/LandingPageRoute";
 import AdminRoutes from "./Pages/Admin-Pages/admin-routes";
 import SupervisorRoutes from "./Pages/Supervisor-Pages/supervisor-routes";
 import PresidentRoutes from "./Pages/President-Pages/president-routes";
+import AccountantRoutes from "./Pages/Accountant-Pages/accountant-routes";
+import SecretaryRoutes from "./Pages/Secretary-Pages/secretary-routes";
 
 import AuthGuard from "./auth/AuthGuard";
 import sessionRoutes from "./Pages/sessions/SessionRoutes";
@@ -34,9 +32,9 @@ const routes = [
             ...AdminRoutes,
             ...SupervisorRoutes,
             ...PresidentRoutes,
+            ...AccountantRoutes,
+            ...SecretaryRoutes,
             // 
-            ...dashboardRoutes,
-            ...summaryRoutes,
             ...clubsRoutes,
             ...membersRoutes,
             ...eventsRoutes,
@@ -44,13 +42,11 @@ const routes = [
             ...FinanceRoutes,
             ...forumRoutes,
             ...generalRoutes,
-            ...materialRoutes,
-            ...chartsRoute,
         ],
     },
     ...sessionRoutes,
     ...landingPageRoute,
-    { path: "/", element: <Navigate to="dashboard/default" /> },
+    { path: "/", element: <Navigate to="Dashboard-Admin" /> },
     { path: "*", element: <NotFound /> },
 ];
 

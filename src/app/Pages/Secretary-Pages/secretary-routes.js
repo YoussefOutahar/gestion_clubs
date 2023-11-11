@@ -8,14 +8,13 @@ import { EventsProvider } from "../../contexts/EventsContext";
 import { BudgetsProvider } from "../../contexts/BudgetsContext";
 
 const Dashboard = Loadable(lazy(() => import("./Dashboard/Analytics")));
-const Clubs = Loadable(lazy(() => import("./Clubs-Management/MyClub")));
-const Members = Loadable(lazy(() => import("./Member-Management/Members")));
-const Meetings = Loadable(lazy(() => import("./Meetings-Page/Meetings")));
-const Events = Loadable(lazy(() => import("./Evants-Management/Events")));
-const Finance = Loadable(lazy(() => import("./Finance-Management/FinancePage")));
+const Clubs = Loadable(lazy(() => import("./Club-Management/MyClub")));
+const Members = Loadable(lazy(() => import("./Members-Management/Members")));
+const Meetings = Loadable(lazy(() => import("./Meetings-Management/Meetings")));
+const Events = Loadable(lazy(() => import("./Events-Management/Events")));
 
 
-const AdminRoutes = [
+const SecretaryRoutes = [
     {
         path: "/Dashboard-Secritary",
         element: <Dashboard />,
@@ -54,34 +53,34 @@ const AdminRoutes = [
             </EventsProvider>
         ),
     },
-    {
-        path: "/Finance-Management-Secritary",
-        element: (
-            <BudgetsProvider>
-                <Finance />
-            </BudgetsProvider>
-        ),
-    },
+    // {
+    //     path: "/Finance-Management-Secritary",
+    //     element: (
+    //         <BudgetsProvider>
+    //             <Finance />
+    //         </BudgetsProvider>
+    //     ),
+    // },
 
     // Validation Routes
-    {
-        path: "/Clubs-Validation",
-        element: <ClubsProvider>
-            <ClubValidation />
-        </ClubsProvider>,
-    },
-    {
-        path: "/Events-Validation",
-        element: (
-            <EventsProvider>
-                <EventsValidation />
-            </EventsProvider>
-        ),
-    },
-    {
-        path: "/Meetings-Validation",
-        element: <MeetingsValidation />,
-    },
+    // {
+    //     path: "/Clubs-Validation",
+    //     element: <ClubsProvider>
+    //         <ClubValidation />
+    //     </ClubsProvider>,
+    // },
+    // {
+    //     path: "/Events-Validation",
+    //     element: (
+    //         <EventsProvider>
+    //             <EventsValidation />
+    //         </EventsProvider>
+    //     ),
+    // },
+    // {
+    //     path: "/Meetings-Validation",
+    //     element: <MeetingsValidation />,
+    // },
 ];
 
-export default AdminRoutes;
+export default SecretaryRoutes;

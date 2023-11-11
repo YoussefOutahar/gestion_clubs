@@ -1,8 +1,8 @@
 import { Typography, Grid, Card, CardContent, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material'
 import { useEffect, useState } from 'react'
 
-import { getCurrentUser, getProfileById } from '../../DataBase/services/UsersService'
-import ClubsService from '../../DataBase/services/ClubsService'
+import { getCurrentUser, getProfileById } from '../../../DataBase/services/UsersService'
+import ClubsService from '../../../DataBase/services/ClubsService'
 
 
 const MyClub = () => {

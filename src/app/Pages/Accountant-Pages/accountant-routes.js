@@ -8,14 +8,14 @@ import { EventsProvider } from "../../contexts/EventsContext";
 import { BudgetsProvider } from "../../contexts/BudgetsContext";
 
 const Dashboard = Loadable(lazy(() => import("./Dashboard/Analytics")));
-const Clubs = Loadable(lazy(() => import("./Clubs-Management/MyClub")));
-const Members = Loadable(lazy(() => import("./Member-Management/Members")));
-const Meetings = Loadable(lazy(() => import("./Meetings-Page/Meetings")));
-const Events = Loadable(lazy(() => import("./Evants-Management/Events")));
+const Clubs = Loadable(lazy(() => import("./Club-Management/MyClub")));
+const Members = Loadable(lazy(() => import("./Members-Management/Members")));
+const Meetings = Loadable(lazy(() => import("./Meetings-Management/Meetings")));
+const Events = Loadable(lazy(() => import("./Events-Management/Events")));
 const Finance = Loadable(lazy(() => import("./Finance-Management/FinancePage")));
 
 
-const AdminRoutes = [
+const AccountantRoutes = [
     {
         path: "/Dashboard-Club",
         element: <Dashboard />,
@@ -64,24 +64,24 @@ const AdminRoutes = [
     },
 
     // Validation Routes
-    {
-        path: "/Clubs-Validation",
-        element: <ClubsProvider>
-            <ClubValidation />
-        </ClubsProvider>,
-    },
-    {
-        path: "/Events-Validation",
-        element: (
-            <EventsProvider>
-                <EventsValidation />
-            </EventsProvider>
-        ),
-    },
-    {
-        path: "/Meetings-Validation",
-        element: <MeetingsValidation />,
-    },
+    // {
+    //     path: "/Clubs-Validation",
+    //     element: <ClubsProvider>
+    //         <ClubValidation />
+    //     </ClubsProvider>,
+    // },
+    // {
+    //     path: "/Events-Validation",
+    //     element: (
+    //         <EventsProvider>
+    //             <EventsValidation />
+    //         </EventsProvider>
+    //     ),
+    // },
+    // {
+    //     path: "/Meetings-Validation",
+    //     element: <MeetingsValidation />,
+    // },
 ];
 
-export default AdminRoutes;
+export default AccountantRoutes;

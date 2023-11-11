@@ -20,7 +20,7 @@ import {
     DialogActions,
     DialogContentText,
 } from "@mui/material";
-import { getCurrentUser, getUsersByClub, getProfileById, updateUserRole,deleteProfile } from "../../DataBase/services/UsersService";
+import { getCurrentUser, getUsersByClub, getProfileById, updateUserRole,deleteProfile } from "../../../DataBase/services/UsersService";
 
 const GestionMembers = () => {
     const [users, setUsers] = useState([]);
