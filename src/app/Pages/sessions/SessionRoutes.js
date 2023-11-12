@@ -1,6 +1,9 @@
 import Loadable from "../../components/Loadable";
 import { lazy } from "react";
 
+import AuthGuard from "../../auth/AuthGuard";
+import MatxLayout from "../../components/MatxLayout/MatxLayout";
+
 const NotFound = Loadable(lazy(() => import("./NotFound")));
 const ForgotPassword = Loadable(lazy(() => import("./ForgotPassword")));
 const JwtLogin = Loadable(lazy(() => import("./JwtLogin")));

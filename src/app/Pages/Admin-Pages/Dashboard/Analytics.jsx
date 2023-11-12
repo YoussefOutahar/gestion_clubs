@@ -1,11 +1,13 @@
-import { Card, Grid, styled, useTheme } from "@mui/material";
-import { Fragment} from "react";
+import { Card, Grid, styled, useTheme, Typography, CardContent } from "@mui/material";
+import { Fragment } from "react";
 import Campaigns from "./shared/Campaigns";
 import DoughnutChart from "./shared/Doughnut";
 import RowCards from "./shared/RowCards";
 import StatCards from "./shared/StatCards";
 import StatCards2 from "./shared/StatCards2";
 import TopSellingTable from "./shared/TopSellingTable";
+
+import LineChart from "./shared/LineChart";
 import UpgradeCard from "./shared/UpgradeCard";
 
 const ContentBox = styled("div")(({ theme }) => ({
@@ -39,11 +41,55 @@ const Analytics = () => {
     return (
         <Fragment>
             <ContentBox className="analytics">
+                <Grid container item justifyContent="space-between" spacing={2}>
+                    {/* Top Row with 3 Cards */}
+                    <Grid item xs={4}>
+                        <Card>
+                            <CardContent>
+                                <DoughnutChart
+                                    height="300px"
+                                    color={[
+                                        palette.primary.dark,
+                                        palette.primary.main,
+                                        palette.primary.light,
+                                    ]}
+                                />
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Campaigns />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Card>
+                            <CardContent>
+                                <Typography variant="h6">Card 3</Typography>
+                                {/* Add your content here */}
+                            </CardContent>
+                        </Card>
+                    </Grid>
+
+                    {/* Bottom Row with Cards taking the whole space */}
+                    <Grid item xs={12}>
+                        <StatCards />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <StatCards2 />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Card>
+                            <CardContent>
+                                <LineChart
+                                    height="350px"
+                                    color={[palette.primary.main, palette.primary.light]}
+                                />
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
                 <Grid container spacing={3}>
                     <Grid item lg={8} md={8} sm={12} xs={12}>
-                        <StatCards />
                         <TopSellingTable />
-                        <StatCards2 />
 
                         <H4>Ongoing Projects</H4>
                         <RowCards />
@@ -53,15 +99,7 @@ const Analytics = () => {
                         <Card sx={{ px: 3, py: 2, mb: 3 }}>
                             <Title>Traffic Sources</Title>
                             <SubTitle>Last 30 days</SubTitle>
-
-                            <DoughnutChart
-                                height="300px"
-                                color={[palette.primary.dark, palette.primary.main, palette.primary.light]}
-                            />
                         </Card>
-
-                        <UpgradeCard />
-                        <Campaigns />
                     </Grid>
                 </Grid>
             </ContentBox>
