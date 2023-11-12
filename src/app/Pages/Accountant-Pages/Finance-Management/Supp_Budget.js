@@ -58,7 +58,7 @@ const Supp_Budget = () => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const { data, error } = await supabase.from("Activites").select("Name");
+        const { data, error } = await supabase.from("Events").select("name");
         if (error) {
           console.error("Error fetching activities:", error);
         } else {

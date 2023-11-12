@@ -65,7 +65,7 @@ export default class ClubsService {
     }
 
     static async getClubMembers(id) {
-        const { data, error } = await supabase.from("Membre").select("*").eq("id_club", id);
+        const { data, error } = await supabase.from("profiles").select("*").eq("id_club", id);
         if (error) {
             console.error("Error fetching club members:", error);
         } else {

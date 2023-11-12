@@ -4,7 +4,8 @@ import FinanceCards from "./Components/FinanceCards";
 import { styled, Box, Button, Grid, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 
 import supabase from "../../../DataBase/Clients/SupabaseClient";
-import useClubs from "../../../hooks/useClubs";
+import ClubsService from "../../../DataBase/services/ClubsService";
+import BudgetService from "../../../DataBase/services/BudgetService";
 
 const StyledButton = styled(Button)(({ theme }) => ({
     margin: theme.spacing(1),
@@ -28,53 +29,52 @@ const ContentBox1 = styled("div")(({ theme }) => ({
 const AdminFinance = () => {
     const [totalSuppBudget, setTotalSuppBudget] = useState(0);
     const [totalBudget, setTotalBudget] = useState(0);
-
-    const { clubs } = useClubs();
+    const [clubs, setClubs] = useState([]);
 
     const getTotalSuppEarningsByClub = async (clubId) => {
         const { data, error } = await supabase
-            .from("Activites")
-            .select("Supp_budget, Earnings")
+            .from("Events")
+            .select("supp_budget, earnings")
             .eq("id_club", clubId);
 
         if (error) {
             console.error("Error calculating total:", error.message);
             return { total_supp_budget: 0, total_earnings: 0 };
         } else {
-            const total_supp_budget = data.reduce((sum, item) => sum + (item.Supp_budget || 0), 0);
-            const total_earnings = data.reduce((sum, item) => sum + (item.Earnings || 0), 0);
+            const total_supp_budget = data.reduce((sum, item) => sum + (item.supp_budget || 0), 0);
+            const total_earnings = data.reduce((sum, item) => sum + (item.earnings || 0), 0);
             return { total_supp_budget, total_earnings };
         }
     };
     
-    // useEffect(() => {
-    //   ClubsService.getClubs().then(async (data) => {
-    //     const clubData = await Promise.all(
-    //       data.map(async (club) => {
-    //         const budget = await BudgetService.getBudgetByClub(club.id);
-    //         const { total_supp_budget, total_earnings } = await getTotalSuppEarningsByClub(club.id);
-    //         return {
-    //           id: club.id,
-    //           name: club.name,
-    //           Budget: budget.budget,
-    //           Rest: budget.rest,
-    //           Supp_budget: total_supp_budget,
-    //           Earnings: total_earnings,
-    //         };
-    //       })
-    //     );
-    //     setClubs(clubData);
-    //   });
-    // }, []);
+    useEffect(() => {
+      ClubsService.getClubs().then(async (data) => {
+        const clubData = await Promise.all(
+          data.map(async (club) => {
+            const budget = await BudgetService.getBudgetByClub(club.id);
+            const { total_supp_budget, total_earnings } = await getTotalSuppEarningsByClub(club.id);
+            return {
+              id: club.id,
+              name: club.name,
+              budget: budget.budget,
+              rest: budget.rest,
+              supp_budget: total_supp_budget,
+              earnings: total_earnings,
+            };
+          })
+        );
+        setClubs(clubData);
+      });
+    }, []);
 
     useEffect(() => {
         const fetchInfos = async () => {
-            const { data, error } = await supabase.from("Activites").select("Supp_budget");
+            const { data, error } = await supabase.from("Events").select("supp_budget");
             //.eq("Date", new Date().getFullYear());
             if (error) {
                 console.error("Error fetching Donations:", error);
             } else {
-                const totalSuppBudget = data.reduce((sum, item) => sum + (item.Supp_budget || 0), 0);
+                const totalSuppBudget = data.reduce((sum, item) => sum + (item.supp_budget || 0), 0);
                 setTotalSuppBudget(totalSuppBudget);
             }
         };
@@ -87,7 +87,7 @@ const AdminFinance = () => {
             const { data, error } = await supabase
                 .from("Budget")
                 .select("budget")
-                .eq("annee", new Date().getFullYear());
+                .eq("year", new Date().getFullYear());
 
             if (error) {
                 console.error("Error fetching Budget value:", error);
@@ -139,10 +139,10 @@ const AdminFinance = () => {
                             {clubs.map((club, index) => (
                                 <TableRow key={index}>
                                     <TableCell align="left">{club.name}</TableCell>
-                                    <TableCell align="center">{club.Budget}</TableCell>
-                                    <TableCell align="center">{club.Supp_budget}</TableCell>
-                                    <TableCell align="center">{club.Earnings}</TableCell>
-                                    <TableCell align="center">{club.Rest}</TableCell>
+                                    <TableCell align="center">{club.budget}</TableCell>
+                                    <TableCell align="center">{club.supp_budget}</TableCell>
+                                    <TableCell align="center">{club.earnings}</TableCell>
+                                    <TableCell align="center">{club.rest}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

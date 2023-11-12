@@ -317,28 +317,6 @@ const Account = () => {
                                                 sx={{ mb: 2 }}
                                             />
                                         ) : null}
-                                        <input
-                                            type="file"
-                                            onChange={handleFileChange}
-                                            accept=".png,.jpeg"
-                                            id="invoice-input"
-                                            style={{ display: "none" }}
-                                        />
-                                        <label htmlFor="invoice-input">
-                                            <Button
-                                                sx={{ mb: 4 }}
-                                                color="primary"
-                                                component="span"
-                                                variant="outlined"
-                                            >
-                                                Upload Invoice
-                                            </Button>
-                                        </label>
-
-                                        <Span style={{ display: "inline-flex", verticalAlign: "middle" }}>
-                                            {uploading ? "Uploading ..." : null}
-                                            {selectedFile ? selectedFile.name : null}
-                                        </Span>
                                     </Grid>
                                 </DialogContent>
                                 <DialogActions>

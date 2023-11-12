@@ -47,11 +47,11 @@ import { useState } from "react";
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((data, index) => (
                 <TableRow key={index}>
-                <TableCell align="center">{data.Name}</TableCell>
+                <TableCell align="center">{data.name}</TableCell>
                 <TableCell align="center">{formatDate(data.Date)}</TableCell>
-                <TableCell align="center">{data.Cost}</TableCell>
-                <TableCell align="center">{data.Earnings}</TableCell>
-                <TableCell align="center">{data.Supp_budget}</TableCell>
+                <TableCell align="center">{data.cost}</TableCell>
+                <TableCell align="center">{data.earnings}</TableCell>
+                <TableCell align="center">{data.supp_budget}</TableCell>
               </TableRow>
               ))}
           </TableBody>
