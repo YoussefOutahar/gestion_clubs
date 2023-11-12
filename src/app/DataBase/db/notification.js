@@ -1,13 +1,17 @@
 import Mock from '../mock'
 import NotificationsService from '../services/NotificationsService'
 import { getCurrentUser , getProfileById } from '../services/UsersService';
+import UsersService from '../services/UsersService';
 
 Mock.onGet('/api/notification').reply(async(config) => {
-    let user = await getCurrentUser()
-    let profile = await getProfileById(user.id)
+
+    let user = await UsersService.getCurrentUser();
+    let profileResponse = await UsersService.getUserById(user.id);
+    let profile = profileResponse[0];
     const response = await NotificationsService.getNotifications()
     
     let notifications = [];
+
     if (profile.role == "admin") {
         response.data.forEach(async (notification) => {
             if (notification.id_club != null) {
@@ -16,15 +20,13 @@ Mock.onGet('/api/notification').reply(async(config) => {
         });
         return [200, notifications]
     } else {
-        const response = await NotificationsService.getNotifications()
         response.data.forEach(async (notification) => {
-            if (notification.id_club == null) {
+            if (notification.id_club == profile.id_club) {
                 notifications.push(notification)
             }
         });
         return [200, notifications]
     }
-    return [200, response.data]
 })
 
 Mock.onPost('/api/notification/add').reply((config) => {
