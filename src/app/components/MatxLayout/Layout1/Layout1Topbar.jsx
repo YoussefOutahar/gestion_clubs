@@ -133,7 +133,7 @@ const Layout1Topbar = () => {
             </StyledItem>
 
             <StyledItem>
-              <Link to="/Account">
+              <Link to="/session/account">
                 <Icon> person </Icon>
                 <Span> Profile </Span>
               </Link>

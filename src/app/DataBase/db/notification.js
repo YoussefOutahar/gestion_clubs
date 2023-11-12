@@ -7,23 +7,23 @@ Mock.onGet('/api/notification').reply(async(config) => {
     let profile = await getProfileById(user.id)
     const response = await NotificationsService.getNotifications()
     
-    // let notifications = [];
-    // if (profile.role == "admin") {
-    //     response.data.forEach(async (notification) => {
-    //         if (notification.id_club != null) {
-    //             notifications.push(notification)
-    //         }
-    //     });
-    //     return [200, notifications]
-    // } else {
-    //     const response = await getNotifications()
-    //     response.data.forEach(async (notification) => {
-    //         if (notification.id_club == null) {
-    //             notifications.push(notification)
-    //         }
-    //     });
-    //     return [200, notifications]
-    // }
+    let notifications = [];
+    if (profile.role == "admin") {
+        response.data.forEach(async (notification) => {
+            if (notification.id_club != null) {
+                notifications.push(notification)
+            }
+        });
+        return [200, notifications]
+    } else {
+        const response = await NotificationsService.getNotifications()
+        response.data.forEach(async (notification) => {
+            if (notification.id_club == null) {
+                notifications.push(notification)
+            }
+        });
+        return [200, notifications]
+    }
     return [200, response.data]
 })
 
@@ -41,8 +41,7 @@ Mock.onPost('/api/notification/delete').reply(async (config) => {
 })
 
 Mock.onPost('/api/notification/delete-all').reply(async (config) => {
-    await NotificationsService.clearNotifications()
-    const response = await NotificationsService.getNotifications()
+    const response = await NotificationsService.clearNotifications()
     console.log(response)
     return [200, response.data]
 })

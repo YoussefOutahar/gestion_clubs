@@ -14,11 +14,11 @@ import PresidentRoutes from "./Pages/President-Pages/president-routes";
 import AccountantRoutes from "./Pages/Accountant-Pages/accountant-routes";
 import SecretaryRoutes from "./Pages/Secretary-Pages/secretary-routes";
 
-import AuthGuard from "./auth/AuthGuard";
 import sessionRoutes from "./Pages/sessions/SessionRoutes";
 import NotFound from "./Pages/sessions/NotFound";
 
 import { Navigate } from "react-router-dom";
+import AuthGuard from "./auth/AuthGuard";
 import MatxLayout from "./components/MatxLayout/MatxLayout";
 
 const routes = [
