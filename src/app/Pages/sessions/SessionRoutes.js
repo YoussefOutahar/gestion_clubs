@@ -6,13 +6,7 @@ const ForgotPassword = Loadable(lazy(() => import("./ForgotPassword")));
 const JwtLogin = Loadable(lazy(() => import("./JwtLogin")));
 const JwtRegister = Loadable(lazy(() => import("./JwtRegister")));
 
-const Account = Loadable(lazy(() => import("../../Pages/sessions/Account")));
-
 const sessionRoutes = [
-    {
-        path: "session/account",
-        element: <Account />,
-    },
     { path: "/session/signup", element: <JwtRegister /> },
     { path: "/session/signin", element: <JwtLogin /> },
     { path: "/session/forgot-password", element: <ForgotPassword /> },

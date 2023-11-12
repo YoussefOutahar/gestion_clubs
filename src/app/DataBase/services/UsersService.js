@@ -31,6 +31,16 @@ export default class UsersService {
         }
     };
 
+    static async getUserClub(id){
+        try {
+            const { data, error } = await supabase.from("Clubs").select("name").eq("id", id);
+            if (error) throw error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     static async updateUser(id,user) {
         try {
             const { data, error } = await supabase.from("profiles").update(id).eq("id", id);
