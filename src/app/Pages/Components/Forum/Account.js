@@ -22,6 +22,9 @@ import { Span } from "../../../components/Typography";
 import { getCurrentUser, getUserMember, getProfileById } from "../../../DataBase/services/UsersService";
 import UsersService from "../../../DataBase/services/UsersService";
 
+import { TableContainer, Paper, Table, TableBody, TableRow, TableCell } from "@mui/material";
+
+
 // form field validation schema
 const validationSchema = Yup.object().shape({
     password: Yup.string().min(6, "Password must be 6 character length").required("Password is required!"),
@@ -175,65 +178,95 @@ const Account = () => {
 
     if (user && profile) {
         return (
-            <>
-                <ContentBox1>
-                    <SimpleCard style={{ margin: "20px" }}>
-                        <Grid container spacing={2} alignItems="center">
-                            <Grid item>
-                                <Avatar
-                                    alt={user[0].name}
-                                    src={user[0].avatar}
-                                    sx={{ width: 120, height: 120, margin: "2%" }}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="h5">{user[0].name}</Typography>
-                            </Grid>
-                        </Grid>
-                        <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
-                            <Typography>Email: {user[0].email}</Typography>
-                        </Box>
-                        {user[0].role.toLowerCase() != "admin" ? (
-                            <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
-                                <Typography>Club: {user[0].club}</Typography>
-                            </Box>
-                        ) : null}
-                        <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
-                            <Typography>Role: {user[0].role}</Typography>
-                        </Box>
-                        <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
-                            <Typography>Phone: {user[0].phone}</Typography>
-                        </Box>
-                        {user[0].role.toLowerCase() != "admin" ? (
-                            <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
-                                <Typography>Field: {user[0].field}</Typography>
-                            </Box>
-                        ) : null}
-                        {user[0].role.toLowerCase() != "admin" ? (
-                            <Box border={1} borderRadius={4} p={2} mt={2} mb={2}>
-                                <Typography>Year: {user[0].year}</Typography>
-                            </Box>
-                        ) : null}
-                        <Fab
-                            color="primary"
-                            aria-label="Edit"
-                            sx={{ position: "fixed", bottom: 16, right: 16 }}
-                            onClick={handleEdit}
-                        >
-                            <EditIcon />
-                        </Fab>
-                    </SimpleCard>
-                </ContentBox1>
-                <Dialog open={openEditDialog} onClose={handleClose}>
-                    <DialogTitle>Edit User</DialogTitle>
-                    <Formik
-                        validationSchema={validationSchema}
-                        //onSubmit={handleEditFormSubmit}
-                        initialValues={initialValues}
-                    >
-                        {({ values, errors, touched, handleChange, handleBlur, handleSubmit, submitForm }) => (
-                            <form onSubmit={handleSubmit}>
-                                <DialogContent>
+            <ContentBox1>
+                <SimpleCard style={{ margin: "20px", padding: "20px" }}>
+    <Grid container spacing={2} alignItems="center">
+        <Grid item xs={12} md={4}>
+            <Grid container spacing={2} alignItems="center">
+                <Grid item>
+                    <Avatar alt={user[0].name} src={user[0].avatar} sx={{ width: 120, height: 120 }} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Box ml={2}>
+                        <Typography variant="h5">{user[0].name}</Typography>
+                        <Typography variant="subtitle1" color="textSecondary">
+                            {user[0].role}
+                        </Typography>
+                    </Box>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid item xs={12} md={8}>
+            <Table>
+                <TableBody>
+                    <TableRow>
+                        <TableCell>
+                            <Typography variant="body2" component="strong">
+                                Email:
+                            </Typography>
+                        </TableCell>
+                        <TableCell>{user[0].email}</TableCell>
+                    </TableRow>
+                    {user[0].role.toLowerCase() !== "admin" && (
+                        <TableRow>
+                            <TableCell>
+                                <Typography variant="body2" component="strong">
+                                    Club:
+                                </Typography>
+                            </TableCell>
+                            <TableCell>{user[0].club}</TableCell>
+                        </TableRow>
+                    )}
+                    <TableRow>
+                        <TableCell>
+                            <Typography variant="body2" component="strong">
+                                Phone:
+                            </Typography>
+                        </TableCell>
+                        <TableCell>{user[0].phone}</TableCell>
+                    </TableRow>
+                    {user[0].role.toLowerCase() !== "admin" && (
+                        <>
+                            <TableRow>
+                                <TableCell>
+                                    <Typography variant="body2" component="strong">
+                                        Field:
+                                    </Typography>
+                                </TableCell>
+                                <TableCell>{user[0].field}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>
+                                    <Typography variant="body2" component="strong">
+                                        Year:
+                                    </Typography>
+                                </TableCell>
+                                <TableCell>{user[0].year}</TableCell>
+                            </TableRow>
+                        </>
+                    )}
+                </TableBody>
+            </Table>
+        </Grid>
+        <Grid item xs={12} sx={{ textAlign: "right", marginTop: { xs: 2, md: 0 } }}>
+            <Fab color="primary" aria-label="Edit" onClick={handleEdit}>
+                <EditIcon />
+            </Fab>
+        </Grid>
+    </Grid>
+</SimpleCard>
+
+
+
+<Dialog open={openEditDialog} onClose={handleClose} fullWidth maxWidth="md">
+    <DialogTitle sx={{ fontSize: "1.5rem", fontWeight: "bold", borderBottom: "1px solid #e0e0e0" }}>Edit User Informations</DialogTitle>
+    <Formik
+        validationSchema={validationSchema}
+        initialValues={initialValues}
+    >
+        {({ values, errors, touched, handleChange, handleBlur, handleSubmit, submitForm }) => (
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
                                     <Grid container spacing={2} marginTop={2}>
                                         <TextField
                                             fullWidth
@@ -318,21 +351,23 @@ const Account = () => {
                                             />
                                         ) : null}
                                     </Grid>
-                                </DialogContent>
-                                <DialogActions>
-                                    <Button onClick={handleClose}>Cancel</Button>
-                                    <Button color="primary" onClick={submitForm}>
-                                        <input type="submit" value="Save" />
-                                    </Button>
-                                </DialogActions>
-                            </form>
-                        )}
-                    </Formik>
-                </Dialog>
-            </>
+                                    </DialogContent>
+                <DialogActions sx={{ borderTop: "1px solid #e0e0e0", padding: 2, justifyContent: "space-between" }}>
+                    <Button onClick={handleClose} variant="outlined" sx={{ color: "#757575" }}>
+                        Cancel
+                    </Button>
+                    <Button color="primary" onClick={submitForm} variant="contained">
+                        Save
+                    </Button>
+                </DialogActions>
+            </form>
+        )}
+    </Formik>
+</Dialog>
+            </ContentBox1>
         );
     } else {
-        return <p></p>;
+        return <p>Loading...</p>; 
     }
 };
 
